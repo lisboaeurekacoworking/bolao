@@ -86,26 +86,26 @@ endtrans %}{% endblock %} {% block menu %}{% endblock %} {% block content %}
       </p>
     </div>
   </section>
-  <div class="auth-lang-switcher">
-    <a
-      href="{{ url_for('set_language', lang='pt') }}"
-      class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
-      >PT</a
-    >
-    <span class="lang-sep">|</span>
-    <a
-      href="{{ url_for('set_language', lang='pt_BR') }}"
-      class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
-      >BR</a
-    >
-    <span class="lang-sep">|</span>
-    <a
-      href="{{ url_for('set_language', lang='en') }}"
-      class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
-      >EN</a
-    >
-  </div>
 </main>
+<div class="auth-lang-switcher">
+  <a
+    href="{{ url_for('set_language', lang='pt') }}"
+    class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+    >PT</a
+  >
+  <span class="lang-sep">|</span>
+  <a
+    href="{{ url_for('set_language', lang='pt_BR') }}"
+    class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+    >BR</a
+  >
+  <span class="lang-sep">|</span>
+  <a
+    href="{{ url_for('set_language', lang='en') }}"
+    class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+    >EN</a
+  >
+</div>
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 {% endblock %}

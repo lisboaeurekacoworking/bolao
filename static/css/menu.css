@@ -8,7 +8,6 @@
   font-size: 1rem;
 }
 
-/* Menu fixo no topo — landing */
 .menu-sticky {
   position: sticky;
   top: 0;
@@ -28,7 +27,7 @@
   cursor: pointer;
 }
 
-/* Mobile: dropdown que aparece POR CIMA do conteúdo */
+/* Mobile: dropdown */
 .nav-menu {
   position: absolute;
   top: 100%;
@@ -59,13 +58,13 @@
   align-items: center;
 }
 
-/* Links normais do menu */
+/* Links do menu */
 .li-menu a {
   color: white;
   font-size: clamp(1.2rem, 4vw, 1.4rem);
   font-family: "Montserrat";
   text-decoration: none;
-  transition: 0.4s;
+  transition: 0.3s;
 }
 
 .li-menu a.active {
@@ -76,67 +75,30 @@
   font-weight: 600;
 }
 
-.li-menu a.active:hover {
-  padding: 9px 17px;
+/* Hover apenas em desktop com rato */
+@media (hover: hover) {
+  .li-menu a:hover {
+    padding: 10px 13px;
+    cursor: url("/static/img/futebol-colocado-no-design-grunge.png"), pointer;
+  }
+
+  .li-menu a.active:hover {
+    padding: 9px 17px;
+  }
 }
 
-.li-menu .lang-btn.active {
-  background-color: transparent;
-  color: #ffc507;
-  padding: 2px 4px;
-  border-radius: 0;
-  font-weight: 700;
-  border-bottom: 2px solid #ffc507;
-}
-
-.li-menu a:hover {
-  padding: 10px 13px;
-  transition: 0.3s;
-  cursor:
-    url("/static/img/futebol-colocado-no-design-grunge.png"), pointer !important;
-}
-
-/* ── Botão "Arena Eurena" na landing (público) ── */
-.login-landing {
-  padding: 0;
-}
-
+/* Landing — botão Entrar */
 .login-landing a {
-  display: block;
-
   padding: 7px 25px;
   border-radius: 5px;
-  color: #ffc507 !important;
+  color: #ffc507;
   font-weight: 600;
   font-size: 0.85rem;
-  text-align: center;
   white-space: nowrap;
   transition: 0.2s ease;
 }
 
-.login-landing a:hover {
-  background-color: white !important;
-  color: black !important;
-  border: 1px solid black;
-  padding: 7px 25px !important;
-}
-
-/* ── "Meu Perfil" no menu privado — sem fundo amarelo ── */
-.login-bet a {
-  color: black !important;
-  font-weight: 600;
-  background: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-}
-
-.login-bet a:hover {
-  color: white !important;
-  background: none !important;
-  padding: 0 !important;
-}
-
-/* ── Seletor PT | BR | EN ── */
+/* Seletor PT | BR | EN — base (fundo escuro) */
 .lang-switcher {
   display: flex;
   align-items: center;
@@ -147,22 +109,22 @@
   font-family: "Montserrat", sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.45) !important;
+  color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
   transition: 0.2s ease;
-  padding: 2px 4px !important;
-  background: none !important;
-  border-radius: 0 !important;
+  padding: 2px 4px;
+  background: none;
+  border-radius: 0;
 }
 
-.lang-btn:hover {
-  color: white !important;
-  padding: 2px 4px !important;
-  background: none !important;
+@media (hover: hover) {
+  .lang-btn:hover {
+    color: white;
+  }
 }
 
 .lang-btn.active {
-  color: #ffc507 !important;
+  color: #ffc507;
   border-bottom: 2px solid #ffc507;
 }
 
@@ -171,7 +133,9 @@
   font-size: 0.7rem;
 }
 
-/* Seletor nas páginas sem menu (login, register, etc.) */
+/* Seletor nas páginas de auth (fundo claro)
+   Especificidade: .auth-lang-switcher .lang-btn > .lang-btn
+   Não precisa de !important */
 .auth-lang-switcher {
   position: fixed;
   top: 1.2rem;
@@ -183,16 +147,26 @@
 }
 
 .auth-lang-switcher .lang-btn {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(0, 0, 0, 0.45);
   font-size: 0.8rem;
 }
 
-.auth-lang-switcher .lang-btn.active {
-  color: #ffc507 !important;
-  border-bottom: 2px solid #ffc507;
+.auth-lang-switcher .lang-sep {
+  color: rgba(0, 0, 0, 0.2);
 }
 
-/* Botão com texto centrado */
+@media (hover: hover) {
+  .auth-lang-switcher .lang-btn:hover {
+    color: black;
+  }
+}
+
+.auth-lang-switcher .lang-btn.active {
+  color: #9c7500;
+  border-bottom: 2px solid #9c7500;
+}
+
+/* Utilitários */
 .btn-center {
   text-align: center;
   justify-content: center;
@@ -200,7 +174,6 @@
   align-items: center;
 }
 
-/* Widget API-Football */
 .api-football-widget {
   border: none;
   border-radius: 12px;
@@ -211,10 +184,14 @@
   display: block;
 }
 
-/* ── Desktop ── */
+/* Desktop (min 768px) */
 @media (min-width: 768px) {
   .menu-toggle {
     display: none;
+  }
+
+  .lang-btn {
+    color: white;
   }
 
   .nav-menu {
@@ -235,21 +212,14 @@
 
   .li-menu a {
     font-size: clamp(0.6rem, 2vw, 0.9rem);
-    border-bottom: none;
   }
 
   .li-menu a:hover {
     padding: 4px 8px;
   }
 
-  /* Evitar que o hover genérico afete o lang-btn */
-  .lang-btn:hover {
-    padding: 2px 4px !important;
-  }
-
-  /* login-landing mantém o próprio hover */
   .login-landing a:hover {
-    padding: 7px 25px !important;
+    padding: 7px 25px;
   }
 }
 
@@ -269,62 +239,66 @@
   }
 }
 
-/* ── MOBILE — correcções ── */
+/* Mobile (max 767px) */
 @media (max-width: 767px) {
-
-  /* Links do menu — tamanho consistente e profissional */
   .li-menu a {
     font-size: 1.1rem;
-    padding: 0.9rem 1.5rem;
     display: block;
+    padding: 0.9rem 1.5rem;
     width: 100%;
   }
 
-  /* Item activo no mobile — mesmo estilo do desktop */
   .li-menu a.active {
     background-color: #ffc507;
-    color: black !important;
+    color: black;
     font-weight: 700;
     border-radius: 0;
     padding: 0.9rem 1.5rem;
   }
 
-  /* Hover no mobile */
-  .li-menu a:hover {
-    background: rgba(255,255,255,0.07);
-    padding: 0.9rem 1.5rem;
-  }
-
-  /* Separador subtil entre itens */
   .li-menu {
     width: 100%;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   }
+
   .li-menu:last-child {
     border-bottom: none;
   }
 
-  /* Seletor de língua — fica no menu, mas com espaçamento próprio */
-  .li-menu.lang-switcher {
+  /* Seletor de língua no mobile
+     Fundo sempre preto → forçar cor branca com especificidade alta */
+  .nav-menu .li-menu.lang-switcher {
     padding: 0.9rem 0;
     border-bottom: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     justify-content: center;
-    border-top: 1px solid rgba(255,255,255,0.15);
     margin-top: 0.3rem;
   }
 
-  /* login-landing no mobile — texto amarelo, sem fundo */
+  .nav-menu .li-menu.lang-switcher .lang-btn {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .nav-menu .li-menu.lang-switcher .lang-btn.active {
+    color: black;
+    border-bottom: 2px solid #ffc507;
+    border-radius: 4px;
+  }
+
+  .nav-menu .li-menu.lang-switcher .lang-sep {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
   .login-landing a {
-    color: #ffc507 !important;
+    color: #ffc507;
     font-size: 1.1rem;
     padding: 0.9rem 1.5rem;
     background: none;
     border-radius: 0;
   }
 
-  /* login-bet no mobile */
   .login-bet a {
-    color: #ffc507 !important;
+    color: #ffc507;
     padding: 0.9rem 1.5rem;
   }
 }
