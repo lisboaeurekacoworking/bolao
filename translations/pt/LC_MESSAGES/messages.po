@@ -1,0 +1,674 @@
+# Arena Eureka — pt
+msgid ""
+msgstr ""
+"Project-Id-Version: Arena Eureka\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt\n"
+
+msgid "Arena Eureka"
+msgstr "Arena Eureka"
+
+msgid ". Each participant can make predictions on the matches available in each phase."
+msgstr ". Cada participante pode palpitar nos jogos disponíveis em cada fase."
+
+msgid ". Predictions can be changed until the official start of the match."
+msgstr ". Os palpites podem ser alterados até o início oficial da partida."
+
+msgid ". After the game begins, the prediction is locked."
+msgstr ". Após o começo do jogo, o palpite fica bloqueado."
+
+msgid ". The score is automatically calculated based on the actual result."
+msgstr ". A pontuação é calculada automaticamente conforme o resultado real."
+
+msgid ". Prizes may vary depending on the campaign and the Eureka unit."
+msgstr ". Os prêmios podem variar conforme a campanha e a unidade Eureka."
+
+msgid ". The main prize will be based on the overall ranking of the competition."
+msgstr ". O prêmio principal considerará o ranking geral da disputa."
+
+msgid ". There may be highlights by unit or specific category."
+msgstr ". Poderão existir destaques por unidade ou categoria específica."
+
+msgid ". Final prize details will be communicated by each Eureka unit."
+msgstr ". Os detalhes finais de premiação serão comunicados por cada unidade Eureka."
+
+msgid ". The ranking is updated based on results that have already been confirmed."
+msgstr ". O ranking é atualizado com base nos resultados já confirmados."
+
+msgid ". The system may display an overall ranking as well as rankings by unit/audience."
+msgstr ". O sistema pode exibir ranking geral e rankings por unidade/público."
+
+msgid ". In case of a tie, the system uses internal criteria already defined in the ranking."
+msgstr ". Em caso de empate, o sistema usa critérios internos já definidos no ranking."
+
+msgid ". Messages in Arena Talks must respect the community environment."
+msgstr ". Mensagens na Arena Talks devem respeitar o ambiente da comunidade."
+
+msgid "10 points:"
+msgstr "10 pontos:"
+
+msgid "7 points:"
+msgstr "7 pontos:"
+
+msgid "5 points:"
+msgstr "5 pontos:"
+
+msgid "2 points:"
+msgstr "2 pontos:"
+
+msgid "0 points:"
+msgstr "0 pontos:"
+
+msgid "correctly predicted the exact result - number of goals for both teams and the winner."
+msgstr "acertou o resultados exato (número de gols dos dois times e vencedor)."
+
+msgid "predicted the winner + the number of goals for one of the teams."
+msgstr "acertou o vencedor + número de gols de um dos times."
+
+msgid "predicted only the winner."
+msgstr "acertou apenas o vencedor."
+
+msgid "predicted only the number of goals for one of the teams."
+msgstr "acertou apenas número de gols de um dos times."
+
+msgid "did not get any criteria correct."
+msgstr "não acertou nenhum critério."
+
+msgid "Yes. As long as the match has not started, you can update your prediction."
+msgstr "Sim. Contanto que as partidas ainda não tenham se iniciado, poderás atualizar seus palpites."
+
+msgid "Yes. You need to create an account and sign in to Arena Eureka to register predictions."
+msgstr "Sim. Precisas criar uma conta e entrar na Arena Eureka para registar seus palpites."
+
+msgid "Yes. The internal area shows your profile, position and score."
+msgstr "Sim. As áreas internas mostram seu perfil, posição no ranking e quantidade de pontos."
+
+msgid "A space to talk with the Arena Eureka community about matches, predictions and World Cup expectations."
+msgstr "Um espaço para falar sobre a Arena Eureka, jogos, palpites e expectativas para a copa do mundo 2026"
+
+msgid "By country"
+msgstr "Por país"
+
+msgid "Group A"
+msgstr "Grupo A"
+
+msgid "Group B"
+msgstr "Grupo B"
+
+msgid "Group C"
+msgstr "Grupo C"
+
+msgid "Group D"
+msgstr "Grupo D"
+
+msgid "Group E"
+msgstr "Grupo E"
+
+msgid "Group F"
+msgstr "Grupo F"
+
+msgid "Group G"
+msgstr "Grupo G"
+
+msgid "Group H"
+msgstr "Grupo H"
+
+msgid "Group I"
+msgstr "Grupo I"
+
+msgid "Group J"
+msgstr "Grupo J"
+
+msgid "Group K"
+msgstr "Grupo K"
+
+msgid "Group L"
+msgstr "Grupo L"
+
+msgid "Group Stage"
+msgstr "Primeira Fase"
+
+msgid "Round of 32"
+msgstr "32 Avos"
+
+msgid "Round of 16"
+msgstr "Oitavas"
+
+msgid "Quarter final"
+msgstr "Quartas"
+
+msgid "Semifinals"
+msgstr "Semifinal"
+
+msgid "Final"
+msgstr "Final"
+
+msgid "3dr Place"
+msgstr "Terceiro Lugar"
+
+msgid "Eureka FanZone"
+msgstr "Eureka FanZone"
+
+msgid "Predictions"
+msgstr "Palpites"
+
+msgid "Ranking"
+msgstr "Ranking"
+
+msgid "Rules"
+msgstr "Regras"
+
+msgid "My Profile"
+msgstr "Meu Perfil"
+
+msgid "Sign out"
+msgstr "Sign out"
+
+msgid "Matches"
+msgstr "Jogos"
+
+msgid "Events"
+msgstr "Eventos"
+
+msgid "Sign in"
+msgstr "Sign in"
+
+msgid "Back to Arena Eureka"
+msgstr "← Voltar para a Arena Eureka"
+
+msgid "The perfect place to experience the excitement of the 2026 World Cup. Watch the matches, make your predictions and celebrate every goal with our community."
+msgstr "O lugar perfeito para viver a emoção da Copa do Mundo 2026. Assista aos jogos, dê os seus palpites e celebre cada golo com a nossa comunidade."
+
+msgid "View Calendar"
+msgstr "Ver Calendário"
+
+msgid "Join Arena Eureka"
+msgstr "Participar da Arena Eureka"
+
+msgid "Join the Arena Eureka predictions, show you know football and compete with the community!"
+msgstr "Participa dos palpites da Arena Eureka, mostra que percebes de futebol e disputa com a comunidade!"
+
+msgid "World Cup — Matches and Results"
+msgstr "Copa do Mundo — Jogos e Resultados"
+
+msgid "Eureka will be 100%% connected to the World Cup! Time to sit back, relax, watch the matches and make new connections."
+msgstr "A Eureka ficará 100%% conectada ao mundial! É hora de relaxar, assistir aos jogos e fazer novas conexões."
+
+msgid "Events Room"
+msgstr "Sala de Eventos"
+
+msgid "Check out the best photos from our events!"
+msgstr "Confira as melhores fotos dos nossos eventos!"
+
+msgid "Make your predictions, follow the ranking and compete with friends at the World Cup."
+msgstr "Dê os seus palpites, acompanhe o ranking e dispute com amigos na Copa do Mundo."
+
+msgid "Create account"
+msgstr "Criar conta"
+
+msgid "I already have an account"
+msgstr "Já tenho conta"
+
+msgid "Make your predictions for every match."
+msgstr "Dê os seus palpites em todos os jogos."
+
+msgid "Follow your position and compete with the community."
+msgstr "Acompanhe a sua posição e a disputa com a comunidade."
+
+msgid "Friends"
+msgstr "Amigos"
+
+msgid "Compete with friends and colleagues during the World Cup."
+msgstr "Dispute com amigos e colegas durante a Copa."
+
+msgid "See who is leading right now."
+msgstr "Veja quem está a liderar agora."
+
+msgid "Position"
+msgstr "Posição"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Points"
+msgstr "Pontos"
+
+msgid "See full ranking"
+msgstr "Ver ranking completo"
+
+msgid "Your predictions"
+msgstr "Os seus palpites"
+
+msgid "Choose the stage and fill in the scores."
+msgstr "Escolhe a fase e preenche os resultados."
+
+msgid "Open"
+msgstr "Abertos"
+
+msgid "Filter by"
+msgstr "Filtrar por"
+
+msgid "All"
+msgstr "Todos"
+
+msgid "Today"
+msgstr "Hoje"
+
+msgid "Missing predictions"
+msgstr "Faltam palpitar"
+
+msgid "Already predicted"
+msgstr "Já palpitei"
+
+msgid "By team"
+msgstr "Por seleção"
+
+msgid "All teams"
+msgstr "Todas as seleções"
+
+msgid "Your prediction"
+msgstr "O teu palpite"
+
+msgid "No prediction"
+msgstr "Sem palpite"
+
+msgid "Real result"
+msgstr "Resultado Final"
+
+msgid "Current prediction"
+msgstr "Palpite atual"
+
+msgid "Update prediction"
+msgstr "Atualizar palpite"
+
+msgid "Save prediction"
+msgstr "Guardar palpite"
+
+msgid "✓ Exact score"
+msgstr "✓ Resultado exato"
+
+msgid "✓ Winner"
+msgstr "✓ Vencedor"
+
+msgid "✗ Winner"
+msgstr "✗ Vencedor"
+
+msgid "✓ One side"
+msgstr "✓ Um lado"
+
+msgid "✗ Score"
+msgstr "✗ Resultado"
+
+msgid "Awaiting result"
+msgstr "Aguardando resultado"
+
+msgid "Match finished"
+msgstr "Jogo encerrado"
+
+msgid "Open for predictions"
+msgstr "Aberto para palpites"
+
+msgid "Stage not yet available"
+msgstr "Fase ainda indisponível"
+
+msgid "No matches available for this stage yet."
+msgstr "Ainda não há jogos para esta fase."
+
+msgid "Prediction saved!"
+msgstr "Palpite guardado!"
+
+msgid "General ranking"
+msgstr "Ranking geral"
+
+msgid "Compare the general ranking, by country or by Eureka unit."
+msgstr "Compara a classificação geral, por país ou por unidade da Eureka."
+
+msgid "Participants"
+msgstr "Participantes"
+
+msgid "Current leader"
+msgstr "Líder atual"
+
+msgid "General"
+msgstr "Geral"
+
+msgid "Country"
+msgstr "País"
+
+msgid "Unit"
+msgstr "Unidade"
+
+msgid "Exact"
+msgstr "Exatos"
+
+msgid "Winner hits"
+msgstr "Acertos de vencedor"
+
+msgid "You"
+msgstr "Você"
+
+msgid "No participants found"
+msgstr "Nenhum participante encontrado"
+
+msgid "No participants for this filter."
+msgstr "Não há participantes neste filtro."
+
+msgid "Sign in to see the full ranking and follow your position."
+msgstr "Inicia sessão para ver o ranking completo."
+
+msgid "A space to talk with the Arena Eureka community about matches, predictions and World Cup expectations."
+msgstr "Um espaço para conversar com a comunidade da Arena Eureka sobre jogos, palpites e expectativas da Copa."
+
+msgid "What do you think about the World Cup? Share your opinion..."
+msgstr "O que achas da Copa? Partilha a tua opinião..."
+
+msgid "Maximum 500 characters"
+msgstr "Máximo 500 caracteres"
+
+msgid "Publish"
+msgstr "Publicar"
+
+msgid "Are you sure you want to delete this post?"
+msgstr "Tem a certeza que quer apagar este post?"
+
+msgid "Are you sure you want to delete this comment?"
+msgstr "Tem a certeza que quer apagar este comentário?"
+
+msgid "Moderate"
+msgstr "Moderar"
+
+msgid "Delete"
+msgstr "Apagar"
+
+msgid "Like"
+msgstr "Curtir"
+
+msgid "Write a comment..."
+msgstr "Escreve um comentário..."
+
+msgid "Comment"
+msgstr "Comentar"
+
+msgid "No conversations yet"
+msgstr "Ainda não há conversas"
+
+msgid "Be the first to post in Arena Talks."
+msgstr "Seja a primeira pessoa a publicar na Arena Talks."
+
+msgid "Total points"
+msgstr "Pontos totais"
+
+msgid "Exact score + Winner (10 pts)"
+msgstr "Resultado exato + Vencedor (10 pts)"
+
+msgid "One side goals + Winner (7 pts)"
+msgstr "Golos de um lado + Vencedor (7 pts)"
+
+msgid "Winner only (5 pts)"
+msgstr "Só vencedor (5 pts)"
+
+msgid "One side goals only (2 pts)"
+msgstr "Só golos de um lado (2 pts)"
+
+msgid "Overall position"
+msgstr "Posição geral"
+
+msgid "Performance"
+msgstr "Aproveitamento"
+
+msgid "Today's matches"
+msgstr "Jogos de hoje"
+
+msgid "No matches today."
+msgstr "Nenhum jogo hoje."
+
+msgid "Next matches to predict"
+msgstr "Próximos jogos para palpitar"
+
+msgid "Go to predictions"
+msgstr "Ir para palpites"
+
+msgid "You have already predicted the next matches."
+msgstr "Já preencheste os próximos jogos."
+
+msgid "Rules & Prizes"
+msgstr "Regras & Prémios"
+
+msgid "Understand how Arena Eureka works, how scoring is calculated and what the prize criteria are."
+msgstr "Percebe como a Arena Eureka funciona, como a pontuação é calculada e quais são os critérios de premiação."
+
+msgid "How it works"
+msgstr "Como funciona"
+
+msgid "Scoring"
+msgstr "Pontuação"
+
+msgid "General rules"
+msgstr "Regras gerais"
+
+msgid "Prizes"
+msgstr "Prémios"
+
+msgid "FAQ"
+msgstr "Dúvidas frequentes"
+
+msgid "Can I change my prediction?"
+msgstr "Posso alterar o meu palpite?"
+
+msgid "Yes. As long as the match has not started, you can update your prediction."
+msgstr "Sim. Enquanto o jogo não começou, podes atualizar o teu palpite."
+
+msgid "What happens when the match starts?"
+msgstr "O que acontece quando o jogo começa?"
+
+msgid "The prediction is locked and can no longer be modified."
+msgstr "O palpite fica bloqueado e não pode mais ser modificado."
+
+msgid "Do I need to be signed in to participate?"
+msgstr "Preciso de estar autenticado para participar?"
+
+msgid "Yes. You need to create an account and sign in to Arena Eureka to register predictions."
+msgstr "Sim. É necessário criar uma conta e entrar na Arena Eureka para registar palpites."
+
+msgid "Can I follow my ranking position?"
+msgstr "Posso acompanhar a minha posição no ranking?"
+
+msgid "Yes. The internal area shows your profile, position and score."
+msgstr "Sim. A área interna mostra o teu perfil, posição e pontuação."
+
+msgid "Sign in to participate in the predictions"
+msgstr "Aceda à sua conta para participar"
+
+msgid "Forgot my password"
+msgstr "Esqueci a minha palavra-passe"
+
+msgid "Don't have an account?"
+msgstr "Não tem conta?"
+
+msgid "Password reset successfully. Please sign in."
+msgstr "Palavra-passe redefinida com sucesso."
+
+msgid "WORLD CUP 2026"
+msgstr "COPA DO MUNDO 2026"
+
+msgid "Sign in and follow your ranking."
+msgstr "Inicia sessão e acompanha a tua disputa no ranking."
+
+msgid "Sign up to participate in the predictions"
+msgstr "Registe-se para participar"
+
+msgid "Full name"
+msgstr "Nome completo"
+
+msgid "Your name"
+msgstr "O seu nome"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Password"
+msgstr "Palavra-passe"
+
+msgid "Select"
+msgstr "Selecionar"
+
+msgid "Eureka Unit"
+msgstr "Unidade Eureka"
+
+msgid "Already have an account?"
+msgstr "Já tem conta?"
+
+msgid "Make your predictions and compete with your friends."
+msgstr "Faça os seus palpites e dispute com os seus amigos."
+
+msgid "Welcome"
+msgstr "Bem-vindo"
+
+msgid "Your Arena Eureka account has been created successfully."
+msgstr "A tua conta na Arena Eureka foi criada com sucesso."
+
+msgid "Next steps"
+msgstr "Próximos passos"
+
+msgid "Sign in with your email and password"
+msgstr "Entra com o teu email e palavra-passe"
+
+msgid "Go to Predictions and fill in your scores"
+msgstr "Vai a Palpites e preenche os resultados"
+
+msgid "Follow your place in the Ranking in real time"
+msgstr "Acompanha o teu lugar no Ranking em tempo real"
+
+msgid "Get started →"
+msgstr "Começar agora →"
+
+msgid "Recover password"
+msgstr "Recuperar palavra-passe"
+
+msgid "Enter your email to receive reset instructions."
+msgstr "Introduz o teu e-mail para receber as instruções."
+
+msgid "Send instructions"
+msgstr "Enviar instruções"
+
+msgid "Remembered your password?"
+msgstr "Lembrou a sua palavra-passe?"
+
+msgid "Back to login"
+msgstr "Voltar ao login"
+
+msgid "Recover your account and get back in the game."
+msgstr "Recupere a sua conta e volte à disputa."
+
+msgid "Reset password"
+msgstr "Redefinir palavra-passe"
+
+msgid "Choose a new password to continue in Arena Eureka."
+msgstr "Escolhe uma nova palavra-passe para continuar."
+
+msgid "New password"
+msgstr "Nova palavra-passe"
+
+msgid "Confirm new password"
+msgstr "Confirmar nova palavra-passe"
+
+msgid "Save new password"
+msgstr "Guardar nova palavra-passe"
+
+msgid "Update your password and get back in the game."
+msgstr "Atualize a sua palavra-passe e volte à disputa."
+
+msgid "like"
+msgstr "gosto"
+
+
+msgid "Sign in to participate in the pool."
+msgstr "Faça login para participar da Arena Eureka"
+
+
+msgid "Your password has been reset. Log in to continue."
+msgstr "Sua palavra-passe foi resetada. Faça login para continuar."
+
+
+msgid "Still don't have an account?"
+msgstr "Ainda não tem uma conta?"
+
+msgid "Final result"
+msgstr "Resultado Final"
+
+
+msgid "Privacy Policy"
+msgstr "Política de Privacidade"
+
+msgid "Privacy Policy | Arena Eureka"
+msgstr "Política de Privacidade | Arena Eureka"
+
+msgid "Last updated: March 2026"
+msgstr "Última atualização: Março 2026"
+
+msgid "I have read and accept the"
+msgstr "Li e aceito a"
+
+msgid "and consent to the processing of my personal data."
+msgstr "e consinto no tratamento dos meus dados pessoais."
+
+msgid "You must accept the Privacy Policy to create an account."
+msgstr "Deve aceitar a Política de Privacidade para criar uma conta."
+
+msgid "Too many failed attempts. Please try again in %(minutes)d minutes."
+msgstr "Demasiadas tentativas falhadas. Tente novamente em %(minutes)d minutos."
+
+msgid "Invalid login. Last attempt before temporary block."
+msgstr "Login inválido. Última tentativa antes do bloqueio temporário."
+
+msgid "Invalid login. %(remaining)d attempts remaining."
+msgstr "Login inválido. %(remaining)d tentativas restantes."
+
+msgid "Please verify your email before signing in. A new verification link has been sent."
+msgstr "Por favor verifica o teu email antes de entrar. Um novo link de verificação foi enviado."
+
+msgid "Your email has not been verified yet."
+msgstr "O teu email ainda não foi verificado."
+
+msgid "Check your terminal for the verification link."
+msgstr "Verifica o terminal para encontrar o link de verificação."
+
+msgid "Resend verification link"
+msgstr "Reenviar link de verificação"
+
+msgid "New link generated — check the terminal."
+msgstr "Novo link gerado — verifica o terminal."
+
+msgid "Invalid verification link | Arena Eureka"
+msgstr "Link de verificação inválido | Arena Eureka"
+
+msgid "Invalid link"
+msgstr "Link inválido"
+
+msgid "This verification link is invalid or has expired (valid for 24 hours)."
+msgstr "Este link de verificação é inválido ou expirou (válido por 24 horas)."
+
+msgid "Sign in to your account and request a new verification link."
+msgstr "Inicia sessão na tua conta e pede um novo link de verificação."
+
+msgid "Go to login"
+msgstr "Ir para o login"
+
+msgid "Delete account"
+msgstr "Apagar conta"
+
+msgid "This action is permanent and cannot be undone. All your predictions, posts and comments will be deleted."
+msgstr "Esta acção é permanente e não pode ser desfeita. Todos os teus palpites, posts e comentários serão apagados."
+
+msgid "Incorrect password. Account not deleted."
+msgstr "Palavra-passe incorrecta. Conta não apagada."
+
+msgid "I want to delete my account"
+msgstr "Quero apagar a minha conta"
+
+msgid "Confirm your password to proceed:"
+msgstr "Confirma a tua palavra-passe para continuar:"
+
+msgid "Permanently delete my account"
+msgstr "Apagar permanentemente a minha conta"

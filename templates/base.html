@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="{{ current_lang }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Oswald:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{% block title %}Arena Eureka{% endblock %}</title>
+  </head>
+  <body>
+    <!-- MENU PÚBLICO (sem login) -->
+    {% block menu %}
+    <div class="menu menu-sticky">
+      <a href="{{ url_for('home') }}">
+        <img
+          class="img-menu"
+          src="{{ url_for('static', filename='img/eurekacopabranco.png') }}"
+          alt="Arena Eureka"
+        />
+      </a>
+      <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+      <nav class="nav-menu">
+        <ul class="menu-list menu-list-eurekabet">
+          {% block menu_items %}{% endblock %}
+
+          <!-- Botão de idioma — igual em todas as páginas -->
+          <li class="li-menu lang-switcher">
+            <a
+              href="{{ url_for('set_language', lang='pt') }}"
+              class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+              >PT</a
+            >
+            <span class="lang-sep">|</span>
+            <a
+              href="{{ url_for('set_language', lang='pt_BR') }}"
+              class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+              >BR</a
+            >
+            <span class="lang-sep">|</span>
+            <a
+              href="{{ url_for('set_language', lang='en') }}"
+              class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+              >EN</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    {% endblock %} {% block content %}{% endblock %}
+
+    <script
+      src="{{ url_for('static', filename='js/script.js') }}"
+      defer
+    ></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

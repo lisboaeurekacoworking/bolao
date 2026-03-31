@@ -1,0 +1,191 @@
+{% extends "base.html" %} {% block title %}{% trans %}Ranking | Arena Eureka{%
+endtrans %}{% endblock %} {% block menu %}
+<div class="menu">
+  <a href="{{ url_for('me') }}"
+    ><img
+      class="img-menu"
+      src="{{ url_for('static', filename='img/eurekacopabranco.png') }}"
+      alt="Arena Eureka"
+  /></a>
+  <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+  <nav class="nav-menu">
+    <ul class="menu-list menu-list-eurekabet">
+      <li class="li-menu">
+        <a href="{{ url_for('predict') }}">{{ _('Predictions') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('ranking') }}">{{ _('Ranking') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('bettalks') }}">Arena Talks</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('rules') }}">{{ _('Rules') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('me') }}">{{ _('My Profile') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a>
+      </li>
+      <li class="li-menu lang-switcher">
+        <a
+          href="{{ url_for('set_language', lang='pt') }}"
+          class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+          >PT</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='pt_BR') }}"
+          class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+          >BR</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='en') }}"
+          class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+          >EN</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %} {% block content %}
+<main class="ranking-page">
+  <section class="ranking-hero">
+    <div class="ranking-hero-header">
+      <h1>{{ _('General ranking') }}</h1>
+      <p>
+        {{ _('Compare the general ranking, by country or by Eureka unit.') }}
+      </p>
+    </div>
+
+    <div class="ranking-summary">
+      <article class="ranking-summary-card">
+        <span>{{ _('Participants') }}</span>
+        <strong>{{ ranking|length }}</strong>
+      </article>
+
+      <article class="ranking-summary-card">
+        <span>{{ _('Current leader') }}</span>
+        <strong>
+          {% if ranking %} {{ ranking[0].name }} {% else %} — {% endif %}
+        </strong>
+      </article>
+    </div>
+
+    <!-- ABAS PRINCIPAIS -->
+    <div class="ranking-tabs-wrapper">
+      <div class="ranking-tabs">
+        <a
+          href="{{ url_for('ranking') }}"
+          class="ranking-tab {% if view == 'general' %}active{% endif %}"
+          >{{ _('General') }}</a
+        >
+
+        <a
+          href="{{ url_for('ranking', view='country', filter='PT') }}"
+          class="ranking-tab {% if view == 'country' %}active{% endif %}"
+          >{{ _('Country') }}</a
+        >
+
+        <a
+          href="{{ url_for('ranking', view='unit', filter='lisboa') }}"
+          class="ranking-tab {% if view == 'unit' %}active{% endif %}"
+          >{{ _('Unit') }}</a
+        >
+      </div>
+    </div>
+
+    <!-- FILTROS SECUNDÁRIOS -->
+    {% if view == 'country' %}
+    <div class="ranking-subfilters">
+      {% for code, label in country_filters %}
+      <a
+        href="{{ url_for('ranking', view='country', filter=code) }}"
+        class="ranking-subfilter-btn {% if filter_value == code %}active{% endif %}"
+      >
+        {% if code == "PT" %}🇵🇹{% elif code == "BR" %}🇧🇷{% endif %} {{ label }}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %} {% if view == 'unit' %}
+    <div class="ranking-subfilters">
+      {% for unit_code, unit_label in unit_filters %}
+      <a
+        href="{{ url_for('ranking', view='unit', filter=unit_code) }}"
+        class="ranking-subfilter-btn {% if filter_value == unit_code %}active{% endif %}"
+      >
+        {{ unit_label }}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="ranking-table-section">
+    <div class="ranking-table-wrapper">
+      <table class="ranking-general-table">
+        <thead>
+          <tr>
+            <th>{{ _('Position') }}</th>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Points') }}</th>
+            <th>{{ _('Exact') }}</th>
+            <th>{{ _('Winner hits') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for player in ranking %}
+          <tr
+            class="{% if current_user_id and player.id == current_user_id|int %}ranking-current-user{% endif %}"
+          >
+            <td>
+              {% if player.position == 1 %} 🥇 {% elif player.position == 2 %}
+              🥈 {% elif player.position == 3 %} 🥉 {% else %} {{
+              player.position }} {% endif %}
+            </td>
+
+            <td>
+              <div class="ranking-player-cell">
+                <div class="ranking-player-name">
+                  {% if current_user_id and player.id == current_user_id|int %}
+                  {{ player.name }}
+                  <span class="ranking-you-badge">{{ _('You') }}</span>
+                  {% else %} {{ player.name }} {% endif %}
+                </div>
+
+                <div class="ranking-player-meta">
+                  {% if player.country_code == "PT" %} 🇵🇹 {% elif
+                  player.country_code == "BR" %} 🇧🇷 {% endif %} {% if
+                  player.eureka_unit %} · {{ player.eureka_unit|replace('_', '
+                  ')|title }} {% endif %}
+                </div>
+              </div>
+            </td>
+
+            <td>{{ player.points }}</td>
+            <td>{{ player.exact_hits }}</td>
+            <td>{{ player.winner_hits }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if not ranking %}
+    <div class="ranking-empty-state">
+      <h3>{{ _('No participants found') }}</h3>
+      <p>{{ _('No participants for this filter.') }}</p>
+    </div>
+    {% endif %} {% if not is_logged %}
+    <div class="ranking-locked-message">
+      <p>
+        {{ _('Sign in to see the full ranking and follow your position.') }}
+      </p>
+      <a class="btn2" href="{{ url_for('login') }}">{{ _('Sign in') }}</a>
+    </div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %} {% block scripts %} {% endblock %}

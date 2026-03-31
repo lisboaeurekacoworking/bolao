@@ -1,0 +1,110 @@
+.bolao-preview {
+  background-color: rgba(294, 197, 7);
+  text-align: center;
+  list-style: none;
+  font-family: "Oswald";
+  color: black;
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.bolao-preview h1 {
+  grid-column: 1;
+  grid-row: 1;
+  color: black;
+  font-size: clamp(3rem, 4.8vw, 7rem);
+  margin-bottom: 50px;
+  text-align: left;
+  margin-top: 50px;
+  margin-left: 10%;
+}
+
+.bolao-preview p {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  line-height: 1.5;
+  color: black;
+  text-align: left;
+  max-width: 70vw;
+  grid-row: 2;
+  margin-left: 10%;
+  font-family: "Montserrat";
+}
+.bolao-preview .ranking-actions {
+  grid-row: 3;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  margin-left: 10%;
+}
+
+.bolao-preview .ranking-actions a {
+  grid-column: 1;
+  justify-content: center;
+}
+
+.bolao-preview .section-table {
+  grid-column: 2;
+  grid-row: 2/4;
+}
+
+.bolao-preview .ranking-table {
+  border: 0px solid white;
+  border-radius: 6px;
+  padding: 0px 0px 30px 0px;
+  width: clamp(100px, 100vw, 800px);
+  margin: 0 50px 5px 50px;
+  background-color: rgba(255, 255, 255, 0.485);
+  position: relative;
+}
+
+.btn3 {
+  position: absolute;
+  display: flex;
+  justify-self: left;
+  margin-left: 50px;
+  width: 800px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.bolao-preview .ranking-table tbody td {
+  height: 50px;
+  border-bottom: solid 0.2px rgba(294, 197, 7);
+  font-family: "Montserrat";
+}
+
+.bolao-preview .ranking-table thead tr th {
+  padding-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.747);
+  color: black;
+  border-radius: 5px;
+  padding-top: 10px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .bolao-preview {
+    display: flex;
+    flex-direction: column;
+  }
+  .bolao-preview .ranking-table {
+    width: clamp(100px, 100vw, 400px);
+    margin: 50px 50px 5px 50px;
+  }
+
+  .btn3 {
+    width: clamp(100px, 100vw, 400px);
+    margin-bottom: 50px;
+  }
+
+  .bolao-preview .ranking-actions {
+    width: clamp(100px, 100vw, 180px);
+    display: block;
+    margin: 80px auto;
+  }
+}

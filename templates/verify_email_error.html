@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{% trans %}Invalid verification link | Arena Eureka{% endtrans %}{% endblock %}
+{% block menu %}{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+  <section class="auth-panel auth-form-panel">
+    <div class="auth-form-wrapper">
+      <h1 class="auth-title">⚠️ {% trans %}Invalid link{% endtrans %}</h1>
+      <p class="auth-subtitle">
+        {% trans %}This verification link is invalid or has expired (valid for 24 hours).{% endtrans %}
+      </p>
+      <p style="margin-top:1rem; font-family:'Montserrat',sans-serif; font-size:0.9rem;">
+        {% trans %}Sign in to your account and request a new verification link.{% endtrans %}
+      </p>
+      <a href="{{ url_for('login') }}" class="auth-submit-btn" style="display:block; text-align:center; margin-top:1.5rem;">
+        {% trans %}Go to login{% endtrans %}
+      </a>
+    </div>
+  </section>
+  <section class="auth-panel auth-visual-panel">
+    <div class="auth-visual-content">
+      <h2 class="auth-visual-title">ARENA EUREKA</h2>
+    </div>
+  </section>
+</main>
+{% endblock %}

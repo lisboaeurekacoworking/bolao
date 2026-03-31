@@ -1,0 +1,102 @@
+.rules-page {
+  min-height: 100vh;
+  background: #f6f3ea;
+  color: #111;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.rules-hero {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+}
+
+.rules-hero-header h1 {
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  color: #111;
+  margin-bottom: 1.5rem;
+  line-height: 0.95;
+}
+
+.rules-hero-header p {
+  max-width: 850px;
+  font-family: "Montserrat", sans-serif;
+  color: #555;
+  line-height: 1.6;
+}
+
+.rules-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.rules-card {
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 24px;
+  padding: 1.4rem;
+}
+
+.rules-card h2 {
+  font-size: 1.8rem;
+  color: #9c7500;
+  margin-bottom: 1rem;
+}
+
+.rules-card ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-left: 1.2rem;
+}
+
+.rules-card li {
+  font-family: "Montserrat", sans-serif;
+  color: #333;
+  line-height: 1.5;
+}
+
+.rules-card li strong {
+  color: #111;
+}
+
+.rules-card-wide {
+  grid-column: 1 / -1;
+}
+
+.rules-faq {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.rules-faq-item {
+  background: #faf7ef;
+  border: 1px solid #f0e7ca;
+  border-radius: 18px;
+  padding: 1rem;
+}
+
+.rules-faq-item h3 {
+  font-size: 1.1rem;
+  color: #111;
+  margin-bottom: 0.45rem;
+}
+
+.rules-faq-item p {
+  font-family: "Montserrat", sans-serif;
+  color: #555;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .rules-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rules-faq {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

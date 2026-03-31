@@ -1,0 +1,23 @@
+.jogos {
+  background-color: white;
+}
+
+.jogos h1 {
+  color: black;
+  font-size: clamp(3rem, 4.8vw, 7rem);
+  text-align: left;
+  padding-top: 50px;
+  margin-left: 5%;
+  margin-bottom: 16px;
+}
+
+/* ── Widget SofaScore ── */
+.sofascore-widget {
+  border: none;
+  border-radius: 12px;
+  width: 90%;
+  height: 600px;
+  margin-left: 5%;
+  margin-bottom: 5%;
+  display: block;
+}

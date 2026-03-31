@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}{% trans %}Rules & Prizes | Arena Eureka{% endtrans %}{% endblock %}
+
+{% block menu %}
+<div class="menu">
+  <a href="{{ url_for('me') }}"><img class="img-menu" src="{{ url_for('static', filename='img/eurekacopabranco.png') }}" alt="Arena Eureka" /></a>
+  <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+  <nav class="nav-menu">
+    <ul class="menu-list menu-list-eurekabet">
+      {% if is_logged %}
+      <li class="li-menu"><a href="{{ url_for('predict') }}">{{ _('Predictions') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('ranking') }}">{{ _('Ranking') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('bettalks') }}">Arena Talks</a></li>
+      <li class="li-menu"><a href="{{ url_for('rules') }}">{{ _('Rules') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('me') }}">{{ _('My Profile') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a></li>
+      {% else %}
+      <li class="li-menu"><a href="{{ url_for('home') }}">Home</a></li>
+      <li class="li-menu"><a href="{{ url_for('rules') }}">{{ _('Rules') }}</a></li>
+      <li class="li-menu login-landing"><a href="{{ url_for('login') }}">{{ _('Sign in') }}</a></li>
+      {% endif %}
+      <li class="li-menu lang-switcher">
+        <a href="{{ url_for('set_language', lang='pt') }}" class="lang-btn {% if current_lang == 'pt' %}active{% endif %}">PT</a>
+        <span class="lang-sep">|</span>
+        <a href="{{ url_for('set_language', lang='pt_BR') }}" class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}">BR</a>
+        <span class="lang-sep">|</span>
+        <a href="{{ url_for('set_language', lang='en') }}" class="lang-btn {% if current_lang == 'en' %}active{% endif %}">EN</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<main class="rules-page">
+  <section class="rules-hero">
+    <div class="rules-hero-header">
+      <h1>{{ _('Rules & Prizes') }}</h1>
+      <p>{% trans %}Understand how Arena Eureka works, how scoring is calculated and what the prize criteria are.{% endtrans %}</p>
+    </div>
+  </section>
+
+  <section class="rules-grid">
+    <article class="rules-card">
+      <h2>{{ _('How it works') }}</h2>
+      <ul>
+        <li>{% trans %}. Each participant can make predictions on the matches available in each phase.{% endtrans %}</li>
+        <li>{% trans %}. Predictions can be changed until the official start of the match.{% endtrans %}</li>
+        <li>{% trans %}. After the game begins, the prediction is locked.{% endtrans %}</li>
+        <li>{% trans %}. The score is automatically calculated based on the actual result.{% endtrans %}</li>
+      </ul>
+    </article>
+
+    <article class="rules-card">
+      <h2>{{ _('Scoring') }}</h2>
+      <ul>
+        <li><strong>{{ _('10 points:') }}</strong> {% trans %}correctly predicted the exact result - number of goals for both teams and the winner.{% endtrans %}</li>
+        <li><strong>{{ _('7 points:') }}</strong> {% trans %}predicted the winner + the number of goals for one of the teams.{% endtrans %}</li>
+        <li><strong>{{ _('5 points:') }}</strong> {% trans %}predicted only the winner.{% endtrans %}</li>
+        <li><strong>{{ _('2 points:') }}</strong> {% trans %}predicted only the number of goals for one of the teams.{% endtrans %}</li>
+        <li><strong>{{ _('0 points:') }}</strong> {% trans %}did not get any criteria correct.{% endtrans %}</li>
+      </ul>
+    </article>
+
+    <article class="rules-card">
+      <h2>{{ _('General rules') }}</h2>
+      <ul>
+        <li>{% trans %}. The ranking is updated based on results that have already been confirmed.{% endtrans %}</li>
+        <li>{% trans %}. The system may display an overall ranking as well as rankings by unit/audience.{% endtrans %}</li>
+        <li>{% trans %}. In case of a tie, the system uses internal criteria already defined in the ranking.{% endtrans %}</li>
+        <li>{% trans %}. Messages in Arena Talks must respect the community environment.{% endtrans %}</li>
+      </ul>
+    </article>
+
+    <article class="rules-card">
+      <h2>{{ _('Prizes') }}</h2>
+      <ul>
+        <li>{% trans %}. Prizes may vary depending on the campaign and the Eureka unit.{% endtrans %}</li>
+        <li>{% trans %}. The main prize will be based on the overall ranking of the competition.{% endtrans %}</li>
+        <li>{% trans %}. There may be highlights by unit or specific category.{% endtrans %}</li>
+        <li>{% trans %}. Final prize details will be communicated by each Eureka unit.{% endtrans %}</li>
+      </ul>
+    </article>
+
+    <article class="rules-card rules-card-wide">
+      <h2>{{ _('FAQ') }}</h2>
+      <div class="rules-faq">
+        <div class="rules-faq-item">
+          <h3>{{ _('Can I change my prediction?') }}</h3>
+          <p>{% trans %}Yes. As long as the match has not started, you can update your prediction.{% endtrans %}</p>
+        </div>
+        <div class="rules-faq-item">
+          <h3>{{ _('What happens when the match starts?') }}</h3>
+          <p>{{ _('The prediction is locked and can no longer be modified.') }}</p>
+        </div>
+        <div class="rules-faq-item">
+          <h3>{{ _('Do I need to be signed in to participate?') }}</h3>
+          <p>{% trans %}Yes. You need to create an account and sign in to Arena Eureka to register predictions.{% endtrans %}</p>
+        </div>
+        <div class="rules-faq-item">
+          <h3>{{ _('Can I follow my ranking position?') }}</h3>
+          <p>{% trans %}Yes. The internal area shows your profile, position and score.{% endtrans %}</p>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

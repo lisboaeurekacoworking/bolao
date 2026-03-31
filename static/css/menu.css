@@ -1,0 +1,270 @@
+.menu {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(12px, 3vw, 24px);
+  position: relative;
+  font-size: 1rem;
+}
+
+/* Menu fixo no topo — landing */
+.menu-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.img-menu {
+  height: clamp(3rem, 6vw, 6rem);
+}
+
+.menu-toggle {
+  display: block;
+  font-size: 2.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Mobile: dropdown que aparece POR CIMA do conteúdo */
+.nav-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: black;
+  z-index: 999;
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    padding 0.3s ease;
+}
+
+.nav-menu.active {
+  padding: 1rem 0;
+  max-height: 600px;
+}
+
+.menu-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  align-items: center;
+}
+
+/* Links normais do menu */
+.li-menu a {
+  color: white;
+  font-size: clamp(1.2rem, 4vw, 1.4rem);
+  font-family: "Montserrat";
+  text-decoration: none;
+  transition: 0.4s;
+}
+
+.li-menu a.active {
+  background-color: #ffc507;
+  color: black;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.li-menu a.active:hover {
+  padding: 9px 17px;
+}
+
+.li-menu .lang-btn.active {
+  background-color: transparent;
+  color: #ffc507;
+  padding: 2px 4px;
+  border-radius: 0;
+  font-weight: 700;
+  border-bottom: 2px solid #ffc507;
+}
+
+.li-menu a:hover {
+  padding: 10px 13px;
+  transition: 0.3s;
+  cursor:
+    url("/static/img/futebol-colocado-no-design-grunge.png"), pointer !important;
+}
+
+/* ── Botão "Arena Eurena" na landing (público) ── */
+.login-landing {
+  padding: 0;
+}
+
+.login-landing a {
+  display: block;
+
+  padding: 7px 25px;
+  border-radius: 5px;
+  color: #ffc507 !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.login-landing a:hover {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid black;
+  padding: 7px 25px !important;
+}
+
+/* ── "Meu Perfil" no menu privado — sem fundo amarelo ── */
+.login-bet a {
+  color: black !important;
+  font-weight: 600;
+  background: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+.login-bet a:hover {
+  color: white !important;
+  background: none !important;
+  padding: 0 !important;
+}
+
+/* ── Seletor PT | BR | EN ── */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lang-btn {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45) !important;
+  text-decoration: none;
+  transition: 0.2s ease;
+  padding: 2px 4px !important;
+  background: none !important;
+  border-radius: 0 !important;
+}
+
+.lang-btn:hover {
+  color: white !important;
+  padding: 2px 4px !important;
+  background: none !important;
+}
+
+.lang-btn.active {
+  color: #ffc507 !important;
+  border-bottom: 2px solid #ffc507;
+}
+
+.lang-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.7rem;
+}
+
+/* Seletor nas páginas sem menu (login, register, etc.) */
+.auth-lang-switcher {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 100;
+}
+
+.auth-lang-switcher .lang-btn {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.8rem;
+}
+
+.auth-lang-switcher .lang-btn.active {
+  color: #ffc507 !important;
+  border-bottom: 2px solid #ffc507;
+}
+
+/* Botão com texto centrado */
+.btn-center {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+/* Widget API-Football */
+.api-football-widget {
+  border: none;
+  border-radius: 12px;
+  width: 90%;
+  height: 800px;
+  margin-left: 5%;
+  margin-bottom: 3rem;
+  display: block;
+}
+
+/* ── Desktop ── */
+@media (min-width: 768px) {
+  .menu-toggle {
+    display: none;
+  }
+
+  .nav-menu {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    z-index: auto;
+  }
+
+  .menu-list {
+    flex-direction: row;
+    gap: 2.5rem;
+    margin-left: auto;
+  }
+
+  .li-menu a {
+    font-size: clamp(0.6rem, 2vw, 0.9rem);
+    border-bottom: none;
+  }
+
+  .li-menu a:hover {
+    padding: 4px 8px;
+  }
+
+  /* Evitar que o hover genérico afete o lang-btn */
+  .lang-btn:hover {
+    padding: 2px 4px !important;
+  }
+
+  /* login-landing mantém o próprio hover */
+  .login-landing a:hover {
+    padding: 7px 25px !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .menu {
+    padding: 24px 64px;
+  }
+  .menu-list {
+    gap: 3.5rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .menu {
+    padding-left: clamp(64px, 5%, 150px);
+    padding-right: clamp(64px, 5%, 150px);
+  }
+}

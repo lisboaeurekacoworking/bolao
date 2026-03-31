@@ -1,0 +1,231 @@
+.home-bet {
+  background: black;
+  color: white;
+  min-height: 100vh;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.menu-list-eurekabet {
+  font-family: "Montserrat", sans-serif;
+  align-items: center;
+}
+
+.hero-bet {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.hero-bet-logo {
+  width: 120px;
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: clamp(3.5rem, 12vw, 5rem);
+  line-height: 0.95;
+  color: white;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.hero-text {
+  max-width: 900px;
+  margin: 0 auto 2.5rem;
+  font-size: clamp(1.1rem, 2vw, 1.2rem);
+  color: white;
+  line-height: 1.4;
+  font-family: "Montserrat", sans-serif;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  padding: 1rem 1.6rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1rem);
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.hero-btn-primary {
+  background-color: rgba(255, 197, 7);
+  color: black;
+  border: 1px solid rgba(255, 197, 7);
+}
+
+.hero-btn-secondary {
+  background-color: white;
+  color: black;
+  border: 1px solid white;
+}
+
+.hero-btn-primary:hover {
+  background-color: white;
+  color: black;
+  border: 1px solid white;
+}
+
+.hero-btn-secondary:hover {
+  background-color: black;
+  color: rgba(255, 197, 7);
+  border: 1px solid rgba(255, 197, 7);
+}
+.features-bet {
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: #0f0f0f;
+  border: 1px solid #1f1f1f;
+  border-radius: 18px;
+  padding: 1rem 0.5rem;
+  text-align: center;
+}
+
+.feature-card h2 {
+  font-size: clamp(1.5rem, 3vw, 1.8rem);
+  margin-bottom: 0.8rem;
+  color: white;
+}
+
+.feature-card p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+.home-ranking {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.home-ranking-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.home-ranking-header h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 0.5rem;
+}
+
+.home-ranking-header p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+}
+
+.section-table {
+  width: 100%;
+  overflow-x: auto;
+  height: 50vh;
+}
+
+.home-ranking .ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #0f0f0f;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.home-ranking .ranking-table th,
+.home-ranking .ranking-table td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 0.2px solid rgba(255, 197, 7);
+  font-family: "Montserrat", sans-serif;
+}
+
+.home-ranking .ranking-table th {
+  font-weight: 700;
+  background: #151515;
+}
+
+.home-ranking .ranking-actions {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.home-ranking .ranking-actions .btn3 {
+  justify-self: center;
+  width: auto;
+  background-color: white;
+  border: solid 0.3px white;
+}
+
+.home-ranking .ranking-actions .btn3:hover {
+  background-color: black;
+  color: rgba(255, 197, 7);
+  border: solid 0.3px rgba(255, 197, 7);
+}
+
+.menu-list-eurekabet .login-bet {
+  background-color: rgba(255, 197, 7);
+  padding: 8px 26px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.menu-list-eurekabet .login-bet:hover {
+  color: rgba(255, 197, 7);
+  background-color: black;
+  border: solid 0.3px rgba(255, 197, 7);
+}
+
+.menu-list-eurekabet .login-bet a {
+  color: black;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.menu-list-eurekabet .login-bet a:hover {
+  color: rgba(255, 197, 7);
+}
+
+@media (min-width: 768px) {
+  .hero-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .features-bet {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero-bet-logo {
+    width: 170px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-title {
+    font-size: 5rem;
+  }
+}
+

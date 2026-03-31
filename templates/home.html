@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}{{ _('Arena Eureka') }}{% endblock %}
+
+{% block menu_items %}
+<li class="li-menu"><a href="{{ url_for('home') }}">Home</a></li>
+<li class="li-menu"><a href="#jogos">{{ _('Matches') }}</a></li>
+<li class="li-menu"><a href="{{ url_for('rules') }}">{{ _('Rules') }}</a></li>
+<li class="li-menu login-landing">
+  <a href="{{ url_for('login') }}">{{ _('Sign in') }}</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<main class="home-bet">
+
+  <!-- HERO -->
+  <section class="hero-bet">
+    <div class="hero-identity">
+      <img class="hero-bet-logo hidden" src="{{ url_for('static', filename='img/lampada-copa.png') }}" alt="Arena Eureka" />
+      <h1 class="hero-title hidden">ARENA EUREKA</h1>
+    </div>
+    <p class="hero-text hidden">
+      {{ _('Make your predictions, follow the ranking and compete with friends at the World Cup.') }}
+    </p>
+    <div class="hero-actions hidden">
+      <a class="hero-btn hero-btn-primary" href="{{ url_for('register') }}">{{ _('Create account') }}</a>
+      <a class="hero-btn hero-btn-secondary" href="{{ url_for('login') }}">{{ _('I already have an account') }}</a>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="features-bet">
+    <article class="feature-card hidden">
+      <h2>{{ _('Predictions') }}</h2>
+      <p>{{ _('Make your predictions for every match.') }}</p>
+    </article>
+    <article class="feature-card hidden">
+      <h2>{{ _('Ranking') }}</h2>
+      <p>{{ _('Follow your position and compete with the community.') }}</p>
+    </article>
+    <article class="feature-card hidden">
+      <h2>{{ _('Friends') }}</h2>
+      <p>{{ _('Compete with friends and colleagues during the World Cup.') }}</p>
+    </article>
+  </section>
+
+  <!-- RANKING — estilo fanzone (bolao-preview) -->
+  <section class="bolao-preview" id="ranking">
+    <h1 class="hidden">ARENA EUREKA</h1>
+    <p class="hidden">
+      {{ _('Join the Arena Eureka predictions, show you know football and compete with the community!') }}
+    </p>
+    <div class="section-table hidden">
+      <table class="ranking-table">
+        <thead>
+          <tr>
+            <th>Top 5</th>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Points') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in ranking %}
+          <tr>
+            <td>
+              {% if user.position == 1 %} 🥇
+              {% elif user.position == 2 %} 🥈
+              {% elif user.position == 3 %} 🥉
+              {% else %} {{ user.position }}
+              {% endif %}
+            </td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.points }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a class="btn3 hidden" href="{{ url_for('ranking') }}">{{ _('See full ranking') }}</a>
+    </div>
+    <div class="ranking-actions hidden">
+      <a class="btn2 btn-center" href="{{ url_for('login') }}">{{ _('Sign in') }}</a>
+    </div>
+  </section>
+
+  <!-- JOGOS -->
+  <section class="jogos" id="jogos">
+    <h1 class="hidden">{{ _('Matches') }}</h1>
+    <iframe
+      class="hidden api-football-widget"
+      src="https://widget.api-futebol.com.br/render/widget_8e00d62b49cdc970"
+      title="{{ _('World Cup — Matches and Results') }}"
+      loading="lazy"
+      referrerpolicy="unsafe-url"
+      sandbox="allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation allow-popups-to-escape-sandbox"
+    ></iframe>
+  </section>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Scroll suave com compensação do menu
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener("click", (e) => {
+    const targetId = link.getAttribute("href").slice(1);
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    e.preventDefault();
+    const menuEl = document.querySelector(".menu");
+    const menuHeight = menuEl ? menuEl.offsetHeight : 0;
+    const targetTop = target.getBoundingClientRect().top + window.scrollY - menuHeight;
+    window.scrollTo({ top: targetTop, behavior: "smooth" });
+  });
+});
+</script>
+{% endblock %}

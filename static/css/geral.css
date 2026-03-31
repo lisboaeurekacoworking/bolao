@@ -1,0 +1,106 @@
+* {
+  list-style: none;
+  font-family: "Montserrat", sans-serif;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: black;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+.hero-title,
+.h1,
+.h1-eurekabet {
+  font-family: "Oswald", sans-serif;
+}
+
+.btn1 {
+  color: black;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: white;
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+}
+
+.btn1:hover {
+  background-color: rgba(294, 197, 7);
+  color: black;
+  transition: 0.3s;
+  align-self: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+.btn2,
+.btn3 {
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: white;
+  font-family: "Montserrat", sans-serif;
+  color: black;
+  border-radius: 10px;
+  padding: 1rem 1.4rem;
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  border: none;
+}
+
+.btn3 {
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
+
+.btn2:hover {
+  background-color: black;
+  color: white;
+  transition: 0.3s;
+}
+
+.btn3:hover {
+  background-color: black;
+  color: white;
+  transition: 0.3s;
+  padding: 1rem 1.4rem;
+}
+
+.hidden {
+  opacity: 0;
+  filter: blur(15px);
+  transform: translateX(-100%);
+  transition: all 1s;
+}
+
+.show {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateX(0);
+  transition: all 1s;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

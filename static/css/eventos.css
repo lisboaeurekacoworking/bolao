@@ -1,0 +1,118 @@
+.eventos {
+  height: auto;
+}
+
+.eventos h1 {
+  color: white;
+  font-size: clamp(3rem, 4.8vw, 7rem);
+  text-align: right;
+  margin-top: 5%;
+  margin-right: 5%;
+  margin-bottom: 16px;
+}
+
+.eventos p {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  line-height: 1.5;
+  max-width: 80%;
+  color: white;
+  text-align: right;
+  max-width: 70vw;
+  margin: 0 auto 40px;
+  margin-right: 5%;
+  font-family: "Montserrat";
+}
+
+.eventos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.evento-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.eventos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 30px;
+}
+
+/* Card */
+.evento-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Hover */
+.evento-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Imagem */
+.evento-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Conteúdo */
+.evento-info {
+  padding: 16px;
+}
+
+.evento-info h2 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.evento-info p {
+  font-size: 0.9rem;
+  margin: 4px 0;
+  color: #555;
+  font-family: "Montserrat";
+  text-align: center;
+}
+
+.evento-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.evento-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.evento-info {
+  padding: 16px;
+}
+
+.evento-info h2 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.evento-info p {
+  font-size: 0.9rem;
+  margin: 4px 0;
+  color: #555;
+}

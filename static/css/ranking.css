@@ -1,0 +1,239 @@
+.ranking-page {
+  min-height: 100vh;
+  background: #f6f3ea;
+  color: #111;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.ranking-hero {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+
+.ranking-hero-header {
+  margin-bottom: 1.5rem;
+}
+
+.ranking-hero-header h1 {
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  color: #111;
+  margin-bottom: 1.5rem;
+  line-height: 0.95;
+}
+
+.ranking-hero-header p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.05rem;
+  color: #555;
+}
+
+.ranking-summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.ranking-summary-card {
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 18px;
+  padding: 1.2rem;
+}
+
+.ranking-summary-card span {
+  display: block;
+  font-family: "Montserrat", sans-serif;
+  color: #666;
+  margin-bottom: 0.4rem;
+}
+
+.ranking-summary-card strong {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: #d8a400;
+  line-height: 1;
+}
+
+/* ABAS PRINCIPAIS */
+.ranking-tabs-wrapper {
+  border-bottom: 2px solid #d8cfae;
+  margin-bottom: 1rem;
+}
+
+.ranking-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+}
+
+.ranking-tab {
+  border: 1px solid #d8cfae;
+  border-bottom: none;
+  background: #ece7d9;
+  color: #444;
+  padding: 0.9rem 1.4rem;
+  border-radius: 14px 14px 0 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  top: 2px;
+}
+
+.ranking-tab.active {
+  background: #f6f3ea;
+  color: #111;
+  border-color: #d8cfae;
+  font-weight: 700;
+}
+
+/* FILTROS SECUNDÁRIOS */
+.ranking-subfilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.ranking-subfilter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: white;
+  color: #444;
+  border: 1px solid #eadfb7;
+  border-radius: 999px;
+  padding: 0.8rem 1.1rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.ranking-subfilter-btn:hover {
+  background: #fff7dc;
+  color: #111;
+}
+
+.ranking-subfilter-btn.active {
+  background: #ffc507;
+  color: black;
+  border-color: #ffc507;
+}
+
+/* TABELA */
+.ranking-table-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ranking-table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 22px;
+}
+
+.ranking-general-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.ranking-general-table th,
+.ranking-general-table td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #f0e7ca;
+  font-family: "Montserrat", sans-serif;
+}
+
+.ranking-general-table th {
+  background: #fffaf0;
+  color: #444;
+  font-weight: 700;
+}
+
+.ranking-general-table tbody tr:hover {
+  background: #fcf7e8;
+}
+
+.ranking-current-user {
+  background: #f5edd1;
+}
+
+.ranking-player-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ranking-player-name {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  color: #111;
+}
+
+.ranking-player-meta {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ranking-you-badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  background: #ffc507;
+  color: black;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.ranking-empty-state {
+  margin-top: 1.4rem;
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 18px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.ranking-empty-state h3 {
+  color: #9c7500;
+  margin-bottom: 0.5rem;
+}
+
+.ranking-empty-state p {
+  font-family: "Montserrat", sans-serif;
+  color: #666;
+}
+
+.ranking-locked-message {
+  margin-top: 1.4rem;
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 18px;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.ranking-locked-message p {
+  font-family: "Montserrat", sans-serif;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .ranking-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

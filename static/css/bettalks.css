@@ -1,0 +1,424 @@
+.bettalks-page {
+  min-height: 100vh;
+  background: #f6f3ea;
+  color: #111;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.bettalks-hero {
+  max-width: 1000px;
+  margin: 0 auto 1.5rem;
+}
+
+.bettalks-hero-header h1 {
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  color: #111;
+  margin-bottom: 1.5rem;
+  line-height: 0.95;
+}
+
+.bettalks-hero-header p {
+  font-family: "Montserrat", sans-serif;
+  color: #555;
+  line-height: 1.5;
+  max-width: 850px;
+}
+
+.bettalks-compose {
+  max-width: 1000px;
+  margin: 0 auto 2rem;
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 24px;
+  padding: 1.4rem;
+}
+
+.bettalks-user-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+.bettalks-user-name {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  color: #111;
+}
+
+.bettalks-user-meta {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.bettalks-error {
+  margin-bottom: 1rem;
+  background: #ffe7e7;
+  color: #a10000;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-family: "Montserrat", sans-serif;
+}
+
+.bettalks-form textarea {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  background: #fafafa;
+  outline: none;
+}
+
+.bettalks-form textarea:focus {
+  border-color: #ffc507;
+  box-shadow: 0 0 0 2px rgba(255, 197, 7, 0.15);
+}
+
+.bettalks-form-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bettalks-hint {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  color: #888;
+}
+
+.bettalks-feed {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.bettalks-post-card {
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 24px;
+  padding: 1.2rem;
+}
+
+.bettalks-post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.bettalks-post-author {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.bettalks-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #ffc507;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Oswald", sans-serif;
+  font-size: 1.4rem;
+}
+
+.bettalks-author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.bettalks-author-info strong {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  color: #111;
+}
+
+.bettalks-author-info span {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  color: #777;
+}
+
+.bettalks-post-date {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.bettalks-post-content p {
+  font-family: "Montserrat", sans-serif;
+  color: #222;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.bettalks-empty-state {
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 24px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.bettalks-empty-state h3 {
+  color: #9c7500;
+  margin-bottom: 0.5rem;
+}
+
+.bettalks-empty-state p {
+  font-family: "Montserrat", sans-serif;
+  color: #666;
+}
+
+.bettalks-post-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+
+.bettalks-delete-btn {
+  background: transparent;
+  border: 1px solid #e7cfcf;
+  color: #a10000;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bettalks-delete-btn:hover {
+  background: #fff0f0;
+  border-color: #dca8a8;
+}
+
+.bettalks-comments-section {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0e7ca;
+}
+
+.bettalks-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.bettalks-comment-item {
+  background: #faf7ef;
+  border: 1px solid #f0e7ca;
+  border-radius: 16px;
+  padding: 0.9rem 1rem;
+}
+
+.bettalks-comment-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.bettalks-comment-header strong {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  color: #111;
+}
+
+.bettalks-comment-header span {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.bettalks-comment-content {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  color: #222;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.bettalks-comment-form {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.bettalks-comment-form input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  background: white;
+  outline: none;
+}
+
+.bettalks-comment-form input:focus {
+  border-color: #ffc507;
+  box-shadow: 0 0 0 2px rgba(255, 197, 7, 0.15);
+}
+
+.bettalks-comment-form button {
+  border: none;
+  background: #ffc507;
+  color: black;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bettalks-comment-form button:hover {
+  background: #111;
+  color: #ffc507;
+}
+
+.bettalks-comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.bettalks-comment-header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.bettalks-comment-delete-btn {
+  background: transparent;
+  border: 1px solid #e7cfcf;
+  color: #a10000;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bettalks-comment-delete-btn:hover {
+  background: #fff0f0;
+  border-color: #dca8a8;
+}
+
+.bettalks-post-reactions {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.bettalks-like-btn {
+  background: white;
+  border: 1px solid #eadfb7;
+  color: #444;
+  border-radius: 999px;
+  padding: 0.6rem 0.95rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bettalks-like-btn:hover {
+  background: #fff7dc;
+  color: #111;
+}
+
+.bettalks-like-btn.active {
+  background: #ffc507;
+  color: black;
+  border-color: #ffc507;
+}
+
+.bettalks-like-count {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  color: #777;
+}
+
+.bettalks-admin-badge {
+  display: inline-block;
+  margin-left: 0.45rem;
+  background: #111;
+  color: #ffc507;
+  border-radius: 999px;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+#toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #111;
+  color: #ffc507;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 768px) {
+  .bettalks-post-header {
+    flex-direction: column;
+  }
+
+  .bettalks-form-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bettalks-comment-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .bettalks-comment-header {
+    flex-direction: column;
+  }
+}

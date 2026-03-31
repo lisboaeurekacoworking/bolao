@@ -1,0 +1,97 @@
+.privacy-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  color: white;
+}
+
+.privacy-hero {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #222;
+  padding-bottom: 2rem;
+}
+
+.privacy-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 0.5rem;
+}
+
+.privacy-updated {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.privacy-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.privacy-section {
+  border-left: 3px solid #ffc507;
+  padding-left: 1.5rem;
+}
+
+.privacy-section h2 {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: #ffc507;
+  margin-bottom: 1rem;
+}
+
+.privacy-section p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0.8rem;
+}
+
+.privacy-section ul {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  padding-left: 1.2rem;
+  list-style: disc;
+  margin-bottom: 0.8rem;
+}
+
+.privacy-section strong {
+  color: white;
+}
+
+/* ── Checkbox de consentimento no registo ── */
+.auth-consent-field {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-consent-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin-top: 2px;
+  accent-color: #ffc507;
+  cursor: pointer;
+}
+
+.auth-consent-label a {
+  color: #ffc507;
+  text-decoration: underline;
+}
+
+.auth-consent-label a:hover {
+  color: white;
+}

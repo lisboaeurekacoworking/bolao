@@ -1,0 +1,232 @@
+{% extends "base.html" %} {% block title %}Arena Talks | Arena Eureka{% endblock
+%} {% block menu %}
+<div class="menu">
+  <a href="{{ url_for('me') }}"
+    ><img
+      class="img-menu"
+      src="{{ url_for('static', filename='img/eurekacopabranco.png') }}"
+      alt="Arena Eureka"
+  /></a>
+  <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+  <nav class="nav-menu">
+    <ul class="menu-list menu-list-eurekabet">
+      <li class="li-menu">
+        <a href="{{ url_for('predict') }}">{{ _('Predictions') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('ranking') }}">{{ _('Ranking') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('bettalks') }}">Arena Talks</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('rules') }}">{{ _('Rules') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('me') }}">{{ _('My Profile') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a>
+      </li>
+      <li class="li-menu lang-switcher">
+        <a
+          href="{{ url_for('set_language', lang='pt') }}"
+          class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+          >PT</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='pt_BR') }}"
+          class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+          >BR</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='en') }}"
+          class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+          >EN</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %} {% block content %}
+<div id="toast"></div>
+<main class="bettalks-page">
+  <section class="bettalks-hero">
+    <div class="bettalks-hero-header">
+      <h1>Arena Talks</h1>
+      <p>
+        {{ _('A space to talk with the Arena Eureka community about matches, predictions and World Cup expectations.') }}
+      </p>
+    </div>
+  </section>
+
+  <section class="bettalks-compose">
+    <div class="bettalks-user-chip">
+      <span class="bettalks-user-name">
+        {{ current_user.name }} {% if current_user.is_admin == 1 %}
+        <span class="bettalks-admin-badge">Admin</span>
+        {% endif %}
+      </span>
+
+      <span class="bettalks-user-meta">
+        {% if current_user.country_code == "PT" %} 🇵🇹 {% elif
+        current_user.country_code == "BR" %} 🇧🇷 {% endif %} {% if
+        current_user.eureka_unit %} · {{ current_user.eureka_unit|replace('_', '
+        ')|title }} {% endif %}
+      </span>
+    </div>
+
+    {% if error %}
+    <p class="bettalks-error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" class="bettalks-form">
+      <textarea
+        name="content"
+        placeholder="{{ _('What do you think about the World Cup? Share your opinion...') }}"
+        maxlength="500"
+        required
+      ></textarea>
+
+      <div class="bettalks-form-footer">
+        <span class="bettalks-hint">{{ _('Maximum 500 characters') }}</span>
+        <button type="submit" class="btn2">{{ _('Publish') }}</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="bettalks-feed">
+    {% if posts %} {% for post in posts %}
+    <article class="bettalks-post-card">
+      <!-- CABEÇALHO DO POST -->
+      <div class="bettalks-post-header">
+        <div class="bettalks-post-author">
+          <div class="bettalks-avatar">
+            {{ post.name[0] if post.name else "U" }}
+          </div>
+
+          <div class="bettalks-author-info">
+            <strong>{{ post.name }}</strong>
+            <span>
+              {% if post.country_code == "PT" %} 🇵🇹 {% elif post.country_code ==
+              "BR" %} 🇧🇷 {% endif %} {% if post.eureka_unit %} · {{
+              post.eureka_unit|replace('_', ' ')|title }} {% endif %}
+            </span>
+          </div>
+        </div>
+
+        <div class="bettalks-post-actions">
+          <div class="bettalks-post-date">{{ post.created_at }}</div>
+
+          {% if post.user_id == current_user.id or current_user.is_admin == 1 %}
+          <form
+            method="POST"
+            action="{{ url_for('delete_bettalks_post', post_id=post.id) }}"
+            class="confirm-delete"
+            data-confirm="{{ _('Are you sure you want to delete this post?') }}"
+          >
+            <button type="submit" class="bettalks-delete-btn">
+              {% if current_user.is_admin == 1 and post.user_id !=
+              current_user.id %}{{ _('Moderate') }}{% else %}{{ _('Delete') }}{%
+              endif %}
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- CONTEÚDO DO POST -->
+      <div class="bettalks-post-content">
+        <p>{{ post.content }}</p>
+      </div>
+
+      <!-- REAÇÕES -->
+      <div class="bettalks-post-reactions">
+        <form
+          method="POST"
+          action="{{ url_for('toggle_bettalks_like', post_id=post.id) }}"
+        >
+          <button
+            type="submit"
+            class="bettalks-like-btn {% if post.liked_by_current_user %}active{% endif %}"
+          >
+            ❤️ Curtir
+          </button>
+        </form>
+
+        <span class="bettalks-like-count">
+          {{ post.likes_count }} curtida{% if post.likes_count != 1 %}s{% endif
+          %}
+        </span>
+      </div>
+
+      <!-- COMENTÁRIOS -->
+      <div class="bettalks-comments-section">
+        {% if post.comments %}
+        <div class="bettalks-comments-list">
+          {% for comment in post.comments %}
+          <div class="bettalks-comment-item">
+            <div class="bettalks-comment-header">
+              <div class="bettalks-comment-header-main">
+                <strong>{{ comment.name }}</strong>
+                <span>
+                  {% if comment.country_code == "PT" %} 🇵🇹 {% elif
+                  comment.country_code == "BR" %} 🇧🇷 {% endif %} {% if
+                  comment.eureka_unit %} · {{ comment.eureka_unit|replace('_', '
+                  ')|title }} {% endif %} · {{ comment.created_at }}
+                </span>
+              </div>
+
+              {% if comment.user_id == current_user.id or current_user.is_admin
+              == 1 %}
+              <form
+                method="POST"
+                action="{{ url_for('delete_bettalks_comment', comment_id=comment.id) }}"
+                class="confirm-delete"
+                data-confirm="{{ _('Are you sure you want to delete this comment?') }}"
+              >
+                <button type="submit" class="bettalks-comment-delete-btn">
+                  {% if current_user.is_admin == 1 and comment.user_id !=
+                  current_user.id %}{{ _('Moderate') }}{% else %}{{ _('Delete')
+                  }}{% endif %}
+                </button>
+              </form>
+              {% endif %}
+            </div>
+
+            <div class="bettalks-comment-content">{{ comment.content }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- FORM DE NOVO COMENTÁRIO -->
+        <form
+          method="POST"
+          action="{{ url_for('create_bettalks_comment', post_id=post.id) }}"
+          class="bettalks-comment-form"
+        >
+          <input
+            type="text"
+            name="content"
+            maxlength="300"
+            placeholder="{{ _('Write a comment...') }}"
+            required
+          />
+          <button type="submit">{{ _('Comment') }}</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %} {% else %}
+    <div class="bettalks-empty-state">
+      <h3>{{ _('No conversations yet') }}</h3>
+      <p>{{ _('Be the first to post in Arena Talks.') }}</p>
+    </div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/bettalks.js') }}" defer></script>
+{% endblock %}

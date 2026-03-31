@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt_BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Oswald:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Criar conta | Arena Eureka</title>
+  </head>
+
+  <body>
+    <main class="auth-page">
+      <!-- LADO ESQUERDO -->
+      <section class="auth-panel auth-form-panel">
+        <a class="auth-back-link hidden" href="{{ url_for('home') }}">
+          ← Voltar para a Arena Eureka
+        </a>
+        <div class="auth-brand">
+          <div class="auth-brand-icon hidden">
+            <img
+              src="{{ url_for('static', filename='img/taca-de-ouro.png') }}"
+              alt="icon taca"
+              class="taca"
+            />
+          </div>
+          <span class="auth-brand-text hidden">ARENA EUREKA</span>
+        </div>
+
+        <div class="auth-form-wrapper hidden">
+          <h1 class="auth-title">Criar conta</h1>
+          <p class="auth-subtitle">Cadastre-se para participar das apostas</p>
+
+          {% if register_error %}
+          <p class="error-message">{{ register_error }}</p>
+          {% endif %}
+
+          <form
+            method="POST"
+            action="{{ url_for('register') }}"
+            class="auth-form"
+          >
+            <div class="auth-field">
+              <label for="name">Nome completo</label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Seu nome"
+                required
+              />
+            </div>
+
+            <div class="auth-field">
+              <label for="email">E-mail</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="seu@email.com"
+                required
+              />
+            </div>
+
+            <div class="auth-field">
+              <label for="password">Senha</label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+            <div class="auth-field">
+              <label for="country_code">País</label>
+              <select id="country_code" name="country_code" required>
+                <option value="">Selecione</option>
+                <option value="PT">Portugal</option>
+                <option value="BR">Brasil</option>
+              </select>
+            </div>
+
+            <div class="auth-field">
+              <label for="eureka_unit">Unidade Eureka</label>
+              <select id="eureka_unit" name="eureka_unit" required>
+                <option value="">Selecione</option>
+                <option value="lisboa">Lisboa</option>
+                <option value="campinas">Campinas</option>
+                <option value="sao_paulo">São Paulo</option>
+              </select>
+            </div>
+
+            <!-- Consentimento RGPD/LGPD — obrigatório -->
+            <div class="auth-field auth-consent-field">
+              <label class="auth-consent-label">
+                <input type="checkbox" name="privacy_consent" required />
+                <span>
+                  {% trans %}I have read and accept the{% endtrans %}
+                  <a href="{{ url_for('privacy') }}" target="_blank">{% trans %}Privacy Policy{% endtrans %}</a>
+                  {% trans %}and consent to the processing of my personal data.{% endtrans %}
+                </span>
+              </label>
+            </div>
+
+            <button type="submit" class="auth-submit-btn">{{ _('Create account') }}</button>
+          </form>
+
+          <p class="auth-switch-text hidden">
+            Já tem uma conta?
+            <a href="{{ url_for('login') }}">Entrar</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- LADO DIREITO -->
+      <section class="auth-panel auth-visual-panel">
+        <div class="auth-visual-content">
+          <img
+            class="auth-visual-icon hidden"
+            src="{{ url_for('static', filename='img/lampada-copa.png') }}"
+            alt="EurekaBet"
+          />
+          <h2 class="auth-visual-title hidden">COPA DO MUNDO 2026</h2>
+          <p class="auth-visual-text hidden">
+            Faça seus palpites e dispute com seus amigos.
+          </p>
+        </div>
+      </section>
+    </main>
+    <script
+      src="{{ url_for('static', filename='js/script.js') }}"
+      defer
+    ></script>
+  </body>
+</html>

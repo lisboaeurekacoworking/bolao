@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{% trans %}Account created | Arena Eureka{% endtrans %}{% endblock %}
+
+{% block menu %}{% endblock %}
+
+{% block content %}
+<div class="success-page">
+      <div class="success-card">
+        <div class="success-icon">
+          <img
+            src="{{ url_for('static', filename='img/taca-de-ouro.png') }}"
+            alt="Taça"
+            style="width: 38px; height: 38px; object-fit: contain"
+          />
+        </div>
+
+        <h1>
+          Bem-vindo{% if name %},<br />
+          <span class="name-highlight">{{ name.split()[0] }}!</span>
+          {% else %}!{% endif %}
+        </h1>
+
+        <p>
+          {{ _('Your Arena Eureka account has been created successfully.') }}
+        </p>
+
+        <p class="success-next-label">{{ _('Next steps') }}</p>
+        <div class="success-steps">
+          <div class="success-step">
+            <div class="step-num">1</div>
+            <span>{{ _('Sign in with your email and password') }}</span>
+          </div>
+          <div class="success-step">
+            <div class="step-num">2</div>
+            <span
+              >{{ _('Go to Predictions and fill in your scores') }}</span
+            >
+          </div>
+          <div class="success-step">
+            <div class="step-num">3</div>
+            <span
+              >{{ _('Follow your place in the Ranking in real time') }}</span
+            >
+          </div>
+        </div>
+
+        <a href="{{ url_for('me') }}" class="success-btn">{{ _('Get started →') }}</a>
+      </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

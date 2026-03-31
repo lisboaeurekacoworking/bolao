@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}{% trans %}Privacy Policy | Arena Eureka{% endtrans %}{% endblock %}
+
+{% block menu %}
+<div class="menu">
+  <a href="{{ url_for('home') }}"><img class="img-menu" src="{{ url_for('static', filename='img/eurekacopabranco.png') }}" alt="Arena Eureka" /></a>
+  <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+  <nav class="nav-menu">
+    <ul class="menu-list menu-list-eurekabet">
+      {% if is_logged %}
+      <li class="li-menu"><a href="{{ url_for('predict') }}">{{ _('Predictions') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('ranking') }}">{{ _('Ranking') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('bettalks') }}">Arena Talks</a></li>
+      <li class="li-menu"><a href="{{ url_for('rules') }}">{{ _('Rules') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('me') }}">{{ _('My Profile') }}</a></li>
+      <li class="li-menu"><a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a></li>
+      {% else %}
+      <li class="li-menu"><a href="{{ url_for('home') }}">Home</a></li>
+      <li class="li-menu"><a href="{{ url_for('rules') }}">{{ _('Rules') }}</a></li>
+      <li class="li-menu login-landing"><a href="{{ url_for('login') }}">{{ _('Sign in') }}</a></li>
+      {% endif %}
+      <li class="li-menu lang-switcher">
+        <a href="{{ url_for('set_language', lang='pt') }}" class="lang-btn {% if current_lang == 'pt' %}active{% endif %}">PT</a>
+        <span class="lang-sep">|</span>
+        <a href="{{ url_for('set_language', lang='pt_BR') }}" class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}">BR</a>
+        <span class="lang-sep">|</span>
+        <a href="{{ url_for('set_language', lang='en') }}" class="lang-btn {% if current_lang == 'en' %}active{% endif %}">EN</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<main class="privacy-page">
+  <section class="privacy-hero">
+    <h1>{% trans %}Privacy Policy{% endtrans %}</h1>
+    <p class="privacy-updated">{% trans %}Last updated: March 2026{% endtrans %}</p>
+  </section>
+
+  <section class="privacy-content">
+
+    <article class="privacy-section">
+      <h2>{% trans %}1. Who we are{% endtrans %}</h2>
+      <p>{% trans %}The Arena Eureka platform is operated by Eureka Coworking, with offices in Lisbon (Portugal) and São Paulo (Brazil). This Privacy Policy applies to all users of the platform, regardless of their location.{% endtrans %}</p>
+      <p>{% trans %}For any privacy-related questions, please contact us at:{% endtrans %} <strong>privacidade@eureka.co</strong></p>
+    </article>
+
+    <article class="privacy-section">
+      <h2>{% trans %}2. What data we collect{% endtrans %}</h2>
+      <p>{% trans %}When you create an account on Arena Eureka, we collect only the data necessary to operate the platform:{% endtrans %}</p>
+      <ul>
+        <li><strong>{% trans %}Full name{% endtrans %}</strong> — {% trans %}to identify you in the ranking and Arena Talks.{% endtrans %}</li>
+        <li><strong>{% trans %}Email address{% endtrans %}</strong> — {% trans %}to log in and, if necessary, recover your password.{% endtrans %}</li>
+        <li><strong>{% trans %}Country{% endtrans %}</strong> — {% trans %}to enable filtering by country in the ranking.{% endtrans %}</li>
+        <li><strong>{% trans %}Eureka Unit{% endtrans %}</strong> — {% trans %}to enable filtering by unit in the ranking.{% endtrans %}</li>
+      </ul>
+      <p>{% trans %}We do not collect payment data, location data, or any other sensitive information.{% endtrans %}</p>
+    </article>
+
+    <article class="privacy-section">
+      <h2>{% trans %}3. How we use your data{% endtrans %}</h2>
+      <p>{% trans %}Your data is used exclusively for:{% endtrans %}</p>
+      <ul>
+        <li>{% trans %}Managing your account and access to the platform{% endtrans %}</li>
+        <li>{% trans %}Displaying your name and scores in the ranking{% endtrans %}</li>
+        <li>{% trans %}Associating your predictions and posts in Arena Talks with your profile{% endtrans %}</li>
+        <li>{% trans %}Sending password recovery emails when requested{% endtrans %}</li>
+      </ul>
+      <p>{% trans %}We do not use your data for advertising, profiling, or share it with third parties.{% endtrans %}</p>
+    </article>
+
+    <article class="privacy-section">
+      <h2>{% trans %}4. Legal basis for processing{% endtrans %}</h2>
+      <p>{% trans %}The processing of your data is based on your explicit consent, given at the time of account creation. You may withdraw this consent at any time by deleting your account.{% endtrans %}</p>
+      <p>{% trans %}For users in the European Union, this processing complies with the General Data Protection Regulation (GDPR). For users in Brazil, it complies with the Lei Geral de Proteção de Dados (LGPD).{% endtrans %}</p>
+    </article>
+
+    <article class="privacy-section">
+      <h2>{% trans %}5. Data retention{% endtrans %}</h2>
+      <p>{% trans %}Your data is kept for as long as your account is active. If you delete your account, all your personal data will be permanently removed from our systems within 30 days.{% endtrans %}</p>
+    </article>
+
+    <article class="privacy-section">
+      <h2>{% trans %}6. Your rights{% endtrans %}</h2>
+      <p>{% trans %}You have the right to:{% endtrans %}</p>
+      <ul>
+        <li>{% trans %}Access your personal data{% endtrans %}</li>
+        <li>{% trans %}Correct inaccurate data{% endtrans %}</li>
+        <li>{% trans %}Delete your account and all associated data{% endtrans %}</li>
+        <li>{% trans %}Withdraw your consent at any time{% endtrans %}</li>
+        <li>{% trans %}File a complaint with the data protection authority in your country{% endtrans %}</li>
+      </ul>
+      <p>{% trans %}To exercise these rights, contact us at{% endtrans %} <strong>privacidade@eureka.co</strong> {% trans %}or delete your account directly from your profile page.{% endtrans %}</p>
+    </article>
+
+    <article class="privacy-section">
+      <h2>{% trans %}7. Security{% endtrans %}</h2>
+      <p>{% trans %}All passwords are stored in encrypted form using industry-standard hashing (PBKDF2-SHA256). All connections to the platform use HTTPS. We take appropriate technical and organisational measures to protect your data against unauthorised access.{% endtrans %}</p>
+    </article>
+
+    <article class="privacy-section">
+      <h2>{% trans %}8. Changes to this policy{% endtrans %}</h2>
+      <p>{% trans %}We may update this Privacy Policy from time to time. In the event of significant changes, we will notify users via the platform. Continued use of the platform after any changes constitutes acceptance of the updated policy.{% endtrans %}</p>
+    </article>
+
+  </section>
+</main>
+{% endblock %}

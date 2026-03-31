@@ -1,0 +1,371 @@
+{% extends "base.html" %} {% block title %}{% trans %}Predictions | Arena
+Eureka{% endtrans %}{% endblock %} {% block menu %}
+<div class="menu">
+  <a href="{{ url_for('me') }}"
+    ><img
+      class="img-menu"
+      src="{{ url_for('static', filename='img/eurekacopabranco.png') }}"
+      alt="Arena Eureka"
+  /></a>
+  <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+  <nav class="nav-menu">
+    <ul class="menu-list menu-list-eurekabet">
+      <li class="li-menu">
+        <a href="{{ url_for('predict') }}">{{ _('Predictions') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('ranking') }}">{{ _('Ranking') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('bettalks') }}">Arena Talks</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('rules') }}">{{ _('Rules') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('me') }}">{{ _('My Profile') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a>
+      </li>
+      <li class="li-menu lang-switcher">
+        <a
+          href="{{ url_for('set_language', lang='pt') }}"
+          class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+          >PT</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='pt_BR') }}"
+          class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+          >BR</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='en') }}"
+          class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+          >EN</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %} {% block content %}
+<div id="toast"></div>
+
+<main class="predict-page" data-predict-url="{{ url_for('predict') }}">
+  <section class="predict-hero">
+    <div class="predict-hero-header">
+      <h1>{{ _('Your predictions') }}</h1>
+      <p>{{ _('Choose the stage and fill in the scores.') }}</p>
+    </div>
+    <div class="predict-stats">
+      <article class="predict-stat-card">
+        <span class="predict-stat-label">{{ _('Matches') }}</span>
+        <strong>{{ total_games }}</strong>
+      </article>
+      <article class="predict-stat-card">
+        <span class="predict-stat-label">{{ _('Points') }}</span>
+        <strong>{{ total_points }}</strong>
+      </article>
+      <article class="predict-stat-card">
+        <span class="predict-stat-label">{{ _('Open') }}</span>
+        <strong>{{ total_open }}</strong>
+      </article>
+    </div>
+  </section>
+
+  <!-- FILTRO GLOBAL -->
+  <section class="predict-global-filter">
+    <div class="predict-filter-label">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style="display: inline-block; vertical-align: middle; margin-right: 5px"
+      >
+        <path
+          d="M1 2h12M3 7h8M5 12h4"
+          stroke="#9c7500"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+      </svg>
+      {{ _('Filter by') }}
+    </div>
+    <div class="predict-chips">
+      <button class="predict-chip active" data-filter="all">
+        {{ _('All') }}
+      </button>
+      <button class="predict-chip" data-filter="today">{{ _('Today') }}</button>
+      <button class="predict-chip" data-filter="missing">
+        {{ _('Missing predictions') }}
+      </button>
+      <button class="predict-chip" data-filter="done">
+        {{ _('Already predicted') }}
+      </button>
+      <button class="predict-chip" data-filter="selecao">
+        {{ _('By team') }}
+      </button>
+    </div>
+    <div id="selecao-filter" class="predict-filter-extra" style="display: none">
+      <select id="selecao-select" class="predict-filter-select">
+        <option value="">{{ _('All teams') }}</option>
+        {% for team in teams_list %}
+        <option value="{{ team | lower }}">{{ team }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </section>
+
+  <!-- ABAS DAS FASES -->
+  <section class="predict-tabs-wrapper">
+    <div class="predict-tabs">
+      {% for stage in stages %}
+      <button
+        class="predict-tab {% if stage.id == active_stage %}active{% endif %}"
+        type="button"
+        data-tab="{{ stage.id }}"
+      >
+        {{ stage.name }}
+      </button>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- PAINÉIS DAS FASES -->
+  {% for stage in stages %}
+  <section
+    class="predict-stage-panel {% if stage.id == active_stage %}active{% endif %}"
+    id="stage-{{ stage.id }}"
+  >
+    <div class="predict-stage-header">
+      <h2>{{ stage.name }}</h2>
+    </div>
+
+    {% if stage.groups %} {% if stage.id == 1 %}
+    <div class="predict-group-filters" id="group-filters-{{ stage.id }}">
+      <button
+        class="predict-group-btn active"
+        data-group="all"
+        data-stage="{{ stage.id }}"
+      >
+        Todos
+      </button>
+      {% for group_name in stage.groups.keys() %}
+      <button
+        class="predict-group-btn"
+        data-group="{{ group_name }}"
+        data-stage="{{ stage.id }}"
+      >
+        {{ group_name }}
+      </button>
+      {% endfor %}
+    </div>
+    {% endif %} {% for group_name, group_games in stage.groups.items() %}
+    <div
+      class="predict-group-block"
+      data-group-block="{{ group_name }}"
+      data-stage-block="{{ stage.id }}"
+    >
+      <h3 class="predict-group-title">{{ group_name }}</h3>
+      <div class="predict-grid">
+        {% for game in group_games %}
+        <article
+          class="match-card {% if game.is_locked %}match-card-locked{% endif %}"
+          id="game-card-{{ game.id }}"
+          data-home="{{ game.home_name | lower }}"
+          data-away="{{ game.away_name | lower }}"
+          data-locked="{{ 'true' if game.is_locked else 'false' }}"
+          data-has-prediction="{{ 'true' if game.predicted_home_score is not none else 'false' }}"
+          data-datetime="{{ game.game_datetime }}"
+        >
+          <div class="match-card-top">
+            <span class="match-date">
+              {%- set dt = game.game_datetime | string | trim -%} {%- set parts
+              = dt.split(" ") -%} {%- set date_parts = parts[0].split("-") -%}
+              {%- set time_parts = parts[1].split(":") if parts|length > 1 else
+              ["00","00"] -%} {{ date_parts[2] }}/{{ date_parts[1] }} · {{
+              time_parts[0] }}:{{ time_parts[1] }}
+            </span>
+          </div>
+
+          <div class="match-row">
+            <div class="team-side">
+              {% if game.home_flag %}
+              <img
+                class="team-flag"
+                src="https://flagcdn.com/w80/{{ game.home_flag|lower }}.png"
+                alt="Bandeira de {{ game.home_name }}"
+              />
+              {% else %}
+              <div class="team-flag-placeholder"></div>
+              {% endif %}
+              <p>{{ game.home_name }}</p>
+            </div>
+
+            <div class="bet-center">
+              {% if game.is_locked %}
+              <div class="bet-center-stack">
+                {% if game.predicted_home_score is not none %}
+                <div class="saved-bet-box">
+                  <span class="saved-bet-label"
+                    >{{ _('Your prediction') }}</span
+                  >
+                  <div class="saved-bet-score">
+                    <span>{{ game.predicted_home_score }}</span>
+                    <span class="score-separator">x</span>
+                    <span>{{ game.predicted_away_score }}</span>
+                  </div>
+                </div>
+                {% else %}
+                <div class="saved-bet-box saved-bet-box--empty">
+                  <span class="saved-bet-label">{{ _('No prediction') }}</span>
+                  <div class="saved-bet-score saved-bet-score--empty">—</div>
+                </div>
+                {% endif %} {% if game.score_home is not none %}
+                <div class="real-result-box">
+                  <span class="real-result-label">{{ _('Final result') }}</span>
+                  <div class="real-result-score">
+                    <span>{{ game.score_home }}</span>
+                    <span class="real-result-separator">x</span>
+                    <span>{{ game.score_away }}</span>
+                  </div>
+                </div>
+
+                {% if game.predicted_home_score is not none %}
+                <div class="match-detail-row">
+                  {% if game.predicted_home_score == game.score_home and
+                  game.predicted_away_score == game.score_away %}
+                  <span class="match-detail-tag tag-hit"
+                    >{{ _('✓ Exact score') }}</span
+                  >
+                  {% else %} {% set real_result = 'draw' %} {% if
+                  game.score_home > game.score_away %}{% set real_result =
+                  'home' %}{% elif game.score_home < game.score_away %}{% set
+                  real_result = 'away' %}{% endif %} {% set pred_result = 'draw'
+                  %} {% if game.predicted_home_score > game.predicted_away_score
+                  %}{% set pred_result = 'home' %}{% elif
+                  game.predicted_home_score < game.predicted_away_score %}{% set
+                  pred_result = 'away' %}{% endif %} {% if real_result ==
+                  pred_result %}
+                  <span class="match-detail-tag tag-hit"
+                    >{{ _('✓ Winner') }}</span
+                  >
+                  {% else %}
+                  <span class="match-detail-tag tag-miss"
+                    >{{ _('✗ Winner') }}</span
+                  >
+                  {% endif %} {% if game.predicted_home_score == game.score_home
+                  or game.predicted_away_score == game.score_away %}
+                  <span class="match-detail-tag tag-hit"
+                    >{{ _('✓ One side') }}</span
+                  >
+                  {% else %}
+                  <span class="match-detail-tag tag-miss"
+                    >{{ _('✗ Score') }}</span
+                  >
+                  {% endif %} {% endif %}
+                  <span class="match-detail-tag tag-points"
+                    >{{ game.points }} pts</span
+                  >
+                </div>
+                {% endif %} {% else %}
+                <div class="awaiting-result">{{ _('Awaiting result') }}</div>
+                {% endif %}
+              </div>
+
+              {% else %}
+              <div class="bet-center-stack">
+                {% if game.predicted_home_score is not none and
+                game.predicted_away_score is not none %}
+                <div class="saved-bet-box">
+                  <span class="saved-bet-label"
+                    >{{ _('Current prediction') }}</span
+                  >
+                  <div class="saved-bet-score">
+                    <span>{{ game.predicted_home_score }}</span>
+                    <span class="score-separator">x</span>
+                    <span>{{ game.predicted_away_score }}</span>
+                  </div>
+                </div>
+                {% endif %}
+
+                <form
+                  class="predict-form ajax-predict-form"
+                  data-game-id="{{ game.id }}"
+                >
+                  <input type="hidden" name="game_id" value="{{ game.id }}" />
+                  <div class="score-row">
+                    <input
+                      type="number"
+                      name="home_score"
+                      min="0"
+                      value=""
+                      required
+                      class="score-input"
+                    />
+                    <span class="score-separator">x</span>
+                    <input
+                      type="number"
+                      name="away_score"
+                      min="0"
+                      value=""
+                      required
+                      class="score-input"
+                    />
+                  </div>
+                  <button type="submit" class="save-bet-btn">
+                    {% if game.predicted_home_score is not none and
+                    game.predicted_away_score is not none %}{{ _('Update prediction') }}{% else %}{{ _('Save prediction') }}{% endif
+                    %}
+                  </button>
+                </form>
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="team-side">
+              {% if game.away_flag %}
+              <img
+                class="team-flag"
+                src="https://flagcdn.com/w80/{{ game.away_flag|lower }}.png"
+                alt="Bandeira de {{ game.away_name }}"
+              />
+              {% else %}
+              <div class="team-flag-placeholder"></div>
+              {% endif %}
+              <p>{{ game.away_name }}</p>
+            </div>
+          </div>
+
+          <div class="match-card-footer">
+            {% if game.is_locked %}
+            <span class="match-status locked"
+              >🔒 {{ _('Match finished') }}</span
+            >
+            <span class="match-points">{{ game.points }} pts</span>
+            {% else %}
+            <span class="match-status open"
+              >{{ _('Open for predictions') }}</span
+            >
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="predict-empty-state">
+      <h3>{{ _('Stage not yet available') }}</h3>
+      <p>{{ _('No matches available for this stage yet.') }}</p>
+    </div>
+    {% endif %}
+  </section>
+  {% endfor %}
+</main>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/predict.js') }}" defer></script>
+{% endblock %}

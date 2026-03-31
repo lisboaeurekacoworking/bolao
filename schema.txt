@@ -1,0 +1,80 @@
+
+
+Groups
+1 | Grupo A
+2 | Grupo B
+3 | Grupo C
+4 | Grupo D
+5 | Grupo E
+6 | Grupo F
+7 | Grupo G
+8 | Grupo H
+9 | Grupo I
+10 | Grupo J
+11 | Grupo K
+12 | Grupo L
+
+stages
+1 | Primeira Fase
+2 | 32 Avos
+3 | Oitavas de Final
+4 | Quartas de Final
+5 | Semifinal
+6 | Terceiro Lugar
+7 | Final
+
+
+team | team_name | flag_code | group
+1 | México | mex | 1
+2 | África do Sul | rsa | 1
+3 | Coreia do Sul | kor | 1
+4 | Europa D | ed | 1
+5 | Canadá | can | 2
+6 | Europa A | ea | 2
+7 | Suíça | sui | 2
+8 | Catar | qat | 2
+9 | Brasil | bra | 3
+10 | Marrocos | mar | 3
+11 | Escócia | sco | 3
+12 | Haiti | hai | 3
+13 | Estados Unidos | usa | 4
+14 | Paraguai | par | 4
+15 | Austrália | aus | 4
+16 | Europa C | x | 4
+17 | Alemanha | ger | 5
+18 | Curaçao | cuw | 5
+19 | Equador | ecu | 5
+20 | Costa do Marfim | civ | 5
+21 | Holanda | ned | 6
+22 | Japão | jpn | 6
+23 | Tunísia | tun | 6
+24 | Europa B | eb | 6
+25 | Bélgica | bel | 7
+26 | Egito | egy | 7
+27 | Irã | irn | 7
+28 | Nova Zelândia | nzl | 7
+29 | Arábia Saudita | ksa | 8
+30 | Uruguai | uru | 8
+31 | Espanha | esp | 8
+32 | Cabo Verde | cpv | 8
+33 | França | fra | 9
+34 | Senegal | sen | 9
+35 | Noruega | nor | 9
+36 | Intercontinental 2 | i2 | 9
+37 | Argentina | arg | 10
+38 | Argélia | alg | 10
+39 | Áustria | aut | 10
+40 | Jordânia | jor | 10
+41 | Croácia | cro | 11
+42 | Inglaterra | eng | 11
+43 | Panamá | pan | 11
+44 | Gana | gha | 11
+45 | Portugal | por | 12
+46 | Intercontinental 1 | i1 | 12
+47 | Uzbequistão | uzb | 12
+48 | Colômbia | col | 12
+
+
+
+
+

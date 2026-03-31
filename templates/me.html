@@ -1,0 +1,186 @@
+{% extends "base.html" %} {% block title %}{% trans %}My Profile | Arena
+Eureka{% endtrans %}{% endblock %} {% block menu %}
+<div class="menu">
+  <a href="{{ url_for('me') }}"
+    ><img
+      class="img-menu"
+      src="{{ url_for('static', filename='img/eurekacopabranco.png') }}"
+      alt="Arena Eureka"
+  /></a>
+  <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+  <nav class="nav-menu">
+    <ul class="menu-list menu-list-eurekabet">
+      <li class="li-menu">
+        <a href="{{ url_for('predict') }}">{{ _('Predictions') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('ranking') }}">{{ _('Ranking') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('bettalks') }}">Arena Talks</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('rules') }}">{{ _('Rules') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('me') }}">{{ _('My Profile') }}</a>
+      </li>
+      <li class="li-menu">
+        <a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a>
+      </li>
+      <li class="li-menu lang-switcher">
+        <a
+          href="{{ url_for('set_language', lang='pt') }}"
+          class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+          >PT</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='pt_BR') }}"
+          class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+          >BR</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='en') }}"
+          class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+          >EN</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %} {% block content %}
+<main class="profile-page">
+  <!-- AVISO EMAIL NÃO VERIFICADO -->
+  {% if not email_verified %}
+  <div class="profile-email-warning">
+    <p>
+      ⚠️ {% trans %}Your email has not been verified yet.{% endtrans %}
+      {% trans %}Check your terminal for the verification link.{% endtrans %}
+    </p>
+    <a href="{{ url_for('resend_verification') }}" class="profile-resend-btn">
+      {% trans %}Resend verification link{% endtrans %}
+    </a>
+    {% if resent %}
+    <span class="profile-resent-ok">{% trans %}New link generated — check the terminal.{% endtrans %}</span>
+    {% endif %}
+  </div>
+  {% endif %}
+
+
+  <section class="profile-hero">
+    <div class="profile-user">
+      <div class="profile-avatar">{{ user.name[0] if user.name else "U" }}</div>
+      <div class="profile-user-info">
+        <h1>{{ _('My Profile') }}</h1>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="profile-stats">
+    <article class="profile-stat-card">
+      <span>{{ _('Total points') }}</span>
+      <strong>{{ total_points }}</strong>
+    </article>
+
+    <article class="profile-stat-card">
+      <span>{{ _('Exact score + Winner (10 pts)') }}</span>
+      <strong>{{ exact_hits }}</strong>
+    </article>
+
+    <article class="profile-stat-card">
+      <span>{{ _('One side goals + Winner (7 pts)') }}</span>
+      <strong>{{ winner_plus_side_hits }}</strong>
+    </article>
+
+    <article class="profile-stat-card">
+      <span>{{ _('Winner only (5 pts)') }}</span>
+      <strong>{{ winner_only_hits }}</strong>
+    </article>
+
+    <article class="profile-stat-card">
+      <span>{{ _('One side goals only (2 pts)') }}</span>
+      <strong>{{ one_side_hits }}</strong>
+    </article>
+
+    <article class="profile-stat-card">
+      <span>{{ _('Overall position') }}</span>
+      <strong>{{ position }}º</strong>
+    </article>
+
+    <article class="profile-stat-card">
+      <span>{{ _('Performance') }}</span>
+      <strong>{{ aproveitamento }}%</strong>
+    </article>
+  </section>
+
+  <section class="profile-section">
+    <div class="profile-section-header">
+      <h2>{{ _('General ranking') }}</h2>
+    </div>
+
+    <div class="profile-ranking-list">
+      {% for player in top_ranking %}
+      <div
+        class="profile-ranking-item {% if player.id == user.id %}is-user{% endif %}"
+      >
+        <div class="profile-ranking-left">
+          <span class="profile-ranking-position">{{ player.position }}</span>
+          <span class="profile-ranking-name">
+            {% if player.id == user.id %}{{ _('You') }}{% else %} {{ player.name
+            }} {% endif %}
+          </span>
+        </div>
+
+        <div class="profile-ranking-right">{{ player.points }} pts</div>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="margin-top: 1rem; text-align: center">
+      <a class="btn2 btn2--yellow" href="{{ url_for('ranking') }}"
+        >{{ _('See full ranking') }}</a
+      >
+    </div>
+  </section>
+
+  <section class="profile-columns">
+    <div class="profile-box">
+      <h3>{{ _('Today\'s matches') }}</h3>
+
+      {% if today_games %}
+      <ul class="profile-list">
+        {% for game in today_games %}
+        <li>{{ game.home_name }} x {{ game.away_name }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="profile-empty">{{ _('No matches today.') }}</p>
+      {% endif %}
+    </div>
+
+    <div class="profile-box">
+      <h3>{{ _('Next matches to predict') }}</h3>
+
+      {% if upcoming_games %}
+      <ul class="profile-list">
+        {% for game in upcoming_games %}
+        <li>{{ game.home_name }} x {{ game.away_name }}</li>
+        {% endfor %}
+      </ul>
+
+      <div class="profile-box-action">
+        <a class="btn2" href="{{ url_for('predict') }}"
+          >{{ _('Go to predictions') }}</a
+        >
+      </div>
+      {% else %}
+      <p class="profile-empty">
+        {{ _('You have already predicted the next matches.') }}
+      </p>
+      {% endif %}
+    </div>
+  </section>
+</main>
+{% endblock %} {% block scripts %} {% endblock %}

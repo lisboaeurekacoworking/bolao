@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt_BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Oswald:wght@200..700&family=Special+Gothic+Expanded+One&display=swap"
+      rel="stylesheet"
+    />
+    <title>Eureka FanZone</title>
+  </head>
+  <body>
+    <div class="menu">
+      <img
+        class="img-menu"
+        src="{{ url_for('static', filename='img/eurekacopabranco.png') }}"
+        alt="Logo Eureka na copa"
+      />
+
+      <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+      <nav class="nav-menu">
+        <ul class="menu-list">
+          <li class="li-menu">
+            <a href="{{ url_for('home') }}">Home</a>
+          </li>
+          <li class="li-menu">
+            <a href="{{ url_for('bettalks') }}">EurekaTalks</a>
+          </li>
+          <li class="li-menu">
+            <a href="{{ url_for('landing') }}">FanZone</a>
+          </li>
+          <li class="li-menu">
+            <a href="{{ url_for('predict') }}">Palpites</a>
+          </li>
+          <li class="li-menu"><a href="{{ url_for('me') }}">Meu Perfil</a></li>
+        </ul>
+      </nav>
+    </div>
+    <h1>Jogos da Copa</h1>
+    <a href="/">← Voltar para grupos</a>
+    <hr />
+
+    {% for stage, games in games_by_stage.items() %}
+    <h2>{{ stage }}</h2>
+
+    {% for game in games %}
+    <div style="margin-bottom: 10px; padding-left: 10px">
+      {{ game.game_date }} • {{ game.game_time }}<br />
+
+      {% if game.home_name and game.away_name %} {% if game.home_flag %}
+      <img src="https://flagcdn.com/w20/{{ game.home_flag }}.png" />
+      {% endif %} {{ game.home_name }} {% if game.score_home is not none %} {{
+      game.score_home }} x {{ game.score_away }} {% else %} x {% endif %} {{
+      game.away_name }} {% if game.away_flag %}
+      <img src="https://flagcdn.com/w20/{{ game.away_flag }}.png" />
+      {% endif %} {% else %}
+      <em>Times a definir</em>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <hr />
+    {% endfor %}
+  </body>
+</html>

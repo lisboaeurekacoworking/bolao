@@ -1,0 +1,220 @@
+{% extends "base.html" %} {% block title %}{{ _('Eureka FanZone') }}{% endblock
+%} {% block menu %}
+<div class="menu menu-sticky">
+  <img
+    class="img-menu"
+    src="{{ url_for('static', filename='img/eurekacopabranco.png') }}"
+    alt="Logo Eureka"
+  />
+  <button class="menu-toggle" aria-label="Abrir menu">☰</button>
+  <nav class="nav-menu">
+    <ul class="menu-list">
+      <li class="li-menu"><a href="#jogos">{{ _('Matches') }}</a></li>
+      <li class="li-menu"><a href="#fanfotos">FanFotos</a></li>
+      <li class="li-menu"><a href="#eventos">{{ _('Events') }}</a></li>
+      <li class="li-menu login-landing">
+        <a href="{{ url_for('home') }}">Arena Eureka</a>
+      </li>
+      <li class="li-menu lang-switcher">
+        <a
+          href="{{ url_for('set_language', lang='pt') }}"
+          class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+          >PT</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='pt_BR') }}"
+          class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+          >BR</a
+        >
+        <span class="lang-sep">|</span>
+        <a
+          href="{{ url_for('set_language', lang='en') }}"
+          class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+          >EN</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %} {% block content %}
+<header>
+  <div class="part1">
+    <div class="fanzone">
+      <h1 class="h1 hidden">FANZONE</h1>
+      <img
+        class="header-img hidden"
+        src="{{ url_for('static', filename='img/lampada-copa.png') }}"
+        alt="Logo Eureka na copa"
+      />
+    </div>
+    <p class="hidden">
+      {{ _('The perfect place to experience the excitement of the 2026 World
+      Cup. Watch the matches, make your predictions and celebrate every goal
+      with our community.') }}
+    </p>
+    <div class="header-btn">
+      <a href="#jogos" class="btn1 hidden">{{ _('View Calendar') }}</a>
+      <a href="{{ url_for('home') }}" class="btn1 hidden"
+        >{{ _('Join Arena Eureka') }}</a
+      >
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="bolao-preview" id="eureka-bet">
+    <h1 class="hidden">ARENA EUREKA</h1>
+    <p class="hidden">
+      {{ _('Join the Arena Eureka predictions, show you know football and
+      compete with the community!') }}
+    </p>
+
+    <div class="section-table hidden">
+      <table class="ranking-table">
+        <thead>
+          <tr>
+            <th>Top 5</th>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Points') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in ranking %}
+          <tr>
+            <td>
+              {% if user.position == 1 %} 🥇 {% elif user.position == 2 %} 🥈 {%
+              elif user.position == 3 %} 🥉 {% else %} {{ user.position }} {%
+              endif %}
+            </td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.points }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a class="btn3 hidden" href="{{ url_for('ranking') }}"
+        >{{ _('See full ranking') }}</a
+      >
+    </div>
+
+    <div class="ranking-actions hidden">
+      <a class="btn2 btn-center" href="{{ url_for('home') }}"
+        >{{ _('Join Arena Eureka') }}</a
+      >
+    </div>
+  </section>
+
+  <section class="jogos" id="jogos">
+    <h1 class="hidden">{{ _('Matches') }}</h1>
+    <iframe
+      class="hidden api-football-widget"
+      src="https://widget.api-futebol.com.br/render/widget_8e00d62b49cdc970"
+      title="{{ _('World Cup — Matches and Results') }}"
+      loading="lazy"
+      referrerpolicy="unsafe-url"
+      sandbox="allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation allow-popups-to-escape-sandbox"
+    ></iframe>
+  </section>
+
+  <section class="eventos" id="eventos">
+    <h1 class="hidden">{{ _('Events') }}</h1>
+    <p class="hidden">
+      {{ _('Eureka will be 100%% connected to the World Cup! Time to sit back,
+      relax, watch the matches and make new connections') }}
+    </p>
+    <article class="eventos-container">
+      <div class="evento-card hidden">
+        <img
+          src="{{ url_for('static', filename='img/fototeste.avif') }}"
+          alt="Evento"
+        />
+        <div class="evento-info">
+          <h2>Portugal x Espanha</h2>
+          <p>16/02</p>
+          <p>18:00</p>
+          <p>{{ _('Events Room') }}</p>
+        </div>
+      </div>
+      <div class="evento-card hidden">
+        <img
+          src="{{ url_for('static', filename='img/brargteste.webp') }}"
+          alt="Evento"
+        />
+        <div class="evento-info">
+          <h2>Portugal x Espanha</h2>
+          <p>16/02</p>
+          <p>18:00</p>
+          <p>{{ _('Events Room') }}</p>
+        </div>
+      </div>
+      <div class="evento-card hidden">
+        <img
+          src="{{ url_for('static', filename='img/fototeste.avif') }}"
+          alt="Evento"
+        />
+        <div class="evento-info">
+          <h2>Portugal x Espanha</h2>
+          <p>16/02</p>
+          <p>18:00</p>
+          <p>{{ _('Events Room') }}</p>
+        </div>
+      </div>
+      <div class="evento-card hidden">
+        <img
+          src="{{ url_for('static', filename='img/brargteste.webp') }}"
+          alt="Evento"
+        />
+        <div class="evento-info">
+          <h2>Portugal x Espanha</h2>
+          <p>16/02</p>
+          <p>18:00</p>
+          <p>{{ _('Events Room') }}</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="fanfotos fanfotos-left" id="fanfotos">
+    <h1 class="hidden">FANFOTOS</h1>
+    <p class="hidden">{{ _('Check out the best photos from our events!') }}</p>
+    <div class="galeria-grid hidden">
+      <figure class="gallery-item gallery-item-1">
+        <img
+          src="{{ url_for('static', filename='img/eventos/event4.jpeg') }}"
+          class="gallery-img"
+          alt="Foto 1"
+        />
+      </figure>
+      <figure class="gallery-item gallery-item-2">
+        <img
+          src="{{ url_for('static', filename='img/eventos/event7.jpeg') }}"
+          class="gallery-img"
+          alt="Foto 2"
+        />
+      </figure>
+      <figure class="gallery-item gallery-item-3">
+        <img
+          src="{{ url_for('static', filename='img/eventos/jardim_2.webp') }}"
+          class="gallery-img"
+          alt="Foto 3"
+        />
+      </figure>
+      <figure class="gallery-item gallery-item-4">
+        <img
+          src="{{ url_for('static', filename='img/eventos/jardim_1.webp') }}"
+          class="gallery-img"
+          alt="Foto 4"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <div id="imageModal" class="modal">
+    <span class="close">&times;</span>
+    <img alt="modal" class="modal-content" id="modalImage" />
+  </div>
+</main>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/landing.js') }}" defer></script>
+{% endblock %}

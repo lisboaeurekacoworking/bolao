@@ -1,0 +1,207 @@
+.success-page {
+  min-height: 100vh;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.success-card {
+  background: #f6f3ea;
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: #ffc507;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2rem;
+}
+
+.success-card h1 {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #111;
+  margin-bottom: 0.8rem;
+  line-height: 1;
+}
+
+.success-card .name-highlight {
+  color: #d8a400;
+}
+
+.success-card p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+
+.success-steps {
+  background: white;
+  border: 1px solid #eadfb7;
+  border-radius: 18px;
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.success-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0e7ca;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.success-step:last-child {
+  border-bottom: none;
+}
+
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffc507;
+  color: black;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.success-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem 1.4rem;
+  background: #ffc507;
+  color: black;
+  border: none;
+  border-radius: 14px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.success-btn:hover {
+  background: #111;
+  color: #ffc507;
+}
+
+.success-page {
+  min-height: 100vh;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.success-card {
+  background: #f6f3ea;
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: #ffc507;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2rem;
+}
+
+.success-card h1 {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #111;
+  margin-bottom: 0.8rem;
+  line-height: 1;
+}
+
+.success-card .name-highlight {
+  color: #d8a400;
+}
+
+.success-card p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+
+.success-btn {
+  display: flex;
+  margin: 0 auto;
+}
+
+.success-btn:hover {
+  background: #111;
+  color: #ffc507;
+}
+
+/* Label "Próximos passos" */
+.success-next-label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #9c7500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+}

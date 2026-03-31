@@ -1,0 +1,153 @@
+/* ── Zona de perigo — apagar conta ── */
+.profile-danger-zone {
+  max-width: 1200px;
+  margin: 2rem auto 2rem;
+  border: 1px solid #e05555;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  background: white;
+}
+
+.profile-danger-zone h3 {
+  font-size: 1.1rem;
+  color: #e05555;
+  margin-bottom: 0.5rem;
+}
+
+.profile-danger-zone > p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  color: #3a1010;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.profile-delete-error {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  color: #e05555;
+  background: white;
+  border: 1px solid rgba(242, 153, 153, 0.3);
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-delete-details summary {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  color: #e05555;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.4rem 0;
+  list-style: none;
+}
+
+.profile-delete-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.profile-delete-details summary::before {
+  content: "▶ ";
+  font-size: 0.7rem;
+}
+
+.profile-delete-details[open] summary::before {
+  content: "▼ ";
+}
+
+.profile-delete-form {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.profile-delete-form label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  color: #3a1010;
+}
+
+.profile-delete-form input[type="password"] {
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #3a1010;
+  background: white;
+  color: #3a1010;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  max-width: 320px;
+}
+
+.profile-delete-form input[type="password"]:focus {
+  border-color: #e05555;
+}
+
+.profile-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.4rem;
+  border-radius: 8px;
+  border: 1px solid #e05555;
+  background: transparent;
+  color: #e05555;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  max-width: 320px;
+}
+
+.profile-delete-btn:hover {
+  background: #e05555;
+  color: white;
+}
+
+/* ── Aviso email não verificado ── */
+.profile-email-warning {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+  background: #fff8e1;
+  border: 1px solid #ffc507;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.profile-email-warning p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  color: #7a5c00;
+  margin: 0;
+  flex: 1;
+}
+
+.profile-resend-btn {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: black;
+  background: #ffc507;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.profile-resend-btn:hover {
+  background: #e6b200;
+}
+
+.profile-resent-ok {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  color: #2e7d32;
+  font-weight: 600;
+}

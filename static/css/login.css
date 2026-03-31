@@ -1,0 +1,41 @@
+.auth-page-login {
+  min-height: 100vh;
+}
+
+.auth-link-row {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+.auth-link-row a {
+  color: #d9a900;
+  font-weight: 600;
+}
+
+.error-message {
+  margin-bottom: 1rem;
+  background: #ffe3e3;
+  color: #a10000;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+}
+
+.success-message {
+  margin-bottom: 1rem;
+  background: #e6ffea;
+  color: #0c6b25;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+}
+
+.auth-panel.auth-visual-panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
