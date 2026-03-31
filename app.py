@@ -797,7 +797,7 @@ def me():
     conn = get_db_connection()
 
     user = conn.execute("""
-        SELECT id, name, email
+        SELECT id, name, email, email_verified
         FROM users
         WHERE id = ?
     """, (user_id,)).fetchone()

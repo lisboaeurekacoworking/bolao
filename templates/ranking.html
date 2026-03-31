@@ -131,8 +131,6 @@ endtrans %}{% endblock %} {% block menu %}
             <th>{{ _('Position') }}</th>
             <th>{{ _('Name') }}</th>
             <th>{{ _('Points') }}</th>
-            <th>{{ _('Exact') }}</th>
-            <th>{{ _('Winner hits') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -165,8 +163,6 @@ endtrans %}{% endblock %} {% block menu %}
             </td>
 
             <td>{{ player.points }}</td>
-            <td>{{ player.exact_hits }}</td>
-            <td>{{ player.winner_hits }}</td>
           </tr>
           {% endfor %}
         </tbody>
