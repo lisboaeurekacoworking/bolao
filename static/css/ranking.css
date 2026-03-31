@@ -237,3 +237,40 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ── Mobile — ranking ── */
+@media (max-width: 767px) {
+  .ranking-general-table {
+    min-width: 100%;
+  }
+
+  /* Esconder colunas menos importantes no mobile */
+  .ranking-general-table th:nth-child(4),
+  .ranking-general-table td:nth-child(4),
+  .ranking-general-table th:nth-child(5),
+  .ranking-general-table td:nth-child(5) {
+    display: none;
+  }
+
+  .ranking-general-table th,
+  .ranking-general-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .ranking-player-name {
+    font-size: 0.9rem;
+  }
+
+  .ranking-player-meta {
+    font-size: 0.78rem;
+  }
+
+  .ranking-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ranking-hero-header h1 {
+    font-size: 2.2rem;
+  }
+}

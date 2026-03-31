@@ -63,13 +63,15 @@
 }
 
 .btn3 {
-  position: absolute;
+  position: relative;
   display: flex;
   justify-self: left;
   margin-left: 50px;
-  width: 800px;
+  width: auto;
+  max-width: calc(100% - 100px);
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(0.85rem, 2vw, 1rem);
 }
 
 .bolao-preview .ranking-table tbody td {
@@ -91,20 +93,53 @@
   .bolao-preview {
     display: flex;
     flex-direction: column;
+    padding: 1.5rem 1rem;
   }
+
+  .bolao-preview h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+    margin-left: 0;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  .bolao-preview p {
+    margin-left: 0;
+    max-width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .bolao-preview .section-table {
+    grid-column: 1;
+    width: 100%;
+    overflow-x: auto;
+  }
+
   .bolao-preview .ranking-table {
-    width: clamp(100px, 100vw, 400px);
-    margin: 50px 50px 5px 50px;
+    width: 100%;
+    margin: 1rem 0 0.5rem 0;
   }
 
   .btn3 {
-    width: clamp(100px, 100vw, 400px);
-    margin-bottom: 50px;
+    width: auto;
+    margin: 0.5rem 0 1.5rem 0;
+    font-size: 0.9rem;
+    position: relative;
   }
 
   .bolao-preview .ranking-actions {
-    width: clamp(100px, 100vw, 180px);
-    display: block;
-    margin: 80px auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0 1.5rem;
+    gap: 0.8rem;
+  }
+
+  .bolao-preview .ranking-actions a {
+    width: 100%;
+    max-width: 320px;
+    font-size: 1rem;
+    padding: 1rem;
   }
 }
