@@ -54,7 +54,28 @@
         </ul>
       </nav>
     </div>
-    {% endblock %} {% block content %}{% endblock %}
+    {% endblock %}
+    <!-- Seletor de língua fixo no mobile — fora do menu -->
+    <div class="lang-switcher-fixed">
+      <a
+        href="{{ url_for('set_language', lang='pt') }}"
+        class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+        >PT</a
+      >
+      <span class="lang-sep">|</span>
+      <a
+        href="{{ url_for('set_language', lang='pt_BR') }}"
+        class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+        >BR</a
+      >
+      <span class="lang-sep">|</span>
+      <a
+        href="{{ url_for('set_language', lang='en') }}"
+        class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+        >EN</a
+      >
+    </div>
+    {% block content %}{% endblock %}
 
     <script
       src="{{ url_for('static', filename='js/script.js') }}"
