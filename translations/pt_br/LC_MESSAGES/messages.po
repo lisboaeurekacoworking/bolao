@@ -707,3 +707,22 @@ msgstr "Inicie sessão e acompanhe a tua disputa no ranking."
 
 msgid "Back to Arena Eureka"
 msgstr "Voltar para a Arena Eureka"
+
+msgid "Select"
+msgstr "Selecionar"
+
+msgid "Lisbon"
+msgstr "Lisboa"
+
+msgid "Recover password"
+msgstr "Recuperar a senha"
+
+msgid "Type your e-mail end receive the instructions to recover your password."
+msgstr "Digite seu email e receba as instruções para recuperar a senha."
+
+msgid "Send intructions"
+msgstr "Enviar instruções"
+
+msgid "Remember your password?"
+msgstr "Lembrou a senha?"
+

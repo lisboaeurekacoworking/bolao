@@ -718,3 +718,25 @@ msgstr "Make your predictions and compete with Eureka Community"
 
 msgid "Back to Arena Eureka"
 msgstr "Back to Arena Eureka"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Lisbon"
+msgstr "Lisbon"
+
+msgid "Recover password"
+msgstr "Recover password"
+
+msgid "Type your e-mail end receive the instructions to recover your password."
+msgstr "Type your e-mail end receive the instructions to recover your password."
+
+msgid "Send intructions"
+msgstr "Send intructions"
+
+msgid "Remember your password?"
+msgstr "Remember your password?"
+
+
+
+

@@ -24,7 +24,7 @@
       <!-- LADO ESQUERDO -->
       <section class="auth-panel auth-form-panel">
         <a class="auth-back-link hidden" href="{{ url_for('home') }}">
-          ← Voltar para a Arena Eureka
+          {% trans %}← Back to Arena Eureka{% endtrans %}
         </a>
         <div class="auth-brand">
           <div class="auth-brand-icon hidden">
@@ -38,8 +38,10 @@
         </div>
 
         <div class="auth-form-wrapper hidden">
-          <h1 class="auth-title">Criar conta</h1>
-          <p class="auth-subtitle">Cadastre-se para participar das apostas</p>
+          <h1 class="auth-title">{% trans %}Create account{% endtrans %}</h1>
+          <p class="auth-subtitle">
+            {% trans %}Register to participate in Arena Eureka{% endtrans %}
+          </p>
 
           {% if register_error %}
           <p class="error-message">{{ register_error }}</p>
@@ -51,7 +53,7 @@
             class="auth-form"
           >
             <div class="auth-field">
-              <label for="name">Nome completo</label>
+              <label for="name">{% trans %}Full name{% endtrans %}</label>
               <input
                 id="name"
                 type="text"
@@ -73,7 +75,7 @@
             </div>
 
             <div class="auth-field">
-              <label for="password">Senha</label>
+              <label for="password">{% trans %}Password {% endtrans %}</label>
               <input
                 id="password"
                 type="password"
@@ -83,19 +85,21 @@
               />
             </div>
             <div class="auth-field">
-              <label for="country_code">País</label>
+              <label for="country_code">{% trans %}Country{% endtrans %}</label>
               <select id="country_code" name="country_code" required>
-                <option value="">Selecione</option>
+                <option value="">{% trans %}Select{% endtrans %}</option>
                 <option value="PT">Portugal</option>
                 <option value="BR">Brasil</option>
               </select>
             </div>
 
             <div class="auth-field">
-              <label for="eureka_unit">Unidade Eureka</label>
+              <label for="eureka_unit"
+                >{% trans %}Eureka Unit{% endtrans %}</label
+              >
               <select id="eureka_unit" name="eureka_unit" required>
-                <option value="">Selecione</option>
-                <option value="lisboa">Lisboa</option>
+                <option value="">{% trans %}Select{% endtrans %}</option>
+                <option value="lisboa">{% trans %}Lisbon{% endtrans %}</option>
                 <option value="campinas">Campinas</option>
                 <option value="sao_paulo">São Paulo</option>
               </select>
@@ -122,8 +126,8 @@
           </form>
 
           <p class="auth-switch-text hidden">
-            Já tem uma conta?
-            <a href="{{ url_for('login') }}">Entrar</a>
+            {% trans %}Already have an account?{% endtrans %}
+            <a href="{{ url_for('login') }}">{% trans %}Login{% endtrans %}</a>
           </p>
         </div>
       </section>
@@ -136,9 +140,12 @@
             src="{{ url_for('static', filename='img/lampada-copa.png') }}"
             alt="EurekaBet"
           />
-          <h2 class="auth-visual-title hidden">COPA DO MUNDO 2026</h2>
+          <h2 class="auth-visual-title hidden">
+            {% trans %}WORLD CUP 2026{% endtrans %}
+          </h2>
           <p class="auth-visual-text hidden">
-            Faça seus palpites e dispute com seus amigos.
+            {% trans %}Make your predictions and compete with Eureka Community{%
+            endtrans %}
           </p>
         </div>
       </section>
