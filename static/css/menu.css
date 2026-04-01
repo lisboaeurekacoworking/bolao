@@ -142,23 +142,23 @@
 }
 
 .auth-lang-switcher .lang-btn {
-  color: rgba(0, 0, 0, 0.45);
+  color: white;
   font-size: 0.8rem;
 }
 
 .auth-lang-switcher .lang-sep {
-  color: rgba(0, 0, 0, 0.2);
+  color: white;
 }
 
 @media (hover: hover) {
   .auth-lang-switcher .lang-btn:hover {
-    color: black;
+    color: white;
   }
 }
 
 .auth-lang-switcher .lang-btn.active {
-  color: #9c7500;
-  border-bottom: 2px solid #9c7500;
+  color: #ffc507;
+  border-bottom: 2px solid #ffc507;
 }
 
 /* Utilitários */

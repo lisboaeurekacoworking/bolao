@@ -107,13 +107,18 @@
                 <input type="checkbox" name="privacy_consent" required />
                 <span>
                   {% trans %}I have read and accept the{% endtrans %}
-                  <a href="{{ url_for('privacy') }}" target="_blank">{% trans %}Privacy Policy{% endtrans %}</a>
-                  {% trans %}and consent to the processing of my personal data.{% endtrans %}
+                  <a href="{{ url_for('privacy') }}" target="_blank"
+                    >{% trans %}Privacy Policy{% endtrans %}</a
+                  >
+                  {% trans %}and consent to the processing of my personal
+                  data.{% endtrans %}
                 </span>
               </label>
             </div>
 
-            <button type="submit" class="auth-submit-btn">{{ _('Create account') }}</button>
+            <button type="submit" class="auth-submit-btn">
+              {{ _('Create account') }}
+            </button>
           </form>
 
           <p class="auth-switch-text hidden">
@@ -138,6 +143,25 @@
         </div>
       </section>
     </main>
+    <div class="auth-lang-switcher">
+      <a
+        href="{{ url_for('set_language', lang='pt') }}"
+        class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
+        >PT</a
+      >
+      <span class="lang-sep">|</span>
+      <a
+        href="{{ url_for('set_language', lang='pt_BR') }}"
+        class="lang-btn {% if current_lang == 'pt_BR' %}active{% endif %}"
+        >BR</a
+      >
+      <span class="lang-sep">|</span>
+      <a
+        href="{{ url_for('set_language', lang='en') }}"
+        class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+        >EN</a
+      >
+    </div>
     <script
       src="{{ url_for('static', filename='js/script.js') }}"
       defer

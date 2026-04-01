@@ -664,3 +664,57 @@ msgstr "Confirm your password to proceed:"
 
 msgid "Permanently delete my account"
 msgstr "Permanently delete my account"
+
+msgid "Create account"
+msgstr "Create account"
+
+msgid "Register to participate in Arena Eureka"
+msgstr "Register to participate in Arena Eureka"
+
+msgid "Sign in to participate in Arena Eureka"
+msgstr "Sign to participate in Arena Eureka"
+
+msgid "Forgot your password?"
+msgstr "Forgot your password?"
+
+msgid "Still don't have an account?"
+msgstr "Still don't have an account?"
+
+msgid "Sign in and participate in Arena Eureka"
+msgstr "Sign in and participate in Arena Eureka"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Full name"
+msgstr "Full name"
+
+msgid "Your name"
+msgstr "Your name"
+
+msgid "your@email.com"
+msgstr "your@email.com"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "Eureka Unit"
+msgstr "Eureka Unit"
+
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+msgid "Sign in"
+msgstr "Sign in"
+
+msgid "World Cup 2026"
+msgstr "World Cup 2026"
+
+msgid "Make your predictions and compete with Eureka Community"
+msgstr "Make your predictions and compete with Eureka Community"
+
+msgid "Back to Arena Eureka"
+msgstr "Back to Arena Eureka"

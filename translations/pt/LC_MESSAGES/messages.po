@@ -672,3 +672,58 @@ msgstr "Confirma a tua palavra-passe para continuar:"
 
 msgid "Permanently delete my account"
 msgstr "Apagar permanentemente a minha conta"
+
+msgid "Create account"
+msgstr "Criar conta"
+
+msgid "Register to participate in Arena Eureka"
+msgstr "Regista e participa da Arena Eureka"
+
+msgid "Sign in to participate in Arena Eureka"
+msgstr "Faça login e participa da Arena Eureka"
+
+msgid "Forgot your password?"
+msgstr "Esqueceu a palavra-passe?"
+
+msgid "Still don't have an account?"
+msgstr "Ainda não tem uma conta?"
+
+msgid "Sign in para participar da Arena Eureka"
+msgstr "Faça login e participa da Arena Eureka"
+
+msgid "Register"
+msgstr "Registar"
+
+msgid "Full name"
+msgstr "Nome Completo"
+
+msgid "Your name"
+msgstr "Seu nome"
+
+msgid "your@email.com"
+msgstr "seu@email.com"
+
+msgid "Password"
+msgstr "Senha"
+
+msgid "Country"
+msgstr "País"
+
+msgid "Eureka Unit"
+msgstr "Unidade Eureka"
+
+msgid "Already have an account?"
+msgstr "Já tem uma conta?"
+
+msgid "Sign in"
+msgstr "Sign in"
+
+msgid "World Cup 2026"
+msgstr "Copa do Mundo 2026"
+
+msgid "Make your predictions and compete with Eureka Community"
+msgstr "Inicia sessão e acompanha a tua disputa no ranking."
+
+msgid "Back to Arena Eureka"
+msgstr "Voltar para a Arena Eureka"
+
