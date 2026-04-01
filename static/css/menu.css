@@ -281,7 +281,7 @@
 
   .nav-menu .li-menu.lang-switcher .lang-btn.active {
     color: black;
-    border-bottom: 2px solid #ffc507;
+    border-bottom: 2px solid #ffc507 important!;
     border-radius: 4px;
   }
 

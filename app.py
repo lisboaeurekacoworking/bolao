@@ -569,6 +569,10 @@ def landing():
 @app.route("/")
 @app.route("/home")
 def home():
+    # Se já está logado vai directo para o perfil
+    if "user_id" in session:
+        return redirect(url_for("me"))
+
     conn = get_db_connection()
 
     rows = conn.execute("""
