@@ -28,7 +28,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       <li class="li-menu">
         <a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a>
       </li>
-      <li class="li-menu lang-switcher">
+      <li class="lang-switcher">
         <a
           href="{{ url_for('set_language', lang='pt') }}"
           class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
@@ -319,7 +319,8 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                   </div>
                   <button type="submit" class="save-bet-btn">
                     {% if game.predicted_home_score is not none and
-                    game.predicted_away_score is not none %}{{ _('Update prediction') }}{% else %}{{ _('Save prediction') }}{% endif
+                    game.predicted_away_score is not none %}{{ _('Update
+                    prediction') }}{% else %}{{ _('Save prediction') }}{% endif
                     %}
                   </button>
                 </form>

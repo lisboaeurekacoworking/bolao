@@ -78,12 +78,7 @@
 /* Hover apenas em desktop com rato */
 @media (hover: hover) {
   .li-menu a:hover {
-    padding: 10px 13px;
-    cursor: url("/static/img/futebol-colocado-no-design-grunge.png"), pointer;
-  }
-
-  .li-menu a.active:hover {
-    padding: 9px 17px;
+    color: #ffc507;
   }
 }
 
@@ -214,10 +209,6 @@
     font-size: clamp(0.6rem, 2vw, 0.9rem);
   }
 
-  .li-menu a:hover {
-    padding: 4px 8px;
-  }
-
   .login-landing a:hover {
     padding: 7px 25px;
   }
@@ -275,17 +266,17 @@
     margin-top: 0.3rem;
   }
 
-  .nav-menu .li-menu.lang-switcher .lang-btn {
+  .nav-menu .lang-switcher .lang-btn {
     color: rgba(255, 255, 255, 0.6);
   }
 
-  .nav-menu .li-menu.lang-switcher .lang-btn.active {
+  .nav-menu .lang-switcher .lang-btn.active {
     color: black;
-    border-bottom: 2px solid #ffc507 important!;
+    border-bottom: 2px solid #ffc507;
     border-radius: 4px;
   }
 
-  .nav-menu .li-menu.lang-switcher .lang-sep {
+  .nav-menu .lang-switcher .lang-sep {
     color: rgba(255, 255, 255, 0.2);
   }
 

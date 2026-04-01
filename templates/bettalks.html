@@ -28,7 +28,7 @@
       <li class="li-menu">
         <a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a>
       </li>
-      <li class="li-menu lang-switcher">
+      <li class="lang-switcher">
         <a
           href="{{ url_for('set_language', lang='pt') }}"
           class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
@@ -57,7 +57,8 @@
     <div class="bettalks-hero-header">
       <h1>Arena Talks</h1>
       <p>
-        {{ _('A space to talk with the Arena Eureka community about matches, predictions and World Cup expectations.') }}
+        {{ _('A space to talk with the Arena Eureka community about matches,
+        predictions and World Cup expectations.') }}
       </p>
     </div>
   </section>

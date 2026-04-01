@@ -32,7 +32,7 @@
           {% block menu_items %}{% endblock %}
 
           <!-- Botão de idioma — igual em todas as páginas -->
-          <li class="li-menu lang-switcher">
+          <li class="lang-switcher">
             <a
               href="{{ url_for('set_language', lang='pt') }}"
               class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"

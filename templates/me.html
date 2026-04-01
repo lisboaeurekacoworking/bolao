@@ -28,7 +28,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       <li class="li-menu">
         <a href="{{ url_for('logout') }}">{{ _('Sign out') }}</a>
       </li>
-      <li class="li-menu lang-switcher">
+      <li class="lang-switcher">
         <a
           href="{{ url_for('set_language', lang='pt') }}"
           class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
@@ -56,18 +56,19 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
   {% if not email_verified %}
   <div class="profile-email-warning">
     <p>
-      ⚠️ {% trans %}Your email has not been verified yet.{% endtrans %}
-      {% trans %}Check your terminal for the verification link.{% endtrans %}
+      ⚠️ {% trans %}Your email has not been verified yet.{% endtrans %} {% trans
+      %}Check your terminal for the verification link.{% endtrans %}
     </p>
     <a href="{{ url_for('resend_verification') }}" class="profile-resend-btn">
       {% trans %}Resend verification link{% endtrans %}
     </a>
     {% if resent %}
-    <span class="profile-resent-ok">{% trans %}New link generated — check the terminal.{% endtrans %}</span>
+    <span class="profile-resent-ok"
+      >{% trans %}New link generated — check the terminal.{% endtrans %}</span
+    >
     {% endif %}
   </div>
   {% endif %}
-
 
   <section class="profile-hero">
     <div class="profile-user">
