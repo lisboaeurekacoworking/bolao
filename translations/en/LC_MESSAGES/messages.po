@@ -737,6 +737,10 @@ msgstr "Send intructions"
 msgid "Remember your password?"
 msgstr "Remember your password?"
 
+msgid "and consent to the processing of my personal data."
+msgstr "and consent to the processing of my personal data."
+
+
 
 
 

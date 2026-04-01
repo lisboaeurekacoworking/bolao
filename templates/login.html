@@ -66,7 +66,7 @@ endtrans %}{% endblock %} {% block menu %}{% endblock %} {% block content %}
       </p>
 
       <p class="auth-switch-text hidden">
-        Ainda não tem uma conta?
+        {% trans %}Still don't have an account?{% endtrans %}
         <a href="{{ url_for('register') }}">{{ _('Create account') }}</a>
       </p>
     </div>

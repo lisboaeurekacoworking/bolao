@@ -736,8 +736,7 @@ msgstr "Lisboa"
 msgid "Recover password"
 msgstr "Recuperar palavra-passe"
 
-msgid "Type your e-mail end receive the instructions to recover your
-        password."
+msgid "Type your e-mail end receive the instructions to recover your password."
 msgstr "Digite seu email e receba as instruções para recuperar a palavra-passe."
 
 msgid "Send intructions"
@@ -745,4 +744,9 @@ msgstr "Enviar instruções"
 
 msgid "Remember your password?"
 msgstr "Lembrou a palavra-passe?"
+
+msgid "and consent to the processing of my personal data."
+msgstr "e consinto o tratamento dos meus dados pessoais."
+
+
 
