@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session, g
-from init_db import init_db, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, g, jsonify
+from init_db import init_db
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime, timedelta
