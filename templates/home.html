@@ -18,8 +18,9 @@
       <h1 class="hero-title hidden">ARENA EUREKA</h1>
     </div>
     <p class="hero-text hidden">
-      {{ _('Make your predictions, follow the ranking and compete with friends
-      at the World Cup.') }}
+      {% trans %}The perfect place to experience the excitement of the 2026
+      World Cup. Watch the matches, make your predictions and celebrate every
+      goal with our community.{% endtrans %}
     </p>
     <div class="hero-actions hidden">
       <a class="hero-btn hero-btn-primary" href="{{ url_for('register') }}"
@@ -53,8 +54,8 @@
   <section class="bolao-preview" id="ranking">
     <h1 class="hidden">ARENA EUREKA</h1>
     <p class="hidden">
-      {{ _('Join the Arena Eureka predictions, show you know football and
-      compete with the community!') }}
+      {% trans %}Join the Arena Eureka predictions, show you know football and
+      compete with the community!{% endtrans %}
     </p>
     <div class="section-table hidden">
       <table class="ranking-table">
