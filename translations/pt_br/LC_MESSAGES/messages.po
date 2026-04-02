@@ -85,7 +85,7 @@ msgid "Yes. The internal area shows your profile, position and score."
 msgstr "Sim. As áreas internas mostram seu perfil, posição no ranking e quantidade de pontos."
 
 msgid "A space to talk with the Arena Eureka community about matches, predictions and World Cup expectations."
-msgstr "Um espaço para falar sobre a Arena Eureka, jogos, palpites no bolão e expectativas para a copa do mundo 2026"
+msgstr "Um espaço para falar sobre a Arena Eureka, jogos, palpites no bolão e expectativas para a Copa do Mundo 2026"
 
 msgid "By country"
 msgstr "Por país"
@@ -182,7 +182,7 @@ msgid "Join Arena Eureka"
 msgstr "Participar da Arena Eureka"
 
 msgid "Join the Arena Eureka predictions, show you know football and compete with the community!"
-msgstr "Participe dos palpites da Arena Eureka, mostre que entende de futebol e dispute com a comunidade!"
+msgstr "Participe do bolão da Eureka, mostre que entende de futebol e dispute com a comunidade!"
 
 msgid "World Cup — Matches and Results"
 msgstr "Copa do Mundo — Jogos e Resultados"
