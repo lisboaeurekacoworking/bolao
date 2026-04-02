@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session, g, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, g
+from init_db import init_db, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime, timedelta
@@ -16,6 +17,9 @@ import atexit
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-insecure-key-change-in-production")
+
+# Inicializar DB automaticamente ao arrancar
+init_db()
 API_FOOTBALL_BASE_URL = "https://v3.football.api-sports.io"
 API_FOOTBALL_KEY = os.environ.get("API_FOOTBALL_KEY", "5161c72f6742229caf51995e3bb8de26835c789f4e845b107283b8151f19573f")
 WORLD_CUP_LEAGUE_ID = 1
