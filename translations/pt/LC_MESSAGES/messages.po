@@ -247,10 +247,10 @@ msgstr "Todos"
 msgid "Today"
 msgstr "Hoje"
 
-msgid "Missing predictions"
+msgid "Yet to predict"
 msgstr "Faltam dar o palpite"
 
-msgid "Already predicted"
+msgid "Your predictions"
 msgstr "Já dei o palpite"
 
 msgid "By team"
@@ -391,16 +391,16 @@ msgstr "Seja a primeira pessoa a publicar na Arena Talks."
 msgid "Total points"
 msgstr "Pontos totais"
 
-msgid "Exact score + Winner (10 pts)"
+msgid "Perfect prediction (10 pts)"
 msgstr "Acertou resultado exato + Vencedor (10 pts)"
 
-msgid "One side goals + Winner (7 pts)"
+msgid "Single team gols + Winner (7 pts)"
 msgstr "Acertou golos de uma das equipas + Vencedor (7 pts)"
 
 msgid "Winner only (5 pts)"
 msgstr "Acertou apenas vencedor (5 pts)"
 
-msgid "One side goals only (2 pts)"
+msgid "Single team gols (2 pts)"
 msgstr "Acertou apenas golos de uma das equipas (2 pts)"
 
 msgid "Overall position"

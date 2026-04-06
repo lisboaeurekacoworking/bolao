@@ -252,10 +252,10 @@ msgstr "All"
 msgid "Today"
 msgstr "Today"
 
-msgid "Missing predictions"
+msgid "Yet to predict"
 msgstr "Missing predictions"
 
-msgid "Already predicted"
+msgid "Your predictions"
 msgstr "Already predicted"
 
 msgid "By team"
@@ -396,17 +396,17 @@ msgstr "Be the first to post in Arena Talks."
 msgid "Total points"
 msgstr "Total points"
 
-msgid "Exact score + Winner (10 pts)"
-msgstr "Exact score + Winner (10 pts)"
+msgid "Perfect prediction (10 pts)"
+msgstr "Perfect prediction (10 pts)"
 
-msgid "One side goals + Winner (7 pts)"
-msgstr "One side goals + Winner (7 pts)"
+msgid "Single team gols + Winner (7 pts)"
+msgstr "Single team gols + Winner (7 pts)"
 
 msgid "Winner only (5 pts)"
 msgstr "Winner only (5 pts)"
 
-msgid "One side goals only (2 pts)"
-msgstr "One side goals only (2 pts)"
+msgid "Single team gols (2 pts)"
+msgstr "Single team gols (2 pts)"
 
 msgid "Overall position"
 msgstr "Overall position"
