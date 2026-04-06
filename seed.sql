@@ -13,18 +13,18 @@ INSERT INTO stages VALUES
 (7,'Final');
 
 INSERT INTO teams VALUES
-(1,'México','mx',1),(2,'África do Sul','za',1),(3,'Coreia do Sul','kr',1),(4,'Europa D',NULL,1),
-(5,'Canadá','ca',2),(6,'Europa A',NULL,2),(7,'Suíça','ch',2),(8,'Catar','qa',2),
+(1,'México','mx',1),(2,'África do Sul','za',1),(3,'Coreia do Sul','kr',1),(4,'República Tcheca','cz',1),
+(5,'Canadá','ca',2),(6,'Bósnia e Herzegovina','ba',2),(7,'Suíça','ch',2),(8,'Catar','qa',2),
 (9,'Brasil','br',3),(10,'Marrocos','ma',3),(11,'Escócia','gb-sct',3),(12,'Haiti','ht',3),
-(13,'Estados Unidos','us',4),(14,'Paraguai','py',4),(15,'Austrália','au',4),(16,'Europa C',NULL,4),
+(13,'Estados Unidos','us',4),(14,'Paraguai','py',4),(15,'Austrália','au',4),(16,'Turquia','tr',4),
 (17,'Alemanha','de',5),(18,'Curaçao','cw',5),(19,'Equador','ec',5),(20,'Costa do Marfim','ci',5),
-(21,'Países Baixos','nl',6),(22,'Japão','jp',6),(23,'Tunísia','tn',6),(24,'Europa B',NULL,6),
+(21,'Países Baixos','nl',6),(22,'Japão','jp',6),(23,'Tunísia','tn',6),(24,'Suécia','se',6),
 (25,'Bélgica','be',7),(26,'Egito','eg',7),(27,'Irã','ir',7),(28,'Nova Zelândia','nz',7),
 (29,'Arábia Saudita','sa',8),(30,'Uruguai','uy',8),(31,'Espanha','es',8),(32,'Cabo Verde','cv',8),
-(33,'França','fr',9),(34,'Senegal','sn',9),(35,'Noruega','no',9),(36,'Intercontinental 2',NULL,9),
+(33,'França','fr',9),(34,'Senegal','sn',9),(35,'Noruega','no',9),(36,'Iraque','iq',9),
 (37,'Argentina','ar',10),(38,'Argélia','dz',10),(39,'Áustria','at',10),(40,'Jordânia','jo',10),
 (41,'Croácia','hr',11),(42,'Inglaterra','gb-eng',11),(43,'Panamá','pa',11),(44,'Gana','gh',11),
-(45,'Portugal','pt',12),(46,'Intercontinental 1',NULL,12),(47,'Uzbequistão','uz',12),(48,'Colômbia','co',12);
+(45,'Portugal','pt',12),(46,'Congo','cd',12),(47,'Uzbequistão','uz',12),(48,'Colômbia','co',12);
 
 
 INSERT INTO games (
