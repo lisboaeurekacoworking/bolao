@@ -579,6 +579,9 @@ msgstr "Update your password and get back in the game."
 msgid "like"
 msgstr "like"
 
+msgid ❤️ Like
+msgstr ❤️ Like
+
 
 msgid "Sign in to participate in the pool."
 msgstr "Sign in to participate in the pool."
@@ -623,14 +626,14 @@ msgstr "Please verify your email before signing in. A new verification link has 
 msgid "Your email has not been verified yet."
 msgstr "Your email has not been verified yet."
 
-msgid "Check your terminal for the verification link."
-msgstr "Check your terminal for the verification link."
+msgid "Check your inbox for the verification link."
+msgstr "Check your inbox for the verification link."
 
 msgid "Resend verification link"
 msgstr "Resend verification link"
 
-msgid "New link generated — check the terminal."
-msgstr "New link generated — check the terminal."
+msgid "New link generated — check your inbox."
+msgstr "New link generated — check your inbox."
 
 msgid "Invalid verification link | Arena Eureka"
 msgstr "Invalid verification link | Arena Eureka"
@@ -667,6 +670,18 @@ msgstr "Permanently delete my account"
 
 msgid "Create account"
 msgstr "Create account"
+
+msgid "Remembered your password?"
+msgstr "Remembered your password?"
+
+msgid "Save new password"
+msgstr "Save new password"
+
+msgid "Redefine password"
+msgstr "Redefine password"
+
+msgid "Choose a new password to continue your participation in Arena Eureka"
+msgstr "Choose a new password to continue your participation in Arena Eureka"
 
 msgid "Register to participate in Arena Eureka"
 msgstr "Register to participate in Arena Eureka"

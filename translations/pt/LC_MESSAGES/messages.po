@@ -391,6 +391,21 @@ msgstr "Seja a primeira pessoa a publicar na Arena Talks."
 msgid "Total points"
 msgstr "Pontos totais"
 
+msgid ❤️ Like
+msgstr ❤️ Gosto
+
+msgid "Remembered your password?"
+msgstr "Lembrou a palavra-passe?"
+
+msgid "Save new password"
+msgstr "Salvar nova palavra-passe"
+
+msgid "Redefine password"
+msgstr "Redefinir palavra-passe"
+
+msgid "Choose a new password to continue your participation in Arena Eureka"
+msgstr "Escolha uma nova palavra-passe para continuar na Arena Eureka"
+
 msgid "Perfect prediction (10 pts)"
 msgstr "Acertou resultado exato + Vencedor (10 pts)"
 

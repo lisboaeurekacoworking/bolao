@@ -371,6 +371,21 @@ msgstr "Apagar"
 msgid "Like"
 msgstr "Curtir"
 
+msgid ❤️ Like
+msgstr ❤️ Curtir
+
+msgid "Remembered your password?"
+msgstr "Lembrou a senha?"
+
+msgid "Save new password"
+msgstr "Salvar nova senha"
+
+msgid "Redefine password"
+msgstr "Redefinir senha"
+
+msgid "Choose a new password to continue your participation in Arena Eureka"
+msgstr "Escolha uma nova senha para continuar na Arena Eureka"
+
 msgid "Write a comment..."
 msgstr "Escreva um comentário..."
 

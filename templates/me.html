@@ -57,14 +57,14 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
   <div class="profile-email-warning">
     <p>
       ⚠️ {% trans %}Your email has not been verified yet.{% endtrans %} {% trans
-      %}Check your terminal for the verification link.{% endtrans %}
+      %}Check your inbox for the verification link.{% endtrans %}
     </p>
     <a href="{{ url_for('resend_verification') }}" class="profile-resend-btn">
       {% trans %}Resend verification link{% endtrans %}
     </a>
     {% if resent %}
     <span class="profile-resent-ok"
-      >{% trans %}New link generated — check the terminal.{% endtrans %}</span
+      >{% trans %}New link generated — check your inbox.{% endtrans %}</span
     >
     {% endif %}
   </div>
