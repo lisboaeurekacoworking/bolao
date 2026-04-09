@@ -33,7 +33,7 @@ serializer = URLSafeTimedSerializer(app.secret_key)
 # =========================
 app.config['BABEL_DEFAULT_LOCALE'] = 'pt'
 app.config['BABEL_DEFAULT_TIMEZONE'] = 'Europe/Lisbon'
-app.config['LANGUAGES'] = ['pt', 'pt_BR', 'en']
+app.config['LANGUAGES'] = ['pt', 'pt_br', 'en']
 
 babel = Babel()
 
@@ -45,6 +45,7 @@ def get_locale():
     return 'pt'
 
 babel.init_app(app, locale_selector=get_locale)
+
 
 
 
@@ -554,9 +555,12 @@ def inject_language():
 def set_language(lang):
     """Guarda o idioma na sessão e volta à página anterior."""
     if lang in app.config['LANGUAGES']:
+        session.permanent = True
         session['lang'] = lang
     # Volta à página de onde veio, ou para home
     return redirect(request.referrer or url_for('home'))
+
+
 
 # =========================
 # FANZONE — arquivo, acessível em /fanzone
