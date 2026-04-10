@@ -420,8 +420,8 @@ msgstr "para permitir filtrar por unidade no ranking."
 msgid "to identify you in the ranking and Arena Talks."
 msgstr "para identificá-lo no ranking e na Arena Talks."
 
-msgid "to log in and, if necessary, recover your password."
-msgstr "para fazer login e, se necessário, recuperar sua senha."
+msgid "to Sign in and, if necessary, recover your password."
+msgstr "para entrar e, se necessário, recuperar sua senha."
 
 msgid "✓ Exact score"
 msgstr "✓ Placar exato"
@@ -552,8 +552,8 @@ msgstr "❤️ Curtir"
 msgid "Back to Arena Eureka"
 msgstr "Voltar para a Arena Eureka"
 
-msgid "Back to login"
-msgstr "Voltar ao login"
+msgid "Back to Sign in"
+msgstr "Voltar ao Sign in"
 
 msgid "Email"
 msgstr "Email"
@@ -564,7 +564,7 @@ msgstr "Senha"
 msgid "Sign in to participate in the pool."
 msgstr "Entre para participar no bolão."
 
-msgid "Your password has been reset. Log in to continue."
+msgid "Your password has been reset. Sign in to continue."
 msgstr "Sua senha foi redefinida. Entre para continuar."
 
 msgid "Forgot my password"
@@ -579,7 +579,7 @@ msgstr "Entre e acompanhe o seu ranking."
 msgid "WORLD CUP 2026"
 msgstr "COPA DO MUNDO 2026"
 
-msgid "Login | Arena Eureka"
+msgid "Sign in | Arena Eureka"
 msgstr "Entrar | Arena Eureka"
 
 msgid "Recover password | Arena Eureka"
@@ -675,8 +675,8 @@ msgstr "Este link de verificação é inválido ou expirou (válido por 24 horas
 msgid "Sign in to your account and request a new verification link."
 msgstr "Entre na sua conta e solicite um novo link de verificação."
 
-msgid "Go to login"
-msgstr "Ir para o login"
+msgid "Go to Sign in"
+msgstr "Ir para o Sign in"
 
 msgid "Recover password | Arena\nEureka"
 msgstr "Recuperar senha | Arena Eureka"
@@ -711,7 +711,7 @@ msgstr "Lisboa"
 msgid "Already have an account?"
 msgstr "Já tem uma conta?"
 
-msgid "Login"
+msgid "Sign in"
 msgstr "Entrar"
 
 msgid "Make your predictions and compete with Eureka Community"
