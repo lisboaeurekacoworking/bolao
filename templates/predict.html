@@ -318,10 +318,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                     />
                   </div>
                   <button type="submit" class="save-bet-btn">
-                    {% if game.predicted_home_score is not none and
-                    game.predicted_away_score is not none %}{{ _('Update
-                    prediction') }}{% else %}{{ _('Save prediction') }}{% endif
-                    %}
+                    {% if game.predicted_home_score is not none and game.predicted_away_score is not none %}{{ _('Update prediction') }}{% else %}{{ _('Save prediction') }}{% endif %}
                   </button>
                 </form>
               </div>
