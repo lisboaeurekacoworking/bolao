@@ -11,6 +11,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from flask_babel import Babel, gettext as _
+from mailer import send_email
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 import atexit
@@ -1569,10 +1570,12 @@ def forgot_password():
         if user:
             token = serializer.dumps(email, salt="reset-password")
             reset_link = url_for("reset_password", token=token, _external=True)
-
-            print("\n===== LINK DE RECUPERAÇÃO =====")
-            print(reset_link)
-            print("================================\n")
+            html_body = render_template("emails/reset_password.html", reset_link=reset_link)
+            subject = _("Reset your password — Arena Eureka")
+            try:
+                send_email(email, subject, html_body)
+            except Exception as e:
+                print(f"[mailer] falha ao enviar reset para {email}: {e}", flush=True)
 
         success = "Se o email existir, enviamos instruções para redefinir a senha."
 
@@ -1760,10 +1763,12 @@ def delete_account():
 
 def send_verification_email(email, token):
     verify_link = url_for("verify_email", token=token, _external=True)
-    print("\n===== LINK DE VERIFICAÇÃO DE EMAIL =====")
-    print(f"Email: {email}")
-    print(f"Link:  {verify_link}")
-    print("=========================================\n")
+    html_body = render_template("emails/verify_email.html", verify_link=verify_link)
+    subject = _("Confirm your email — Arena Eureka")
+    try:
+        send_email(email, subject, html_body)
+    except Exception as e:
+        print(f"[mailer] falha ao enviar verificação para {email}: {e}", flush=True)
 
 
 @app.route("/verify-email/<token>")
