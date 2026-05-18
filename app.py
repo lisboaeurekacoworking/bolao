@@ -16,12 +16,16 @@ from apscheduler.triggers.cron import CronTrigger
 import atexit
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "dev-insecure-key-change-in-production")
+app.secret_key = os.environ.get("SECRET_KEY")
+if not app.secret_key:
+    raise RuntimeError("SECRET_KEY não configurada — define a variável de ambiente.")
 
 # Inicializar DB automaticamente ao arrancar
 init_db()
 API_FOOTBALL_BASE_URL = "https://v3.football.api-sports.io"
-API_FOOTBALL_KEY = os.environ.get("API_FOOTBALL_KEY", "5161c72f6742229caf51995e3bb8de26835c789f4e845b107283b8151f19573f")
+API_FOOTBALL_KEY = os.environ.get("API_FOOTBALL_KEY")
+if not API_FOOTBALL_KEY:
+    raise RuntimeError("API_FOOTBALL_KEY não configurada — define a variável de ambiente.")
 WORLD_CUP_LEAGUE_ID = 1
 #ajustar para 2026 quando comprar
 WORLD_CUP_SEASON = 2026
@@ -79,7 +83,7 @@ def clear_attempts(ip):
 # CONEXÃO COM O BANCO
 # =========================
 def get_db_connection():
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect(os.environ.get("DATABASE_PATH", "database.db"))
     conn.row_factory = sqlite3.Row
     return conn
 
