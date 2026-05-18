@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Arena Eureka\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_br\n"
+"Language: pt_BR\n"
 
 msgid ". After the game begins, the prediction is locked."
 msgstr ". Após o início do jogo, o palpite fica bloqueado."
