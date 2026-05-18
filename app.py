@@ -39,6 +39,27 @@ app.config['BABEL_DEFAULT_LOCALE'] = 'pt'
 app.config['BABEL_DEFAULT_TIMEZONE'] = 'Europe/Lisbon'
 app.config['LANGUAGES'] = ['pt', 'pt_br', 'en']
 
+# Compila .po -> .mo no boot. Em produção (Railway) o passo de build não
+# garante .mo presentes, e .mo é o que o Flask-Babel lê em runtime.
+def _compile_translations():
+    from babel.messages.mofile import write_mo
+    from babel.messages.pofile import read_po
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'translations')
+    for loc in os.listdir(root):
+        po_path = os.path.join(root, loc, 'LC_MESSAGES', 'messages.po')
+        mo_path = os.path.join(root, loc, 'LC_MESSAGES', 'messages.mo')
+        if not os.path.exists(po_path):
+            continue
+        if os.path.exists(mo_path) and os.path.getmtime(mo_path) >= os.path.getmtime(po_path):
+            continue
+        with open(po_path, 'rb') as f:
+            catalog = read_po(f)
+        with open(mo_path, 'wb') as f:
+            write_mo(f, catalog)
+        print(f'[babel] compiled {loc} -> {mo_path}', flush=True)
+
+_compile_translations()
+
 babel = Babel()
 
 def get_locale():
