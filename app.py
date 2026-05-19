@@ -340,7 +340,105 @@ def test_api_football():
         }, 500
 
 
+# =========================
+# ROTA DE TESTE — APAGAR ANTES DO DEPLOY FINAL
+# Busca jogos reais da Copa 2022 via API e insere
+# com datas no futuro para testar palpites
+# Aceder em: /test-sync-2022 (só admin)
+# =========================
+@app.route("/test-sync-2022")
+def test_sync_2022():
+    if session.get("user_id") != 1:
+        return {"status": "error", "message": "Acesso negado"}, 403
 
+    try:
+        # Buscar jogos da Copa 2022 da API
+        url = API_FOOTBALL_BASE_URL + "/fixtures"
+        headers = {
+            "x-apisports-key": API_FOOTBALL_KEY,
+            "Accept": "application/json"
+        }
+        params = {
+            "league": WORLD_CUP_LEAGUE_ID,
+            "season": 2022  # Copa do Qatar — já tem resultados reais
+        }
+        response = requests.get(url, headers=headers, params=params, timeout=30)
+        response.raise_for_status()
+        fixtures = response.json().get("response", [])
+
+        if not fixtures:
+            return jsonify({"status": "error", "message": "API não devolveu jogos da Copa 2022"}), 400
+
+        conn = get_db_connection()
+
+        # Limpar resultados anteriores de teste
+        conn.execute("UPDATE games SET score_home = NULL, score_away = NULL, api_game_id = NULL")
+        conn.commit()
+
+        now = datetime.now()
+        inserted = 0
+        skipped = 0
+
+        # Ordenar por data original
+        fixtures_sorted = sorted(fixtures, key=lambda x: x.get("fixture", {}).get("date", ""))
+
+        total = len(fixtures_sorted)
+        past_count = total // 2  # metade com resultado (bloqueados)
+
+        for i, item in enumerate(fixtures_sorted):
+            fixture = item.get("fixture", {})
+            teams = item.get("teams", {})
+            goals = item.get("goals", {})
+
+            home_name = teams.get("home", {}).get("name")
+            away_name = teams.get("away", {}).get("name")
+            score_home = goals.get("home")
+            score_away = goals.get("away")
+
+            db_game = find_db_game_by_team_names(conn, home_name, away_name)
+
+            if not db_game:
+                skipped += 1
+                continue
+
+            if i < past_count:
+                # Jogo no passado com resultado
+                days_ago = past_count - i
+                fake_date = (now - timedelta(days=days_ago)).strftime("%Y-%m-%dT%H:%M:%S+00:00")
+                conn.execute("""
+                    UPDATE games
+                    SET game_datetime = ?, score_home = ?, score_away = ?,
+                        api_game_id = ?
+                    WHERE id = ?
+                """, (fake_date, score_home, score_away, str(fixture.get("id")), db_game["id"]))
+            else:
+                # Jogo no futuro sem resultado
+                days_ahead = i - past_count + 1
+                fake_date = (now + timedelta(days=days_ahead, hours=20)).strftime("%Y-%m-%dT%H:%M:%S+00:00")
+                conn.execute("""
+                    UPDATE games
+                    SET game_datetime = ?, score_home = NULL, score_away = NULL,
+                        api_game_id = ?
+                    WHERE id = ?
+                """, (fake_date, str(fixture.get("id")), db_game["id"]))
+
+            inserted += 1
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "status": "ok",
+            "message": "Jogos de teste inseridos com sucesso",
+            "total_api": total,
+            "inserted": inserted,
+            "skipped": skipped,
+            "jogos_passados_com_resultado": past_count,
+            "jogos_futuros_abertos": total - past_count
+        })
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 # =========================
 # SYNC INTELIGENTE
