@@ -120,6 +120,20 @@
               </label>
             </div>
 
+            <!-- Aceite das Regras — obrigatório -->
+            <div class="auth-field auth-consent-field">
+              <label class="auth-consent-label">
+                <input type="checkbox" name="rules_consent" required />
+                <span>
+                  {% trans %}I have read and accept the{% endtrans %}
+                  <a href="{{ url_for('rules') }}" target="_blank"
+                    >{% trans %}Rules{% endtrans %}</a
+                  >
+                  {% trans %}of Arena Eureka.{% endtrans %}
+                </span>
+              </label>
+            </div>
+
             <button type="submit" class="auth-submit-btn">
               {{ _('Create account') }}
             </button>

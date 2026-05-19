@@ -863,6 +863,10 @@ def register():
         country_code = request.form["country_code"]
         eureka_unit = request.form["eureka_unit"]
 
+        if not request.form.get("rules_consent"):
+            register_error = _("You must accept the Arena Eureka Rules to create an account.")
+            return render_template("register.html", register_error=register_error)
+
         password_hash = generate_password_hash(password)
 
         conn = get_db_connection()

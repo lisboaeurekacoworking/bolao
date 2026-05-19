@@ -766,3 +766,11 @@ msgstr "Redefinir palavra-passe"
 
 msgid "If you did not request this, just ignore this email — your password will not change."
 msgstr "Se não pediu isto, ignore este email — a sua palavra-passe não será alterada."
+
+# === Aceite das Regras no cadastro ===
+
+msgid "of Arena Eureka."
+msgstr "da Arena Eureka."
+
+msgid "You must accept the Arena Eureka Rules to create an account."
+msgstr "Tem de aceitar as Regras da Arena Eureka para criar uma conta."
