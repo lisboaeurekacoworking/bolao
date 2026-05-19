@@ -348,7 +348,7 @@ def test_api_football():
 # =========================
 @app.route("/test-sync-2022")
 def test_sync_2022():
-    if session.get("user_id") != 5:
+    if session.get("user_id") != 1:
         return {"status": "error", "message": "Acesso negado"}, 403
 
     try:
