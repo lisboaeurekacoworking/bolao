@@ -29,7 +29,7 @@ if not API_FOOTBALL_KEY:
     raise RuntimeError("API_FOOTBALL_KEY não configurada — define a variável de ambiente.")
 WORLD_CUP_LEAGUE_ID = 1
 #ajustar para 2026 quando comprar
-WORLD_CUP_SEASON = 2026
+WORLD_CUP_SEASON = 2022
 serializer = URLSafeTimedSerializer(app.secret_key)
 
 # =========================
