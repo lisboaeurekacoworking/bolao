@@ -1959,6 +1959,7 @@ def bootstrap_admin():
             user_id = existing["id"]
         else:
             pw_hash = generate_password_hash(admin_password)
+            admin_name = os.environ.get("ADMIN_BOOTSTRAP_NAME") or admin_email.split("@")[0].replace(".", " ").title()
             cur = conn.execute("""
                 INSERT INTO users (
                     name, email, password_hash, created_at,
@@ -1967,7 +1968,7 @@ def bootstrap_admin():
                 )
                 VALUES (?, ?, ?, ?, ?, ?, 1, ?, 1)
             """, (
-                "Daniel Moral", admin_email, pw_hash, now,
+                admin_name, admin_email, pw_hash, now,
                 "BR", "paulista", now
             ))
             action = "created"
