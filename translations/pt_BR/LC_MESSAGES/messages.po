@@ -774,3 +774,112 @@ msgstr "da Arena Eureka."
 
 msgid "You must accept the Arena Eureka Rules to create an account."
 msgstr "Você precisa aceitar as Regras da Arena Eureka para criar uma conta."
+
+
+msgid ". Each participant may submit predictions for the matches available in each stage."
+msgstr ". Cada participante pode enviar palpites para os jogos disponíveis em cada fase."
+
+msgid ". Predictions may be amended until the official kick-off of the match."
+msgstr ". Os palpites podem ser alterados até o pontapé inicial oficial da partida."
+
+msgid ". Once the match has started, the prediction is locked and can no longer be amended."
+msgstr ". Após o início do jogo, o palpite fica bloqueado e não pode ser alterado."
+
+msgid ". Scores are calculated automatically based on the actual result."
+msgstr ". A pontuação é calculada automaticamente com base no resultado real."
+
+msgid ". Participants must create an Arena Eureka account and be logged in to submit predictions."
+msgstr ". Os participantes devem criar uma conta na Arena Eureka e estar logados para enviar palpites."
+
+msgid ". Participation is restricted to individuals aged 18 or over."
+msgstr ". A participação está restrita a indivíduos com 18 anos ou mais."
+
+msgid "Correct exact result: correct scoreline for both teams and winner."
+msgstr "Resultado exato correto: placar correto para ambas as equipes e vencedor."
+
+msgid "Correct winner + correct number of goals scored by one team."
+msgstr "Vencedor correto + número correto de gols de uma das equipes."
+
+msgid "Correct winner only (or draw)."
+msgstr "Apenas vencedor correto (ou empate)."
+
+msgid "Correct number of goals scored by one team only."
+msgstr "Apenas número correto de gols de uma das equipes."
+
+msgid "No criteria matched."
+msgstr "Nenhum critério acertado."
+
+msgid ". The leaderboard is continuously updated based on confirmed results."
+msgstr ". O ranking é atualizado continuamente com base nos resultados confirmados."
+
+msgid ". The system may display an overall leaderboard as well as leaderboards by unit or specific audience."
+msgstr ". O sistema pode exibir um ranking geral e também rankings por unidade ou público específico."
+
+msgid ". Any participant using fraudulent or automated methods will be disqualified."
+msgstr ". Qualquer participante que utilize métodos fraudulentos ou automatizados será desqualificado."
+
+msgid ". Participation implies full acceptance of these Terms and Conditions."
+msgstr ". A participação implica a aceitação integral destes Termos e Condições."
+
+msgid ". The Predictor Competition is non-profit and promoted exclusively as a relationship-building initiative."
+msgstr ". O Bolão é sem fins lucrativos e promovido exclusivamente como iniciativa de relacionamento."
+
+msgid "Tie-Break Criteria"
+msgstr "Critérios de Desempate"
+
+msgid "1st: highest number of exact predictions (correct scoreline)."
+msgstr "1.º: maior número de palpites exatos (placar correto)."
+
+msgid "2nd: highest number of correct result predictions (winner only)."
+msgstr "2.º: maior número de palpites com resultado correto (apenas vencedor)."
+
+msgid "3rd: highest number of predictions submitted throughout the competition."
+msgstr "3.º: maior número de palpites enviados ao longo da competição."
+
+msgid "4th: a draw conducted transparently by the organisers."
+msgstr "4.º: sorteio realizado de forma transparente pelos organizadores."
+
+msgid ". 1 (one) official Brazil or Portugal national team shirt, awarded to the winning participant."
+msgstr ". 1 (uma) camisa oficial da seleção do Brasil ou de Portugal, entregue ao participante vencedor."
+
+msgid ". The prize is personal and non-transferable and may not be exchanged for cash."
+msgstr ". O prêmio é pessoal e intransferível e não pode ser trocado por dinheiro."
+
+msgid ". Only active members of the Eureka Coworking community will be eligible for the prize."
+msgstr ". Apenas membros ativos da comunidade Eureka Coworking serão elegíveis para o prêmio."
+
+msgid ". The winner will be notified within 5 working days following confirmation of the result."
+msgstr ". O vencedor será notificado no prazo de 5 dias úteis após a confirmação do resultado."
+
+msgid ". The prize will be delivered within 30 calendar days from the date of the final (19/07/2026)."
+msgstr ". O prêmio será entregue no prazo de 30 dias corridos a partir da data da final (19/07/2026)."
+
+msgid "Promoter"
+msgstr "Promotor"
+
+msgid "Eureka Coworking Portugal"
+msgstr "Eureka Coworking Portugal"
+
+msgid "Registered office: Palácio Rosa, Lisbon."
+msgstr "Sede: Palácio Rosa, Lisboa."
+
+msgid "Contact: contato@eurekacoworking.com"
+msgstr "Contato: contato@eurekacoworking.com"
+
+msgid "Applicable legislation: GDPR, Portuguese Labour Code, and applicable Portuguese law."
+msgstr "Legislação aplicável: LGPD, CLT e legislação portuguesa aplicável."
+
+msgid "When will I know if I have won the prize?"
+msgstr "Quando saberei se ganhei o prêmio?"
+
+msgid "The winner is determined after the World Cup Final (19/07/2026) and notified within 5 working days."
+msgstr "O vencedor é apurado após a Final da Copa do Mundo (19/07/2026) e notificado no prazo de 5 dias úteis."
+
+msgid "How long will it take to receive the prize?"
+msgstr "Quanto tempo demora para receber o prêmio?"
+
+msgid "Within 30 calendar days after the final (by 18/08/2026). Delivery arrangements will be agreed directly with the winner."
+msgstr "No prazo de 30 dias corridos após a final (até 18/08/2026). Os detalhes de entrega serão combinados diretamente com o vencedor."
+
+msgid "Yes. As long as the match has not started, you may update your prediction freely."
+msgstr "Sim. Enquanto o jogo não começou, você pode atualizar seu palpite livremente."

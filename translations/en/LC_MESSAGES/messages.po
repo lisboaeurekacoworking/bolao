@@ -731,3 +731,111 @@ msgstr "Type your e-mail end receive the instructions to recover your password."
 
 msgid "and consent to the processing of my personal\n                  data."
 msgstr "and consent to the processing of my personal data."
+
+msgid ". Each participant may submit predictions for the matches available in each stage."
+msgstr ". Each participant may submit predictions for the matches available in each stage."
+
+msgid ". Predictions may be amended until the official kick-off of the match."
+msgstr ". Predictions may be amended until the official kick-off of the match."
+
+msgid ". Once the match has started, the prediction is locked and can no longer be amended."
+msgstr ". Once the match has started, the prediction is locked and can no longer be amended."
+
+msgid ". Scores are calculated automatically based on the actual result."
+msgstr ". Scores are calculated automatically based on the actual result."
+
+msgid ". Participants must create an Arena Eureka account and be logged in to submit predictions."
+msgstr ". Participants must create an Arena Eureka account and be logged in to submit predictions."
+
+msgid ". Participation is restricted to individuals aged 18 or over."
+msgstr ". Participation is restricted to individuals aged 18 or over."
+
+msgid "Correct exact result: correct scoreline for both teams and winner."
+msgstr "Correct exact result: correct scoreline for both teams and winner."
+
+msgid "Correct winner + correct number of goals scored by one team."
+msgstr "Correct winner + correct number of goals scored by one team."
+
+msgid "Correct winner only (or draw)."
+msgstr "Correct winner only (or draw)."
+
+msgid "Correct number of goals scored by one team only."
+msgstr "Correct number of goals scored by one team only."
+
+msgid "No criteria matched."
+msgstr "No criteria matched."
+
+msgid ". The leaderboard is continuously updated based on confirmed results."
+msgstr ". The leaderboard is continuously updated based on confirmed results."
+
+msgid ". The system may display an overall leaderboard as well as leaderboards by unit or specific audience."
+msgstr ". The system may display an overall leaderboard as well as leaderboards by unit or specific audience."
+
+msgid ". Any participant using fraudulent or automated methods will be disqualified."
+msgstr ". Any participant using fraudulent or automated methods will be disqualified."
+
+msgid ". Participation implies full acceptance of these Terms and Conditions."
+msgstr ". Participation implies full acceptance of these Terms and Conditions."
+
+msgid ". The Predictor Competition is non-profit and promoted exclusively as a relationship-building initiative."
+msgstr ". The Predictor Competition is non-profit and promoted exclusively as a relationship-building initiative."
+
+msgid "Tie-Break Criteria"
+msgstr "Tie-Break Criteria"
+
+msgid "1st: highest number of exact predictions (correct scoreline)."
+msgstr "1st: highest number of exact predictions (correct scoreline)."
+
+msgid "2nd: highest number of correct result predictions (winner only)."
+msgstr "2nd: highest number of correct result predictions (winner only)."
+
+msgid "3rd: highest number of predictions submitted throughout the competition."
+msgstr "3rd: highest number of predictions submitted throughout the competition."
+
+msgid "4th: a draw conducted transparently by the organisers."
+msgstr "4th: a draw conducted transparently by the organisers."
+
+msgid ". 1 (one) official Brazil or Portugal national team shirt, awarded to the winning participant."
+msgstr ". 1 (one) official Brazil or Portugal national team shirt, awarded to the winning participant."
+
+msgid ". The prize is personal and non-transferable and may not be exchanged for cash."
+msgstr ". The prize is personal and non-transferable and may not be exchanged for cash."
+
+msgid ". Only active members of the Eureka Coworking community will be eligible for the prize."
+msgstr ". Only active members of the Eureka Coworking community will be eligible for the prize."
+
+msgid ". The winner will be notified within 5 working days following confirmation of the result."
+msgstr ". The winner will be notified within 5 working days following confirmation of the result."
+
+msgid ". The prize will be delivered within 30 calendar days from the date of the final (19/07/2026)."
+msgstr ". The prize will be delivered within 30 calendar days from the date of the final (19/07/2026)."
+
+msgid "Promoter"
+msgstr "Promoter"
+
+msgid "Eureka Coworking Portugal"
+msgstr "Eureka Coworking Portugal"
+
+msgid "Registered office: Palácio Rosa, Lisbon."
+msgstr "Registered office: Palácio Rosa, Lisbon."
+
+msgid "Contact: contato@eurekacoworking.com"
+msgstr "Contact: contato@eurekacoworking.com"
+
+msgid "Applicable legislation: GDPR, Portuguese Labour Code, and applicable Portuguese law."
+msgstr "Applicable legislation: GDPR, Portuguese Labour Code, and applicable Portuguese law."
+
+msgid "When will I know if I have won the prize?"
+msgstr "When will I know if I have won the prize?"
+
+msgid "The winner is determined after the World Cup Final (19/07/2026) and notified within 5 working days."
+msgstr "The winner is determined after the World Cup Final (19/07/2026) and notified within 5 working days."
+
+msgid "How long will it take to receive the prize?"
+msgstr "How long will it take to receive the prize?"
+
+msgid "Within 30 calendar days after the final (by 18/08/2026). Delivery arrangements will be agreed directly with the winner."
+msgstr "Within 30 calendar days after the final (by 18/08/2026). Delivery arrangements will be agreed directly with the winner."
+
+msgid "Yes. As long as the match has not started, you may update your prediction freely."
+msgstr "Yes. As long as the match has not started, you may update your prediction freely."

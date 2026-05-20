@@ -1,5 +1,4 @@
-{% extends "base.html" %} {% block title %}{% trans %}Rules & Prizes | Arena
-Eureka{% endtrans %}{% endblock %} {% block menu %}
+{% extends "base.html" %} {% block title %}{% trans %}Rules & Prizes | Arena Eureka{% endtrans %}{% endblock %} {% block menu %}
 <div class="menu">
   <a href="{{ url_for('me') }}"
     ><img
@@ -39,23 +38,11 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       </li>
       {% endif %}
       <li class="lang-switcher">
-        <a
-          href="{{ url_for('set_language', lang='pt') }}"
-          class="lang-btn {% if current_lang == 'pt' %}active{% endif %}"
-          >PT</a
-        >
+        <a href="{{ url_for('set_language', lang='pt') }}" class="lang-btn {% if current_lang == 'pt' %}active{% endif %}">PT</a>
         <span class="lang-sep">|</span>
-        <a
-          href="{{ url_for('set_language', lang='pt_br') }}"
-          class="lang-btn {% if current_lang == 'pt_br' %}active{% endif %}"
-          >BR</a
-        >
+        <a href="{{ url_for('set_language', lang='pt_br') }}" class="lang-btn {% if current_lang == 'pt_br' %}active{% endif %}">BR</a>
         <span class="lang-sep">|</span>
-        <a
-          href="{{ url_for('set_language', lang='en') }}"
-          class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
-          >EN</a
-        >
+        <a href="{{ url_for('set_language', lang='en') }}" class="lang-btn {% if current_lang == 'en' %}active{% endif %}">EN</a>
       </li>
     </ul>
   </nav>
@@ -65,104 +52,76 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
   <section class="rules-hero">
     <div class="rules-hero-header">
       <h1>{{ _('Rules & Prizes') }}</h1>
-      <p>
-        {% trans %}Understand how Arena Eureka works, how scoring is calculated
-        and what the prize criteria are.{% endtrans %}
-      </p>
+      <p>{{ _('Understand how Arena Eureka works, how scoring is calculated and what the prize criteria are.') }}</p>
     </div>
   </section>
 
   <section class="rules-grid">
+
     <article class="rules-card">
       <h2>{{ _('How it works') }}</h2>
       <ul>
-        <li>
-          {% trans %}. Each participant can make predictions on the matches
-          available in each phase.{% endtrans %}
-        </li>
-        <li>
-          {% trans %}. Predictions can be changed until the official start of
-          the match.{% endtrans %}
-        </li>
-        <li>
-          {% trans %}. After the game begins, the prediction is locked.{%
-          endtrans %}
-        </li>
-        <li>
-          {% trans %}. The score is automatically calculated based on the actual
-          result.{% endtrans %}
-        </li>
+        <li>{{ _('. Each participant may submit predictions for the matches available in each stage.') }}</li>
+        <li>{{ _('. Predictions may be amended until the official kick-off of the match.') }}</li>
+        <li>{{ _('. Once the match has started, the prediction is locked and can no longer be amended.') }}</li>
+        <li>{{ _('. Scores are calculated automatically based on the actual result.') }}</li>
+        <li>{{ _('. Participants must create an Arena Eureka account and be logged in to submit predictions.') }}</li>
+        <li>{{ _('. Participation is restricted to individuals aged 18 or over.') }}</li>
       </ul>
     </article>
 
     <article class="rules-card">
       <h2>{{ _('Scoring') }}</h2>
       <ul>
-        <li>
-          <strong>{{ _('10 points:') }}</strong> {% trans %}correctly predicted
-          the exact result - number of goals for both teams and the winner.{%
-          endtrans %}
-        </li>
-        <li>
-          <strong>{{ _('7 points:') }}</strong> {% trans %}predicted the winner
-          + the number of goals for one of the teams.{% endtrans %}
-        </li>
-        <li>
-          <strong>{{ _('5 points:') }}</strong> {% trans %}predicted only the
-          winner.{% endtrans %}
-        </li>
-        <li>
-          <strong>{{ _('2 points:') }}</strong> {% trans %}predicted only the
-          number of goals for one of the teams.{% endtrans %}
-        </li>
-        <li>
-          <strong>{{ _('0 points:') }}</strong> {% trans %}did not get any
-          criteria correct.{% endtrans %}
-        </li>
+        <li><strong>{{ _('10 points:') }}</strong> {{ _('Correct exact result: correct scoreline for both teams and winner.') }}</li>
+        <li><strong>{{ _('7 points:') }}</strong> {{ _('Correct winner + correct number of goals scored by one team.') }}</li>
+        <li><strong>{{ _('5 points:') }}</strong> {{ _('Correct winner only (or draw).') }}</li>
+        <li><strong>{{ _('2 points:') }}</strong> {{ _('Correct number of goals scored by one team only.') }}</li>
+        <li><strong>{{ _('0 points:') }}</strong> {{ _('No criteria matched.') }}</li>
       </ul>
     </article>
 
     <article class="rules-card">
       <h2>{{ _('General rules') }}</h2>
       <ul>
-        <li>
-          {% trans %}. The ranking is updated based on results that have already
-          been confirmed.{% endtrans %}
-        </li>
-        <li>
-          {% trans %}. The system may display an overall ranking as well as
-          rankings by unit/audience.{% endtrans %}
-        </li>
-        <li>
-          {% trans %}. In case of a tie, the system uses internal criteria
-          already defined in the ranking.{% endtrans %}
-        </li>
-        <li>
-          {% trans %}. Messages in Arena Talks must respect the community
-          environment.{% endtrans %}
-        </li>
+        <li>{{ _('. The leaderboard is continuously updated based on confirmed results.') }}</li>
+        <li>{{ _('. The system may display an overall leaderboard as well as leaderboards by unit or specific audience.') }}</li>
+        <li>{{ _('. Messages posted on Arena Talks must respect the community environment.') }}</li>
+        <li>{{ _('. Any participant using fraudulent or automated methods will be disqualified.') }}</li>
+        <li>{{ _('. Participation implies full acceptance of these Terms and Conditions.') }}</li>
+        <li>{{ _('. The Predictor Competition is non-profit and promoted exclusively as a relationship-building initiative.') }}</li>
+      </ul>
+    </article>
+
+    <article class="rules-card">
+      <h2>{{ _('Tie-Break Criteria') }}</h2>
+      <ul>
+        <li>{{ _('1st: highest number of exact predictions (correct scoreline).') }}</li>
+        <li>{{ _('2nd: highest number of correct result predictions (winner only).') }}</li>
+        <li>{{ _('3rd: highest number of predictions submitted throughout the competition.') }}</li>
+        <li>{{ _('4th: a draw conducted transparently by the organisers.') }}</li>
       </ul>
     </article>
 
     <article class="rules-card">
       <h2>{{ _('Prizes') }}</h2>
       <ul>
-        <li>
-          {% trans %}. Prizes may vary depending on the campaign and the Eureka
-          unit.{% endtrans %}
-        </li>
-        <li>
-          {% trans %}. The main prize will be based on the overall ranking of
-          the competition.{% endtrans %}
-        </li>
-        <li>
-          {% trans %}. There may be highlights by unit or specific category.{%
-          endtrans %}
-        </li>
-        <li>
-          {% trans %}. Final prize details will be communicated by each Eureka
-          unit.{% endtrans %}
-        </li>
+        <li>{{ _('. 1 (one) official Brazil or Portugal national team shirt, awarded to the winning participant.') }}</li>
+        <li>{{ _('. The prize is personal and non-transferable and may not be exchanged for cash.') }}</li>
+        <li>{{ _('. Only active members of the Eureka Coworking community will be eligible for the prize.') }}</li>
+        <li>{{ _('. The winner will be notified within 5 working days following confirmation of the result.') }}</li>
+        <li>{{ _('. The prize will be delivered within 30 calendar days from the date of the final (19/07/2026).') }}</li>
+        <li>{{ _('. Final prize details will be communicated by each Eureka unit.') }}</li>
+      </ul>
+    </article>
+
+    <article class="rules-card">
+      <h2>{{ _('Promoter') }}</h2>
+      <ul>
+        <li>{{ _('Eureka Coworking Portugal') }}</li>
+        <li>{{ _('Registered office: Palácio Rosa, Lisbon.') }}</li>
+        <li>{{ _('Contact: contato@eurekacoworking.com') }}</li>
+        <li>{{ _('Applicable legislation: GDPR, Portuguese Labour Code, and applicable Portuguese law.') }}</li>
       </ul>
     </article>
 
@@ -171,33 +130,27 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       <div class="rules-faq">
         <div class="rules-faq-item">
           <h3>{{ _('Can I change my prediction?') }}</h3>
-          <p>
-            {% trans %}Yes. As long as the match has not started, you can update
-            your prediction.{% endtrans %}
-          </p>
+          <p>{{ _('Yes. As long as the match has not started, you may update your prediction freely.') }}</p>
         </div>
         <div class="rules-faq-item">
           <h3>{{ _('What happens when the match starts?') }}</h3>
-          <p>
-            {{ _('The prediction is locked and can no longer be modified.') }}
-          </p>
+          <p>{{ _('The prediction is locked and can no longer be modified.') }}</p>
         </div>
         <div class="rules-faq-item">
           <h3>{{ _('Do I need to be signed in to participate?') }}</h3>
-          <p>
-            {% trans %}Yes. You need to create an account and sign in to Arena
-            Eureka to register predictions.{% endtrans %}
-          </p>
+          <p>{{ _('Yes. You need to create an account and sign in to Arena Eureka to register predictions.') }}</p>
         </div>
         <div class="rules-faq-item">
-          <h3>{{ _('Can I follow my ranking position?') }}</h3>
-          <p>
-            {% trans %}Yes. The internal area shows your profile, position and
-            score.{% endtrans %}
-          </p>
+          <h3>{{ _('When will I know if I have won the prize?') }}</h3>
+          <p>{{ _('The winner is determined after the World Cup Final (19/07/2026) and notified within 5 working days.') }}</p>
+        </div>
+        <div class="rules-faq-item">
+          <h3>{{ _('How long will it take to receive the prize?') }}</h3>
+          <p>{{ _('Within 30 calendar days after the final (by 18/08/2026). Delivery arrangements will be agreed directly with the winner.') }}</p>
         </div>
       </div>
     </article>
+
   </section>
 </main>
 {% endblock %} {% block scripts %}{% endblock %}
