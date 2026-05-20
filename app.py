@@ -1924,6 +1924,63 @@ def logout():
 
 
 # =========================
+# BOOTSTRAP DE ADMIN (uso único)
+# Remover este bloco depois de criar o primeiro admin em produção.
+# Requer env vars ADMIN_BOOTSTRAP_TOKEN e ADMIN_BOOTSTRAP_EMAIL.
+# =========================
+@app.route("/_bootstrap-admin")
+def bootstrap_admin():
+    import hmac
+    expected_token = os.environ.get("ADMIN_BOOTSTRAP_TOKEN")
+    admin_email = os.environ.get("ADMIN_BOOTSTRAP_EMAIL")
+    admin_password = os.environ.get("ADMIN_BOOTSTRAP_PASSWORD")
+
+    if not expected_token or not admin_email or not admin_password:
+        return ("Not Found", 404)
+
+    provided = request.args.get("token", "")
+    if not hmac.compare_digest(provided, expected_token):
+        return ("Not Found", 404)
+
+    conn = get_db_connection()
+    try:
+        existing = conn.execute(
+            "SELECT id, is_admin FROM users WHERE email = ?",
+            (admin_email,)
+        ).fetchone()
+
+        now = datetime.now()
+        if existing:
+            conn.execute(
+                "UPDATE users SET is_admin = 1, email_verified = 1 WHERE id = ?",
+                (existing["id"],)
+            )
+            action = "promoted"
+            user_id = existing["id"]
+        else:
+            pw_hash = generate_password_hash(admin_password)
+            cur = conn.execute("""
+                INSERT INTO users (
+                    name, email, password_hash, created_at,
+                    country_code, eureka_unit, is_admin,
+                    privacy_consent_at, email_verified
+                )
+                VALUES (?, ?, ?, ?, ?, ?, 1, ?, 1)
+            """, (
+                "Daniel Moral", admin_email, pw_hash, now,
+                "BR", "paulista", now
+            ))
+            action = "created"
+            user_id = cur.lastrowid
+
+        conn.commit()
+    finally:
+        conn.close()
+
+    return jsonify({"ok": True, "action": action, "user_id": user_id, "email": admin_email})
+
+
+# =========================
 # RODA A APLICAÇÃO
 # =========================
 if __name__ == "__main__":
