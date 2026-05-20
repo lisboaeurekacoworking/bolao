@@ -821,7 +821,7 @@ msgid ". Participation implies full acceptance of these Terms and Conditions."
 msgstr ". A participação implica a aceitação integral destes Termos e Condições."
 
 msgid ". The Predictor Competition is non-profit and promoted exclusively as a relationship-building initiative."
-msgstr ". O Bolão é sem fins lucrativos e promovido exclusivamente como iniciativa de relacionamento."
+msgstr ". A competição da Arena Eureka é sem fins lucrativos e promovido exclusivamente como iniciativa de relacionamento."
 
 msgid "Tie-Break Criteria"
 msgstr "Critérios de Desempate"
@@ -872,7 +872,7 @@ msgid "When will I know if I have won the prize?"
 msgstr "Quando saberei se ganhei o prémio?"
 
 msgid "The winner is determined after the World Cup Final (19/07/2026) and notified within 5 working days."
-msgstr "O vencedor é apurado após a Final do Campeonato do Mundo (19/07/2026) e notificado no prazo de 5 dias úteis."
+msgstr "O vencedor é apurado após a Final do Mundial (19/07/2026) e notificado no prazo de 5 dias úteis."
 
 msgid "How long will it take to receive the prize?"
 msgstr "Quanto tempo demora a receber o prémio?"
