@@ -387,11 +387,11 @@ msgstr "Your data is used exclusively for:"
 msgid "Your email has not been verified yet."
 msgstr "Your email has not been verified yet."
 
-msgid "Your prediction"
-msgstr "Your prediction"
+msgid "My prediction"
+msgstr "My prediction"
 
-msgid "Your predictions"
-msgstr "Your predictions"
+msgid "My predictions"
+msgstr "My predictions"
 
 msgid "correctly predicted the exact result - number of goals for both teams and the winner."
 msgstr "correctly predicted the exact result - number of goals for both teams and the winner."
