@@ -183,13 +183,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
           data-datetime="{{ game.game_datetime }}"
         >
           <div class="match-card-top">
-            <span class="match-date">
-              {%- set dt = game.game_datetime | string | trim -%} {%- set parts
-              = dt.split(" ") -%} {%- set date_parts = parts[0].split("-") -%}
-              {%- set time_parts = parts[1].split(":") if parts|length > 1 else
-              ["00","00"] -%} {{ date_parts[2] }}/{{ date_parts[1] }} · {{
-              time_parts[0] }}:{{ time_parts[1] }}
-            </span>
+            <span class="match-date">{{ game.game_datetime_display }}</span>
           </div>
 
           <div class="match-row">

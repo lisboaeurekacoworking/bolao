@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, g
 from init_db import init_db
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+import zoneinfo
 from collections import defaultdict
 from functools import wraps
 import sqlite3
@@ -1236,6 +1237,17 @@ def predict():
         game_datetime = datetime.fromisoformat(raw_datetime.replace('+00:00', '').replace('Z', ''))
         is_locked = now >= game_datetime
 
+        # Formatar data para exibição em hora de Lisboa
+        try:
+            dt_str_clean = raw_datetime.replace('T', ' ').replace('+00:00', '').replace('Z', '')
+            dt_utc = datetime.fromisoformat(dt_str_clean)
+            lisbon_tz = zoneinfo.ZoneInfo("Europe/Lisbon")
+            dt_utc = dt_utc.replace(tzinfo=timezone.utc)
+            dt_lisbon = dt_utc.astimezone(lisbon_tz)
+            game_datetime_display = dt_lisbon.strftime("%d/%m · %H:%M")
+        except Exception:
+            game_datetime_display = raw_datetime[:16]
+
         game_data = {
             "id": row["id"],
             "home_name": row["home_name"],
@@ -1245,6 +1257,7 @@ def predict():
             "away_flag": row["away_flag"],
             "away_group_name": row["away_group_name"],
             "game_datetime": row["game_datetime"],
+            "game_datetime_display": game_datetime_display,
             "predicted_home_score": row["predicted_home_score"],
             "predicted_away_score": row["predicted_away_score"],
             "points": points,
