@@ -393,6 +393,9 @@ msgstr "Meu palpite"
 msgid "My predictions"
 msgstr "Meus palpites"
 
+msgid "All groups"
+msgstr "Todos os grupos"
+
 msgid "correctly predicted the exact result - number of goals for both teams and the winner."
 msgstr "acertou o resultado exato — número de golos dos dois times e o vencedor."
 

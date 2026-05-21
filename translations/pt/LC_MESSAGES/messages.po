@@ -453,6 +453,9 @@ msgstr "Palpites | Arena Eureka"
 msgid "Rules & Prizes | Arena\nEureka"
 msgstr "Regras & Prémios | Arena Eureka"
 
+msgid "All groups"
+msgstr "Todos os grupos"
+
 msgid "Understand how Arena Eureka works, how scoring is calculated\n        and what the prize criteria are."
 msgstr "Perceba como a Arena Eureka funciona, como a pontuação é calculada e quais são os critérios de premiação."
 

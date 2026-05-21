@@ -369,6 +369,9 @@ msgstr "Yes. You need to create an account and sign in to Arena Eureka to regist
 msgid "Yet to predict"
 msgstr "Yet to predict"
 
+msgid "All groups"
+msgstr "All groups"
+
 msgid "You"
 msgstr "You"
 
