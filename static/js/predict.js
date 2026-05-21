@@ -78,14 +78,10 @@ function applyFilter() {
         show = (card.dataset.datetime || "").trim().split(" ")[0] === today;
         break;
       case "missing":
-        show =
-          card.dataset.locked === "false" &&
-          card.dataset.hasPrediction === "false";
+        show = card.dataset.hasPrediction === "false";
         break;
       case "done":
-        show =
-          card.dataset.locked === "false" &&
-          card.dataset.hasPrediction === "true";
+        show = card.dataset.hasPrediction === "true";
         break;
       case "selecao":
         if (activeTeam)
