@@ -405,7 +405,7 @@ def test_sync_2022():
         return {"status": "error", "message": "Acesso negado"}, 403
 
     try:
-        # Buscar jogos da Copa 2022 da API
+        # Buscar jogos da Copa 2022 da API — já têm resultados reais
         url = API_FOOTBALL_BASE_URL + "/fixtures"
         headers = {
             "x-apisports-key": API_FOOTBALL_KEY,
@@ -413,7 +413,7 @@ def test_sync_2022():
         }
         params = {
             "league": WORLD_CUP_LEAGUE_ID,
-            "season": 2022  # Copa do Qatar — já tem resultados reais
+            "season": 2022
         }
         response = requests.get(url, headers=headers, params=params, timeout=30)
         response.raise_for_status()
@@ -422,37 +422,36 @@ def test_sync_2022():
         if not fixtures:
             return jsonify({"status": "error", "message": "API não devolveu jogos da Copa 2022"}), 400
 
+        # Buscar todos os jogos da DB (Copa 2026)
         conn = get_db_connection()
+        db_games = conn.execute("SELECT id FROM games ORDER BY id").fetchall()
+        db_game_ids = [g["id"] for g in db_games]
 
-        # Limpar resultados anteriores de teste
-        conn.execute("UPDATE games SET score_home = NULL, score_away = NULL, api_game_id = NULL")
-        conn.commit()
+        if not db_game_ids:
+            conn.close()
+            return jsonify({"status": "error", "message": "Nenhum jogo na base de dados"}), 400
 
         now = datetime.now()
-        inserted = 0
-        skipped = 0
 
-        # Ordenar por data original
+        # Ordenar fixtures por data
         fixtures_sorted = sorted(fixtures, key=lambda x: x.get("fixture", {}).get("date", ""))
 
         total = len(fixtures_sorted)
-        past_count = total // 2  # metade com resultado (bloqueados)
+        past_count = total // 2
+
+        inserted = 0
 
         for i, item in enumerate(fixtures_sorted):
-            fixture = item.get("fixture", {})
-            teams = item.get("teams", {})
-            goals = item.get("goals", {})
+            # Se não há mais jogos na DB, parar
+            if i >= len(db_game_ids):
+                break
 
-            home_name = teams.get("home", {}).get("name")
-            away_name = teams.get("away", {}).get("name")
+            goals = item.get("goals", {})
             score_home = goals.get("home")
             score_away = goals.get("away")
+            fixture_id = item.get("fixture", {}).get("id")
 
-            db_game = find_db_game_by_team_names(conn, home_name, away_name)
-
-            if not db_game:
-                skipped += 1
-                continue
+            db_game_id = db_game_ids[i]
 
             if i < past_count:
                 # Jogo no passado com resultado
@@ -463,7 +462,7 @@ def test_sync_2022():
                     SET game_datetime = ?, score_home = ?, score_away = ?,
                         api_game_id = ?
                     WHERE id = ?
-                """, (fake_date, score_home, score_away, str(fixture.get("id")), db_game["id"]))
+                """, (fake_date, score_home, score_away, str(fixture_id), db_game_id))
             else:
                 # Jogo no futuro sem resultado
                 days_ahead = i - past_count + 1
@@ -473,7 +472,7 @@ def test_sync_2022():
                     SET game_datetime = ?, score_home = NULL, score_away = NULL,
                         api_game_id = ?
                     WHERE id = ?
-                """, (fake_date, str(fixture.get("id")), db_game["id"]))
+                """, (fake_date, str(fixture_id), db_game_id))
 
             inserted += 1
 
@@ -485,14 +484,12 @@ def test_sync_2022():
             "message": "Jogos de teste inseridos com sucesso",
             "total_api": total,
             "inserted": inserted,
-            "skipped": skipped,
             "jogos_passados_com_resultado": past_count,
             "jogos_futuros_abertos": total - past_count
         })
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
-
 # =========================
 # SYNC INTELIGENTE
 # Só corre nos dias com jogos, a cada 15 min
