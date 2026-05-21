@@ -128,7 +128,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       {% endif %}
 
     </div>
-    {% if stage.id == 1 %} {% for group_name, group_games in stage.groups.items() %}
+    {% for group_name, group_games in stage.groups.items() %}
     <div
       class="predict-group-block"
       data-group-block="{{ group_name }}"
