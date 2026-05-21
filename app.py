@@ -1064,8 +1064,8 @@ def me():
     for row in rows_today:
         game_datetime = datetime.fromisoformat(row["game_datetime"].strip().replace('+00:00', '').replace('Z', ''))
         game_date = game_datetime.date()
-    if game_date == today:
-        today_games.append(row)
+        if game_date == today:
+            today_games.append(row)
 
     # Próximos jogos ainda sem palpite
     now = datetime.now()
@@ -1086,7 +1086,7 @@ def me():
 
     upcoming_games = []
     for row in rows_next:
-        game_datetime = datetime.fromisoformat(row["game_datetime"].strip())
+        game_datetime = datetime.fromisoformat(row["game_datetime"].strip().replace('+00:00', '').replace('Z', ''))
         if game_datetime > now and row["prediction_id"] is None:
             upcoming_games.append(row)
         if len(upcoming_games) == 5:
