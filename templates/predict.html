@@ -75,8 +75,6 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
     </div>
   </section>
 
-
-
   <!-- ABAS DAS FASES -->
   <section class="predict-tabs-wrapper">
     <div class="predict-tabs">
@@ -106,19 +104,30 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
 
     <!-- FILTROS DENTRO DA FASE -->
     <div class="predict-stage-controls">
-
       <!-- Chips de filtro -->
       <div class="predict-chips" data-stage-chips="{{ stage.id }}">
-        <button class="predict-chip active" data-filter="all">{{ _('All') }}</button>
-        <button class="predict-chip" data-filter="today">{{ _('Today') }}</button>
-        <button class="predict-chip" data-filter="missing">{{ _('Yet to predict') }}</button>
-        <button class="predict-chip" data-filter="done">{{ _('My predictions') }}</button>
+        <button class="predict-chip active" data-filter="all">
+          {{ _('All') }}
+        </button>
+        <button class="predict-chip" data-filter="today">
+          {{ _('Today') }}
+        </button>
+        <button class="predict-chip" data-filter="missing">
+          {{ _('Yet to predict') }}
+        </button>
+        <button class="predict-chip" data-filter="done">
+          {{ _('My predictions') }}
+        </button>
       </div>
 
       {% if stage.id == 1 %}
       <!-- Dropdown de grupos (só na Primeira Fase) -->
       <div class="predict-group-dropdown-wrapper">
-        <select class="predict-group-dropdown predict-filter-select" data-stage="{{ stage.id }}" id="group-dropdown-{{ stage.id }}">
+        <select
+          class="predict-group-dropdown predict-filter-select"
+          data-stage="{{ stage.id }}"
+          id="group-dropdown-{{ stage.id }}"
+        >
           <option value="all">{{ _('All groups') }}</option>
           {% for group_name in stage.groups.keys() %}
           <option value="{{ group_name }}">{{ group_name }}</option>
@@ -126,7 +135,6 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
         </select>
       </div>
       {% endif %}
-
     </div>
     {% for group_name, group_games in stage.groups.items() %}
     <div
@@ -276,7 +284,10 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                     />
                   </div>
                   <button type="submit" class="save-bet-btn">
-                    {% if game.predicted_home_score is not none and game.predicted_away_score is not none %}{{ _('Update prediction') }}{% else %}{{ _('Save prediction') }}{% endif %}
+                    {% if game.predicted_home_score is not none and
+                    game.predicted_away_score is not none %}{{ _('Update
+                    prediction') }}{% else %}{{ _('Save prediction') }}{% endif
+                    %}
                   </button>
                 </form>
               </div>
