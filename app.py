@@ -1146,7 +1146,7 @@ def predict():
         """, (game_id,)).fetchone()
 
         raw_datetime = game["game_datetime"].strip()
-        game_datetime = datetime.fromisoformat(raw_datetime)
+        game_datetime = datetime.fromisoformat(raw_datetime.replace('+00:00', '').replace('Z', ''))
 
         now = datetime.now()
 
