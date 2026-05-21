@@ -515,22 +515,13 @@
   }
 }
 
-/* ── Filtro global ── */
-.predict-global-filter {
+/* ── Controles dentro da fase ── */
+.predict-stage-controls {
   max-width: 1200px;
   margin: 0 auto 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-}
-
-.predict-filter-label {
-  font-family: "Montserrat", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #9c7500;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  gap: 0.8rem;
 }
 
 .predict-chips {
@@ -555,13 +546,37 @@
 .predict-chip:hover { background: #fff7dc; color: #111; }
 .predict-chip.active { background: #ffc507; color: black; border-color: #ffc507; }
 
-.predict-filter-extra {
+/* Dropdown de grupos */
+.predict-group-dropdown-wrapper {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  flex-wrap: wrap;
 }
 
+.predict-group-dropdown {
+  padding: 0.6rem 2.5rem 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #eadfb7;
+  background: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23888' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  min-width: 160px;
+}
+
+.predict-group-dropdown:focus {
+  border-color: #ffc507;
+  box-shadow: 0 0 0 2px rgba(255,197,7,0.15);
+}
+
+/* Manter compatibilidade com predict-filter-select */
 .predict-filter-select {
   padding: 0.6rem 2rem 0.6rem 1rem;
   border-radius: 999px;

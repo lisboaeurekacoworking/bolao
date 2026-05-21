@@ -75,50 +75,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
     </div>
   </section>
 
-  <!-- FILTRO GLOBAL -->
-  <section class="predict-global-filter">
-    <div class="predict-filter-label">
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style="display: inline-block; vertical-align: middle; margin-right: 5px"
-      >
-        <path
-          d="M1 2h12M3 7h8M5 12h4"
-          stroke="#9c7500"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-      </svg>
-      {{ _('Filter by') }}
-    </div>
-    <div class="predict-chips">
-      <button class="predict-chip active" data-filter="all">
-        {{ _('All') }}
-      </button>
-      <button class="predict-chip" data-filter="today">{{ _('Today') }}</button>
-      <button class="predict-chip" data-filter="missing">
-        {{ _('Yet to predict') }}
-      </button>
-      <button class="predict-chip" data-filter="done">
-        {{ _('Your predictions') }}
-      </button>
-      <button class="predict-chip" data-filter="selecao">
-        {{ _('By team') }}
-      </button>
-    </div>
-    <div id="selecao-filter" class="predict-filter-extra" style="display: none">
-      <select id="selecao-select" class="predict-filter-select">
-        <option value="">{{ _('All teams') }}</option>
-        {% for team in teams_list %}
-        <option value="{{ team | lower }}">{{ team }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </section>
+
 
   <!-- ABAS DAS FASES -->
   <section class="predict-tabs-wrapper">
@@ -145,26 +102,33 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       <h2>{{ stage.name }}</h2>
     </div>
 
-    {% if stage.groups %} {% if stage.id == 1 %}
-    <div class="predict-group-filters" id="group-filters-{{ stage.id }}">
-      <button
-        class="predict-group-btn active"
-        data-group="all"
-        data-stage="{{ stage.id }}"
-      >
-        Todos
-      </button>
-      {% for group_name in stage.groups.keys() %}
-      <button
-        class="predict-group-btn"
-        data-group="{{ group_name }}"
-        data-stage="{{ stage.id }}"
-      >
-        {{ group_name }}
-      </button>
-      {% endfor %}
+    {% if stage.groups %}
+
+    <!-- FILTROS DENTRO DA FASE -->
+    <div class="predict-stage-controls">
+
+      <!-- Chips de filtro -->
+      <div class="predict-chips" data-stage-chips="{{ stage.id }}">
+        <button class="predict-chip active" data-filter="all">{{ _('All') }}</button>
+        <button class="predict-chip" data-filter="today">{{ _('Today') }}</button>
+        <button class="predict-chip" data-filter="missing">{{ _('Yet to predict') }}</button>
+        <button class="predict-chip" data-filter="done">{{ _('Your predictions') }}</button>
+      </div>
+
+      {% if stage.id == 1 %}
+      <!-- Dropdown de grupos (só na Primeira Fase) -->
+      <div class="predict-group-dropdown-wrapper">
+        <select class="predict-group-dropdown predict-filter-select" data-stage="{{ stage.id }}" id="group-dropdown-{{ stage.id }}">
+          <option value="all">{{ _('All groups') }}</option>
+          {% for group_name in stage.groups.keys() %}
+          <option value="{{ group_name }}">{{ group_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
     </div>
-    {% endif %} {% for group_name, group_games in stage.groups.items() %}
+    {% if stage.id == 1 %} {% for group_name, group_games in stage.groups.items() %}
     <div
       class="predict-group-block"
       data-group-block="{{ group_name }}"

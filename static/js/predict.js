@@ -6,8 +6,12 @@
 document.querySelectorAll(".predict-tab").forEach((tab) => {
   tab.addEventListener("click", () => {
     const target = tab.dataset.tab;
-    document.querySelectorAll(".predict-tab").forEach((t) => t.classList.remove("active"));
-    document.querySelectorAll(".predict-stage-panel").forEach((p) => p.classList.remove("active"));
+    document
+      .querySelectorAll(".predict-tab")
+      .forEach((t) => t.classList.remove("active"));
+    document
+      .querySelectorAll(".predict-stage-panel")
+      .forEach((p) => p.classList.remove("active"));
     tab.classList.add("active");
     document.getElementById(`stage-${target}`).classList.add("active");
   });
@@ -18,12 +22,18 @@ document.querySelectorAll(".predict-group-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     const stageId = btn.dataset.stage;
     const group = btn.dataset.group;
-    document.querySelectorAll(`.predict-group-btn[data-stage="${stageId}"]`)
+    document
+      .querySelectorAll(`.predict-group-btn[data-stage="${stageId}"]`)
       .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-    document.querySelectorAll(`[data-stage-block="${stageId}"]`).forEach((block) => {
-      block.style.display = (group === "all" || block.dataset.groupBlock === group) ? "block" : "none";
-    });
+    document
+      .querySelectorAll(`[data-stage-block="${stageId}"]`)
+      .forEach((block) => {
+        block.style.display =
+          group === "all" || block.dataset.groupBlock === group
+            ? "block"
+            : "none";
+      });
   });
 });
 
@@ -39,7 +49,9 @@ chips.forEach((chip) => {
     chips.forEach((c) => c.classList.remove("active"));
     chip.classList.add("active");
     activeFilter = chip.dataset.filter;
-    if (selecaoFilter) selecaoFilter.style.display = activeFilter === "selecao" ? "flex" : "none";
+    if (selecaoFilter)
+      selecaoFilter.style.display =
+        activeFilter === "selecao" ? "flex" : "none";
     if (activeFilter !== "selecao") activeTeam = "";
     applyFilter();
   });
@@ -54,7 +66,7 @@ if (selecaoSelect) {
 
 function getTodayStr() {
   const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 }
 
 function applyFilter() {
@@ -66,26 +78,38 @@ function applyFilter() {
         show = (card.dataset.datetime || "").trim().split(" ")[0] === today;
         break;
       case "missing":
-        show = card.dataset.locked === "false" && card.dataset.hasPrediction === "false";
+        show =
+          card.dataset.locked === "false" &&
+          card.dataset.hasPrediction === "false";
         break;
       case "done":
-        show = card.dataset.locked === "false" && card.dataset.hasPrediction === "true";
+        show =
+          card.dataset.locked === "false" &&
+          card.dataset.hasPrediction === "true";
         break;
       case "selecao":
-        if (activeTeam) show = card.dataset.home === activeTeam || card.dataset.away === activeTeam;
+        if (activeTeam)
+          show =
+            card.dataset.home === activeTeam ||
+            card.dataset.away === activeTeam;
         break;
-      default: show = true;
+      default:
+        show = true;
     }
     card.classList.toggle("match-card--hidden", !show);
   });
 
   document.querySelectorAll(".predict-group-block").forEach((block) => {
-    const visible = block.querySelectorAll(".match-card:not(.match-card--hidden)").length;
+    const visible = block.querySelectorAll(
+      ".match-card:not(.match-card--hidden)",
+    ).length;
     block.classList.toggle("predict-group-block--hidden", visible === 0);
   });
 
   document.querySelectorAll(".predict-stage-panel").forEach((panel) => {
-    const visible = panel.querySelectorAll(".match-card:not(.match-card--hidden)").length;
+    const visible = panel.querySelectorAll(
+      ".match-card:not(.match-card--hidden)",
+    ).length;
     let msg = panel.querySelector(".predict-stage-empty");
     if (!msg) {
       msg = document.createElement("p");
@@ -113,7 +137,9 @@ document.querySelectorAll(".ajax-predict-form").forEach((form) => {
     const data = new FormData(form);
     const homeVal = data.get("home_score");
     const awayVal = data.get("away_score");
-    const predictUrl = document.querySelector("main[data-predict-url]")?.dataset.predictUrl || window.location.href;
+    const predictUrl =
+      document.querySelector("main[data-predict-url]")?.dataset.predictUrl ||
+      window.location.href;
 
     try {
       const response = await fetch(predictUrl, { method: "POST", body: data });
@@ -121,7 +147,9 @@ document.querySelectorAll(".ajax-predict-form").forEach((form) => {
         const btn = form.querySelector(".save-bet-btn");
         if (btn) btn.textContent = "Atualizar palpite";
 
-        let savedBox = form.closest(".bet-center-stack")?.querySelector(".saved-bet-box");
+        let savedBox = form
+          .closest(".bet-center-stack")
+          ?.querySelector(".saved-bet-box");
         if (!savedBox) {
           savedBox = document.createElement("div");
           savedBox.className = "saved-bet-box";
@@ -162,7 +190,10 @@ document.querySelectorAll(".match-card[data-locked='true']").forEach((card) => {
   if (scoreEl) {
     const spans = scoreEl.querySelectorAll("span");
     if (spans.length >= 2) {
-      knownResults[id] = { score_home: spans[0].textContent.trim(), score_away: spans[2]?.textContent.trim() };
+      knownResults[id] = {
+        score_home: spans[0].textContent.trim(),
+        score_away: spans[2]?.textContent.trim(),
+      };
     }
   }
 });
@@ -180,7 +211,8 @@ async function pollResults() {
       if (!card) continue;
 
       const known = knownResults[gameId];
-      const hasChanged = !known ||
+      const hasChanged =
+        !known ||
         String(known.score_home) !== String(result.score_home) ||
         String(known.score_away) !== String(result.score_away);
 
@@ -196,7 +228,8 @@ async function pollResults() {
 
       // Obter dados do palpite do próprio card para calcular acertos
       const predBox = card.querySelector(".saved-bet-score");
-      let predHome = null, predAway = null;
+      let predHome = null,
+        predAway = null;
       if (predBox) {
         const spans = predBox.querySelectorAll("span");
         predHome = parseInt(spans[0]?.textContent.trim());
@@ -208,8 +241,10 @@ async function pollResults() {
 
       // Reconstruir o conteúdo do bet-center com resultado + análise
       betCenter.innerHTML = buildLockedCardHTML(
-        predHome, predAway,
-        result.score_home, result.score_away
+        predHome,
+        predAway,
+        result.score_home,
+        result.score_away,
       );
     }
 
@@ -259,19 +294,25 @@ function buildLockedCardHTML(predHome, predAway, realHome, realAway) {
     if (predHome === realHome && predAway === realAway) {
       tags += `<span class="match-detail-tag tag-hit">✓ Placar exato</span>`;
     } else {
-      const realRes = realHome > realAway ? "home" : realHome < realAway ? "away" : "draw";
-      const predRes = predHome > predAway ? "home" : predHome < predAway ? "away" : "draw";
-      tags += realRes === predRes
-        ? `<span class="match-detail-tag tag-hit">✓ Vencedor</span>`
-        : `<span class="match-detail-tag tag-miss">✗ Vencedor</span>`;
-      tags += (predHome === realHome || predAway === realAway)
-        ? `<span class="match-detail-tag tag-hit">✓ Um lado</span>`
-        : `<span class="match-detail-tag tag-miss">✗ Placar</span>`;
+      const realRes =
+        realHome > realAway ? "home" : realHome < realAway ? "away" : "draw";
+      const predRes =
+        predHome > predAway ? "home" : predHome < predAway ? "away" : "draw";
+      tags +=
+        realRes === predRes
+          ? `<span class="match-detail-tag tag-hit">✓ Vencedor</span>`
+          : `<span class="match-detail-tag tag-miss">✗ Vencedor</span>`;
+      tags +=
+        predHome === realHome || predAway === realAway
+          ? `<span class="match-detail-tag tag-hit">✓ Um lado</span>`
+          : `<span class="match-detail-tag tag-miss">✗ Placar</span>`;
     }
     tags += `<span class="match-detail-tag tag-points">${calcPoints(predHome, predAway, realHome, realAway)} pts</span>`;
   }
 
-  const detailRow = hasPred ? `<div class="match-detail-row">${tags}</div>` : "";
+  const detailRow = hasPred
+    ? `<div class="match-detail-row">${tags}</div>`
+    : "";
 
   return `<div class="bet-center-stack">
     ${predBox}
@@ -284,8 +325,10 @@ function buildLockedCardHTML(predHome, predAway, realHome, realAway) {
 // (mesma lógica do calculate_points no app.py)
 function calcPoints(predHome, predAway, realHome, realAway) {
   if (predHome === realHome && predAway === realAway) return 10;
-  const realRes = realHome > realAway ? "home" : realHome < realAway ? "away" : "draw";
-  const predRes = predHome > predAway ? "home" : predHome < predAway ? "away" : "draw";
+  const realRes =
+    realHome > realAway ? "home" : realHome < realAway ? "away" : "draw";
+  const predRes =
+    predHome > predAway ? "home" : predHome < predAway ? "away" : "draw";
   const acertouVencedor = realRes === predRes;
   const acertouUmLado = predHome === realHome || predAway === realAway;
   if (acertouVencedor && acertouUmLado) return 7;
@@ -298,3 +341,62 @@ function calcPoints(predHome, predAway, realHome, realAway) {
 // Porquê 2 min: o sync do servidor corre a cada 5 min,
 // 2 min garante que apanhamos o resultado logo após o sync
 setInterval(pollResults, 120000);
+
+// ── Dropdown de grupos dentro da fase ──
+document.querySelectorAll(".predict-group-dropdown").forEach((dropdown) => {
+  dropdown.addEventListener("change", function () {
+    const stageId = this.dataset.stage;
+    const selectedGroup = this.value;
+    const panel = document.getElementById("stage-" + stageId);
+    if (!panel) return;
+
+    panel.querySelectorAll(".predict-group-block").forEach((block) => {
+      if (
+        selectedGroup === "all" ||
+        block.dataset.groupBlock === selectedGroup
+      ) {
+        block.classList.remove("predict-group-block--hidden");
+      } else {
+        block.classList.add("predict-group-block--hidden");
+      }
+    });
+  });
+});
+
+// ── Chips dentro da fase ──
+document.querySelectorAll(".predict-chips").forEach((chipsContainer) => {
+  chipsContainer.querySelectorAll(".predict-chip").forEach((chip) => {
+    chip.addEventListener("click", function () {
+      // Activar chip
+      chipsContainer
+        .querySelectorAll(".predict-chip")
+        .forEach((c) => c.classList.remove("active"));
+      this.classList.add("active");
+
+      const filter = this.dataset.filter;
+      const stagePanel = this.closest(".predict-stage-panel");
+      if (!stagePanel) return;
+
+      stagePanel.querySelectorAll(".match-card").forEach((card) => {
+        let show = true;
+        const isLocked = card.dataset.locked === "true";
+        const hasPrediction = card.dataset.hasPrediction === "true";
+
+        const dtStr = card.dataset.datetime;
+        const now = new Date();
+        let isToday = false;
+        if (dtStr) {
+          const gameDate = new Date(dtStr);
+          isToday = gameDate.toDateString() === now.toDateString();
+        }
+
+        if (filter === "today") show = isToday;
+        else if (filter === "missing") show = !isLocked && !hasPrediction;
+        else if (filter === "done") show = hasPrediction;
+        else show = true;
+
+        card.classList.toggle("match-card--hidden", !show);
+      });
+    });
+  });
+});
