@@ -1299,7 +1299,7 @@ def predict():
     # -------------------
     default_stages = [
     {"id": 1, "name": "Primeira Fase"},
-    {"id": 2, "name": "32 Avos"},
+    {"id": 2, "name": "Segundas De Final"},
     {"id": 3, "name": "Oitavas"},
     {"id": 4, "name": "Quartas"},
     {"id": 5, "name": "Semifinal"},

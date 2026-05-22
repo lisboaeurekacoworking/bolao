@@ -139,7 +139,7 @@ def init_db():
         conn.executescript("""
             INSERT INTO stages VALUES
             (1,'Primeira Fase'),
-            (2,'32 Avos'),
+            (2,'Segundas de Final'),
             (3,'Oitavas de Final'),
             (4,'Quartas de Final'),
             (5,'Semifinal'),
