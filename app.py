@@ -364,37 +364,6 @@ def fetch_world_cup_fixtures():
     return data.get("response", [])
 
 
-@app.route("/test-api-football")
-def test_api_football():
-    try:
-        fixtures = fetch_world_cup_fixtures()
-
-        sample = []
-        for item in fixtures[:3]:
-            sample.append({
-                "fixture_id": item.get("fixture", {}).get("id"),
-                "date": item.get("fixture", {}).get("date"),
-                "home_name": item.get("teams", {}).get("home", {}).get("name"),
-                "away_name": item.get("teams", {}).get("away", {}).get("name"),
-                "goals_home": item.get("goals", {}).get("home"),
-                "goals_away": item.get("goals", {}).get("away"),
-                "status": item.get("fixture", {}).get("status", {}).get("short")
-            })
-
-        return {
-            "status": "ok",
-            "total_fixtures": len(fixtures),
-            "sample": sample
-        }
-
-    except Exception as e:
-        return {
-            "status": "error",
-            "message": str(e)
-        }, 500
-
-
-
 
 # =========================
 # SYNC INTELIGENTE
