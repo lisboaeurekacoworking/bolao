@@ -338,61 +338,81 @@ function calcPoints(predHome, predAway, realHome, realAway) {
 // 2 min garante que apanhamos o resultado logo após o sync
 setInterval(pollResults, 120000);
 
-// ── Dropdown de grupos dentro da fase ──
-document.querySelectorAll(".predict-group-dropdown").forEach((dropdown) => {
-  dropdown.addEventListener("change", function () {
-    const stageId = this.dataset.stage;
-    const selectedGroup = this.value;
-    const panel = document.getElementById("stage-" + stageId);
-    if (!panel) return;
+// ── Filtros dentro de cada fase (chips + dropdown de grupos em conjunto) ──
+function applyStageFilter(stagePanel) {
+  const chipsContainer = stagePanel.querySelector('.predict-chips');
+  const dropdown = stagePanel.querySelector('.predict-group-dropdown');
 
-    panel.querySelectorAll(".predict-group-block").forEach((block) => {
-      if (
-        selectedGroup === "all" ||
-        block.dataset.groupBlock === selectedGroup
-      ) {
-        block.classList.remove("predict-group-block--hidden");
-      } else {
-        block.classList.add("predict-group-block--hidden");
-      }
+  const activeChip = chipsContainer ? chipsContainer.querySelector('.predict-chip.active') : null;
+  const activeFilter = activeChip ? activeChip.dataset.filter : 'all';
+  const activeGroup = dropdown ? dropdown.value : 'all';
+
+  const now = new Date();
+
+  stagePanel.querySelectorAll('.match-card').forEach(card => {
+    const isLocked = card.dataset.locked === 'true';
+    const hasPrediction = card.dataset.hasPrediction === 'true';
+
+    // Filtro de chip
+    let showByChip = true;
+    if (activeFilter === 'today') {
+      const dtStr = card.dataset.datetime || '';
+      const gameDate = new Date(dtStr);
+      showByChip = gameDate.toDateString() === now.toDateString();
+    } else if (activeFilter === 'missing') {
+      showByChip = !isLocked && !hasPrediction;
+    } else if (activeFilter === 'done') {
+      showByChip = hasPrediction;
+    }
+
+    // Filtro de grupo
+    let showByGroup = true;
+    if (activeGroup !== 'all') {
+      const groupBlock = card.closest('.predict-group-block');
+      showByGroup = groupBlock ? groupBlock.dataset.groupBlock === activeGroup : true;
+    }
+
+    card.classList.toggle('match-card--hidden', !(showByChip && showByGroup));
+  });
+
+  // Mostrar/esconder blocos de grupo
+  stagePanel.querySelectorAll('.predict-group-block').forEach(block => {
+    if (activeGroup !== 'all' && block.dataset.groupBlock !== activeGroup) {
+      block.classList.add('predict-group-block--hidden');
+      return;
+    }
+    const visible = block.querySelectorAll('.match-card:not(.match-card--hidden)').length;
+    block.classList.toggle('predict-group-block--hidden', visible === 0);
+  });
+
+  // Mensagem de vazio
+  let msg = stagePanel.querySelector('.predict-stage-empty');
+  if (!msg) {
+    msg = document.createElement('p');
+    msg.className = 'predict-no-results predict-stage-empty';
+    msg.textContent = 'Nenhum jogo encontrado com este filtro.';
+    stagePanel.appendChild(msg);
+  }
+  const totalVisible = stagePanel.querySelectorAll('.match-card:not(.match-card--hidden)').length;
+  msg.classList.toggle('visible', activeFilter !== 'all' && totalVisible === 0);
+}
+
+// Chips dentro de cada fase
+document.querySelectorAll('.predict-chips').forEach(chipsContainer => {
+  chipsContainer.querySelectorAll('.predict-chip').forEach(chip => {
+    chip.addEventListener('click', function () {
+      chipsContainer.querySelectorAll('.predict-chip').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      const stagePanel = this.closest('.predict-stage-panel');
+      if (stagePanel) applyStageFilter(stagePanel);
     });
   });
 });
 
-// ── Chips dentro da fase ──
-document.querySelectorAll(".predict-chips").forEach((chipsContainer) => {
-  chipsContainer.querySelectorAll(".predict-chip").forEach((chip) => {
-    chip.addEventListener("click", function () {
-      // Activar chip
-      chipsContainer
-        .querySelectorAll(".predict-chip")
-        .forEach((c) => c.classList.remove("active"));
-      this.classList.add("active");
-
-      const filter = this.dataset.filter;
-      const stagePanel = this.closest(".predict-stage-panel");
-      if (!stagePanel) return;
-
-      stagePanel.querySelectorAll(".match-card").forEach((card) => {
-        let show = true;
-        const isLocked = card.dataset.locked === "true";
-        const hasPrediction = card.dataset.hasPrediction === "true";
-
-        const dtStr = card.dataset.datetime;
-        const now = new Date();
-        let isToday = false;
-        if (dtStr) {
-          const gameDate = new Date(dtStr);
-          isToday = gameDate.toDateString() === now.toDateString();
-        }
-
-        if (filter === "today") show = isToday;
-        else if (filter === "missing") show = !isLocked && !hasPrediction;
-        else if (filter === "done") show = hasPrediction;
-        else show = true;
-
-        card.classList.toggle("match-card--hidden", !show);
-      });
-    });
+// Dropdown de grupos dentro de cada fase
+document.querySelectorAll('.predict-group-dropdown').forEach(dropdown => {
+  dropdown.addEventListener('change', function () {
+    const stagePanel = this.closest('.predict-stage-panel');
+    if (stagePanel) applyStageFilter(stagePanel);
   });
 });
