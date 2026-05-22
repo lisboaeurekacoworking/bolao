@@ -863,3 +863,21 @@ msgstr "Third Place"
 
 msgid "Final"
 msgstr "Final"
+
+msgid "Primeira Fase"
+msgstr "Group Stage"
+
+msgid "Segundas de Final"
+msgstr "Round of 32"
+
+msgid "Oitavas de Final"
+msgstr "Round of 16"
+
+msgid "Quartas de Final"
+msgstr "Quarter-finals"
+
+msgid "Semifinal"
+msgstr "Semi-finals"
+
+msgid "Terceiro Lugar"
+msgstr "Third Place"
