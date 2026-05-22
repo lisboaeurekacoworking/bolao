@@ -1977,6 +1977,50 @@ def privacy():
     is_logged = "user_id" in session
     return render_template("privacy.html", is_logged=is_logged)
 
+
+# =========================
+# ROTA DE RESET — APAGAR ANTES DO DEPLOY FINAL
+# Limpa todos os dados de teste e restaura datas originais
+# Aceder em: /reset-test (só admin)
+# =========================
+@app.route("/reset-test")
+def reset_test():
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    # 1. Apagar todos os palpites
+    conn.execute("DELETE FROM predictions")
+
+    # 2. Restaurar datas originais e limpar resultados de teste
+    conn.execute("""
+        UPDATE games
+        SET
+            score_home = NULL,
+            score_away = NULL,
+            api_game_id = NULL,
+            game_datetime = game_date || ' ' || game_time || ':00'
+        WHERE game_date IS NOT NULL AND game_time IS NOT NULL
+    """)
+
+    conn.commit()
+
+    # Verificar
+    total_games = conn.execute("SELECT COUNT(*) FROM games").fetchone()[0]
+    total_predictions = conn.execute("SELECT COUNT(*) FROM predictions").fetchone()[0]
+    sample = conn.execute("SELECT game_datetime FROM games LIMIT 3").fetchall()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "message": "Reset completo — bolão pronto para a Copa 2026",
+        "total_games": total_games,
+        "total_predictions": total_predictions,
+        "sample_dates": [r["game_datetime"] for r in sample]
+    })
+
 # =========================
 # LOGOUT
 # =========================
