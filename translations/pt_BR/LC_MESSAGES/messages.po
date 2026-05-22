@@ -886,3 +886,24 @@ msgstr "No prazo de 30 dias corridos após a final (até 18/08/2026). Os detalhe
 
 msgid "Yes. As long as the match has not started, you may update your prediction freely."
 msgstr "Sim. Enquanto o jogo não começou, você pode atualizar seu palpite livremente."
+
+msgid "Group Stage"
+msgstr "Primeira Fase"
+
+msgid "Round of 32"
+msgstr "Segundas de Final"
+
+msgid "Round of 16"
+msgstr "Oitavas de Final"
+
+msgid "Quarter-finals"
+msgstr "Quartas de Final"
+
+msgid "Semi-finals"
+msgstr "Semifinal"
+
+msgid "Third Place"
+msgstr "Terceiro Lugar"
+
+msgid "Final"
+msgstr "Final"

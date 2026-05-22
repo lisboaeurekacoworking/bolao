@@ -842,3 +842,24 @@ msgstr "Within 30 calendar days after the final (by 18/08/2026). Delivery arrang
 
 msgid "Yes. As long as the match has not started, you may update your prediction freely."
 msgstr "Yes. As long as the match has not started, you may update your prediction freely."
+
+msgid "Group Stage"
+msgstr "Group Stage"
+
+msgid "Round of 32"
+msgstr "Round of 32"
+
+msgid "Round of 16"
+msgstr "Round of 16"
+
+msgid "Quarter-finals"
+msgstr "Quarter-finals"
+
+msgid "Semi-finals"
+msgstr "Semi-finals"
+
+msgid "Third Place"
+msgstr "Third Place"
+
+msgid "Final"
+msgstr "Final"

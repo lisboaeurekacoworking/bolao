@@ -138,12 +138,12 @@ def init_db():
     if existing_stages == 0:
         conn.executescript("""
             INSERT INTO stages VALUES
-            (1,'Primeira Fase'),
-            (2,'Segundas de Final'),
-            (3,'Oitavas de Final'),
-            (4,'Quartas de Final'),
-            (5,'Semifinal'),
-            (6,'Terceiro Lugar'),
+            (1,'Group Stage'),
+            (2,'Round of 32'),
+            (3,'Round of 16'),
+            (4,'Quarter-finals'),
+            (5,'Semi-finals'),
+            (6,'Third Place'),
             (7,'Final');
         """)
         print("✓ Fases inseridas")

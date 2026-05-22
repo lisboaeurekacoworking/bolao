@@ -1298,12 +1298,12 @@ def predict():
     # Mesmo sem jogos, a aba aparece
     # -------------------
     default_stages = [
-    {"id": 1, "name": "Primeira Fase"},
-    {"id": 2, "name": "Segundas De Final"},
-    {"id": 3, "name": "Oitavas"},
-    {"id": 4, "name": "Quartas"},
-    {"id": 5, "name": "Semifinal"},
-    {"id": 6, "name": "Terceiro Lugar"},
+    {"id": 1, "name": "Group Stage"},
+    {"id": 2, "name": "Round of 32"},
+    {"id": 3, "name": "Round of 16"},
+    {"id": 4, "name": "Quarter-finals"},
+    {"id": 5, "name": "Semi-finals"},
+    {"id": 6, "name": "Third Place"},
     {"id": 7, "name": "Final"},
 ]
 
