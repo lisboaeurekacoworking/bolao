@@ -1979,37 +1979,6 @@ def privacy():
 
 
 # =========================
-# ROTA DE ADMIN — RENOMEAR FASE
-# Uso: /admin/rename-stage/<id>/<novo_nome>
-# Exemplo: /admin/rename-stage/2/Segundas de Final
-# Só admin pode aceder
-# =========================
-@app.route("/admin/rename-stage/<int:stage_id>/<string:novo_nome>")
-def rename_stage(stage_id, novo_nome):
-    conn = get_db_connection()
-    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
-    if not user or user["is_admin"] != 1:
-        conn.close()
-        return jsonify({"status": "error", "message": "Acesso negado"}), 403
-
-    stage = conn.execute("SELECT id, name FROM stages WHERE id = ?", (stage_id,)).fetchone()
-    if not stage:
-        conn.close()
-        return jsonify({"status": "error", "message": f"Fase {stage_id} não encontrada"}), 404
-
-    nome_antigo = stage["name"]
-    conn.execute("UPDATE stages SET name = ? WHERE id = ?", (novo_nome, stage_id))
-    conn.commit()
-    conn.close()
-
-    return jsonify({
-        "status": "ok",
-        "message": f"Fase {stage_id} renomeada com sucesso",
-        "nome_antigo": nome_antigo,
-        "nome_novo": novo_nome
-    })
-
-# =========================
 # LOGOUT
 # =========================
 @app.route("/logout")
