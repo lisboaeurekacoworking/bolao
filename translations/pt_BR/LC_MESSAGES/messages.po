@@ -907,3 +907,21 @@ msgstr "Terceiro Lugar"
 
 msgid "Final"
 msgstr "Final"
+
+msgid "Primeira Fase"
+msgstr "Primeira Fase"
+
+msgid "Segundas de Final"
+msgstr "Segundas de Final"
+
+msgid "Oitavas de Final"
+msgstr "Oitavas de Final"
+
+msgid "Quartas de Final"
+msgstr "Quartas de Final"
+
+msgid "Semifinal"
+msgstr "Semifinal"
+
+msgid "Terceiro Lugar"
+msgstr "Terceiro Lugar"
