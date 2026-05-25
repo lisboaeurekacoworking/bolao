@@ -73,6 +73,14 @@ def get_locale():
 
 babel.init_app(app, locale_selector=get_locale)
 
+# Garante que {% trans %} usa o mesmo locale que _()
+from flask_babel import get_translations
+app.jinja_env.install_gettext_callables(
+    lambda x: get_translations().ugettext(x),
+    lambda s, p, n: get_translations().ungettext(s, p, n),
+    newstyle=True
+)
+
 
 
 
@@ -436,179 +444,11 @@ def fetch_world_cup_fixtures():
     return data.get("response", [])
 
 
-@app.route("/test-api-football")
-def test_api_football():
-    try:
-        fixtures = fetch_world_cup_fixtures()
-
-        sample = []
-        for item in fixtures[:3]:
-            sample.append({
-                "fixture_id": item.get("fixture", {}).get("id"),
-                "date": item.get("fixture", {}).get("date"),
-                "home_name": item.get("teams", {}).get("home", {}).get("name"),
-                "away_name": item.get("teams", {}).get("away", {}).get("name"),
-                "goals_home": item.get("goals", {}).get("home"),
-                "goals_away": item.get("goals", {}).get("away"),
-                "status": item.get("fixture", {}).get("status", {}).get("short")
-            })
-
-        return {
-            "status": "ok",
-            "total_fixtures": len(fixtures),
-            "sample": sample
-        }
-
-    except Exception as e:
-        return {
-            "status": "error",
-            "message": str(e)
-        }, 500
 
 
-# =========================
-# ROTA DE TESTE — APAGAR ANTES DO DEPLOY FINAL
-# Busca jogos reais da Copa 2022 via API e insere
-# com datas no futuro para testar palpites
-# Aceder em: /test-sync-2022 (só admin)
-# =========================
-@app.route("/test-sync-2022")
-def test_sync_2022():
-    if not session.get("user_id"):
-        return {"status": "error", "message": "Acesso negado"}, 403
 
-    try:
-        # Buscar jogos da Copa 2022 da API — já têm resultados reais
-        url = API_FOOTBALL_BASE_URL + "/fixtures"
-        headers = {
-            "x-apisports-key": API_FOOTBALL_KEY,
-            "Accept": "application/json"
-        }
-        params = {
-            "league": WORLD_CUP_LEAGUE_ID,
-            "season": 2022
-        }
-        response = requests.get(url, headers=headers, params=params, timeout=30)
-        response.raise_for_status()
-        fixtures = response.json().get("response", [])
 
-        if not fixtures:
-            return jsonify({"status": "error", "message": "API não devolveu jogos da Copa 2022"}), 400
 
-        # Buscar todos os jogos da DB (Copa 2026)
-        conn = get_db_connection()
-        db_games = conn.execute("SELECT id FROM games ORDER BY id").fetchall()
-        db_game_ids = [g["id"] for g in db_games]
-
-        if not db_game_ids:
-            conn.close()
-            return jsonify({"status": "error", "message": "Nenhum jogo na base de dados"}), 400
-
-        now = datetime.now()
-
-        # Ordenar fixtures por data
-        fixtures_sorted = sorted(fixtures, key=lambda x: x.get("fixture", {}).get("date", ""))
-
-        total = len(fixtures_sorted)
-        past_count = total // 2
-
-        inserted = 0
-
-        for i, item in enumerate(fixtures_sorted):
-            # Se não há mais jogos na DB, parar
-            if i >= len(db_game_ids):
-                break
-
-            goals = item.get("goals", {})
-            score_home = goals.get("home")
-            score_away = goals.get("away")
-            fixture_id = item.get("fixture", {}).get("id")
-
-            db_game_id = db_game_ids[i]
-
-            if i < past_count:
-                # Jogo no passado com resultado
-                days_ago = past_count - i
-                fake_date = (now - timedelta(days=days_ago)).strftime("%Y-%m-%dT%H:%M:%S+00:00")
-                conn.execute("""
-                    UPDATE games
-                    SET game_datetime = ?, score_home = ?, score_away = ?,
-                        api_game_id = ?
-                    WHERE id = ?
-                """, (fake_date, score_home, score_away, str(fixture_id), db_game_id))
-            else:
-                # Jogo no futuro sem resultado
-                days_ahead = i - past_count + 1
-                fake_date = (now + timedelta(days=days_ahead, hours=20)).strftime("%Y-%m-%dT%H:%M:%S+00:00")
-                conn.execute("""
-                    UPDATE games
-                    SET game_datetime = ?, score_home = NULL, score_away = NULL,
-                        api_game_id = ?
-                    WHERE id = ?
-                """, (fake_date, str(fixture_id), db_game_id))
-
-            inserted += 1
-
-        conn.commit()
-        conn.close()
-
-        return jsonify({
-            "status": "ok",
-            "message": "Jogos de teste inseridos com sucesso",
-            "total_api": total,
-            "inserted": inserted,
-            "jogos_passados_com_resultado": past_count,
-            "jogos_futuros_abertos": total - past_count
-        })
-
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
-# =========================
-# SYNC INTELIGENTE
-# Só corre nos dias com jogos, a cada 15 min
-# Máximo: 96 requests/dia (limite free: 100/dia)
-# =========================
-
-def has_games_today():
-    """Verifica se há jogos hoje na base de dados."""
-    conn = get_db_connection()
-    today = datetime.now().date().isoformat()
-    row = conn.execute("""
-        SELECT COUNT(*) as total
-        FROM games
-        WHERE game_datetime LIKE ?
-    """, (today + "%",)).fetchone()
-    conn.close()
-    return row["total"] > 0
-
-def smart_sync():
-    """
-    Só sincroniza se houver jogos hoje.
-    Evita gastar requests da API em dias sem jogos.
-    """
-    if not has_games_today():
-        print(f"[sync] Sem jogos hoje ({datetime.now().date()}) — sync ignorado")
-        return
-
-    print(f"[sync] Jogos hoje — a sincronizar às {datetime.now().strftime('%H:%M')}")
-    try:
-        result = sync_games_from_api()
-        print(f"[sync] OK — {result['updated_games']} jogos actualizados, {result['skipped_games']} ignorados")
-    except Exception as e:
-        print(f"[sync] ERRO — {e}")
-
-# Scheduler: corre a cada 15 minutos
-# 15 min × 24h × 60 min = máx 96 requests num dia com jogos o dia todo
-scheduler = BackgroundScheduler(timezone="UTC")
-scheduler.add_job(
-    func=smart_sync,
-    trigger="interval",
-    minutes=15,
-    id="smart_sync_job",
-    replace_existing=True
-)
-scheduler.start()
-atexit.register(lambda: scheduler.shutdown(wait=False))
 
 # =========================
 # REGRAS DE PONTUAÇÃO
@@ -654,6 +494,47 @@ def calculate_points(real_home, real_away, pred_home, pred_away):
 
     return 0
 
+
+# =========================
+# SYNC INTELIGENTE
+# Só corre nos dias com jogos, a cada 15 min
+# =========================
+def has_games_today():
+    conn = get_db_connection()
+    today = datetime.utcnow().date().isoformat()
+    row = conn.execute("""
+        SELECT COUNT(*) as total
+        FROM games
+        WHERE game_datetime LIKE ?
+    """, (today + "%",)).fetchone()
+    conn.close()
+    return row["total"] > 0
+
+def smart_sync():
+    if not has_games_today():
+        print(f"[sync] Sem jogos hoje ({datetime.utcnow().date()}) — sync ignorado")
+        return
+
+    print(f"[sync] Jogos hoje — a sincronizar às {datetime.now().strftime('%H:%M')}")
+    try:
+        result = sync_games_from_api()
+        print(f"[sync] OK — {result['updated_games']} jogos actualizados, {result['skipped_games']} ignorados")
+    except Exception as e:
+        print(f"[sync] ERRO — {e}")
+
+
+# Scheduler: corre a cada 15 minutos
+scheduler = BackgroundScheduler(timezone="UTC")
+scheduler.add_job(
+    func=smart_sync,
+    trigger="interval",
+    minutes=15,
+    id="smart_sync_job",
+    replace_existing=True
+)
+scheduler.start()
+import atexit
+atexit.register(lambda: scheduler.shutdown(wait=False))
 
 # =========================
 # DADOS DO RANKING
@@ -1141,7 +1022,7 @@ def me():
             today_games.append(row)
 
     # Próximos jogos ainda sem palpite
-    now = datetime.now()
+    now = datetime.utcnow()
     rows_next = conn.execute("""
         SELECT
             g.id,
@@ -1221,7 +1102,7 @@ def predict():
         raw_datetime = game["game_datetime"].strip()
         game_datetime = datetime.fromisoformat(raw_datetime.replace('+00:00', '').replace('Z', ''))
 
-        now = datetime.now()
+        now = datetime.utcnow()
 
         if now >= game_datetime:
             conn.close()
@@ -1283,7 +1164,7 @@ def predict():
         ORDER BY g.stage_id, g.game_datetime
     """, (user_id,)).fetchall()
 
-    now = datetime.now()
+    now = datetime.utcnow()
     stages_map = {}
 
     total_points = 0
@@ -2050,6 +1931,75 @@ def privacy():
     return render_template("privacy.html", is_logged=is_logged)
 
 
+
+# =========================
+# RESET PASSWORD COM TOKEN
+# =========================
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    error = None
+
+    try:
+        email = serializer.loads(
+            token,
+            salt="reset-password",
+            max_age=3600
+        )
+    except:
+        return "Link inválido ou expirado."
+
+    if request.method == "POST":
+        password = request.form["password"]
+        confirm = request.form["confirm"]
+
+        if password != confirm:
+            error = "As senhas não coincidem."
+            return render_template("reset_password.html", error=error)
+
+        password_hash = generate_password_hash(password)
+
+        conn = get_db_connection()
+        conn.execute("""
+            UPDATE users
+            SET password_hash = ?
+            WHERE email = ?
+        """, (password_hash, email))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for("login", reset="ok"))
+
+    return render_template("reset_password.html", error=error)
+
+
+# =========================
+# ROTA DE ADMIN — RENOMEAR FASE
+# =========================
+@app.route("/admin/rename-stage/<int:stage_id>/<string:novo_nome>")
+def rename_stage(stage_id, novo_nome):
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    stage = conn.execute("SELECT id, name FROM stages WHERE id = ?", (stage_id,)).fetchone()
+    if not stage:
+        conn.close()
+        return jsonify({"status": "error", "message": f"Fase {stage_id} não encontrada"}), 404
+
+    nome_antigo = stage["name"]
+    conn.execute("UPDATE stages SET name = ? WHERE id = ?", (novo_nome, stage_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "message": f"Fase {stage_id} renomeada com sucesso",
+        "nome_antigo": nome_antigo,
+        "nome_novo": novo_nome
+    })
+
 # =========================
 # LOGOUT
 # =========================
@@ -2122,4 +2072,4 @@ def bootstrap_admin():
 # RODA A APLICAÇÃO
 # =========================
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=False, port=5001)
