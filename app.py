@@ -517,6 +517,34 @@ def has_games_today():
     conn.close()
     return row["total"] > 0
 
+
+def smart_sync():
+    """Só sincroniza se houver jogos hoje ou durante a Copa 2026."""
+    if not has_games_today():
+        print(f"[sync] Sem jogos hoje ({datetime.utcnow().date()}) — sync ignorado")
+        return
+
+    print(f"[sync] Jogos hoje — a sincronizar às {datetime.now().strftime('%H:%M')}")
+    try:
+        result = sync_games_from_api()
+        print(f"[sync] OK — {result['updated_games']} jogos actualizados, {result['skipped_games']} ignorados")
+    except Exception as e:
+        print(f"[sync] ERRO — {e}")
+
+
+# Scheduler: corre a cada 15 minutos
+scheduler = BackgroundScheduler(timezone="UTC")
+scheduler.add_job(
+    func=smart_sync,
+    trigger="interval",
+    minutes=15,
+    id="smart_sync_job",
+    replace_existing=True
+)
+scheduler.start()
+import atexit
+atexit.register(lambda: scheduler.shutdown(wait=False))
+
 # =========================
 # DADOS DO RANKING
 # =========================
@@ -1910,47 +1938,6 @@ def resend_verification():
 def privacy():
     is_logged = "user_id" in session
     return render_template("privacy.html", is_logged=is_logged)
-
-
-
-# =========================
-# RESET PASSWORD COM TOKEN
-# =========================
-@app.route("/reset-password/<token>", methods=["GET", "POST"])
-def reset_password(token):
-    error = None
-
-    try:
-        email = serializer.loads(
-            token,
-            salt="reset-password",
-            max_age=3600
-        )
-    except:
-        return "Link inválido ou expirado."
-
-    if request.method == "POST":
-        password = request.form["password"]
-        confirm = request.form["confirm"]
-
-        if password != confirm:
-            error = "As senhas não coincidem."
-            return render_template("reset_password.html", error=error)
-
-        password_hash = generate_password_hash(password)
-
-        conn = get_db_connection()
-        conn.execute("""
-            UPDATE users
-            SET password_hash = ?
-            WHERE email = ?
-        """, (password_hash, email))
-        conn.commit()
-        conn.close()
-
-        return redirect(url_for("login", reset="ok"))
-
-    return render_template("reset_password.html", error=error)
 
 
 # =========================
