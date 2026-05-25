@@ -144,13 +144,27 @@ def sync_games_from_api():
 
     matched_games = 0
     updated_games = 0
+    inserted_games = 0
     skipped_games = 0
     skipped_details = []
+
+    # Mapeamento de stage da API para stage_id na DB
+    # A API usa nomes em inglês para as rondas
+    STAGE_NAME_MAP = {
+        "Group Stage": 1,
+        "2nd Round": 2,
+        "Round of 16": 3,
+        "Quarter-finals": 4,
+        "Semi-finals": 5,
+        "3rd Place Final": 6,
+        "Final": 7,
+    }
 
     for item in fixtures:
         fixture = item.get("fixture", {})
         teams = item.get("teams", {})
         goals = item.get("goals", {})
+        league = item.get("league", {})
 
         fixture_id = fixture.get("id")
         fixture_date = fixture.get("date")
@@ -160,6 +174,9 @@ def sync_games_from_api():
 
         score_home = goals.get("home")
         score_away = goals.get("away")
+
+        # Nome da ronda na API
+        round_name = league.get("round", "")
 
         if not fixture_id or not home_name or not away_name:
             skipped_games += 1
@@ -184,36 +201,90 @@ def sync_games_from_api():
         if not db_game:
             db_game = find_db_game_by_team_names(conn, home_name, away_name)
 
-        # se não achou, registra como skipped
-        if not db_game:
+        # se encontrou — actualizar
+        if db_game:
+            matched_games += 1
+            conn.execute("""
+                UPDATE games
+                SET
+                    api_game_id = ?,
+                    game_datetime = ?,
+                    score_home = ?,
+                    score_away = ?
+                WHERE id = ?
+            """, (
+                api_game_id,
+                fixture_date,
+                score_home,
+                score_away,
+                db_game["id"]
+            ))
+            updated_games += 1
+            continue
+
+        # Não encontrou — tentar inserir (fases eliminatórias)
+        # Determinar stage_id a partir do nome da ronda
+        stage_id = None
+        for stage_key, sid in STAGE_NAME_MAP.items():
+            if stage_key.lower() in round_name.lower():
+                stage_id = sid
+                break
+
+        if not stage_id:
             skipped_games += 1
             skipped_details.append({
-                "reason": "not_found_in_db",
+                "reason": "unknown_stage",
                 "fixture_id": fixture_id,
+                "round_name": round_name,
                 "home_name": home_name,
                 "away_name": away_name
             })
             continue
 
-        matched_games += 1
+        # Encontrar os ids das equipas na DB
+        home_name_pt = TEAM_NAME_MAP.get(home_name, home_name)
+        away_name_pt = TEAM_NAME_MAP.get(away_name, away_name)
 
+        home_team = conn.execute(
+            "SELECT id FROM teams WHERE name = ?", (home_name_pt,)
+        ).fetchone()
+        away_team = conn.execute(
+            "SELECT id FROM teams WHERE name = ?", (away_name_pt,)
+        ).fetchone()
+
+        if not home_team or not away_team:
+            skipped_games += 1
+            skipped_details.append({
+                "reason": "team_not_found",
+                "fixture_id": fixture_id,
+                "home_name": home_name,
+                "away_name": away_name,
+                "home_name_pt": home_name_pt,
+                "away_name_pt": away_name_pt
+            })
+            continue
+
+        # Inserir novo jogo
         conn.execute("""
-            UPDATE games
-            SET
-                api_game_id = ?,
-                game_datetime = ?,
-                score_home = ?,
-                score_away = ?
-            WHERE id = ?
+            INSERT INTO games (
+                api_game_id,
+                team_home_id,
+                team_away_id,
+                stage_id,
+                game_datetime,
+                score_home,
+                score_away
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
         """, (
             api_game_id,
+            home_team["id"],
+            away_team["id"],
+            stage_id,
             fixture_date,
             score_home,
-            score_away,
-            db_game["id"]
+            score_away
         ))
-
-        updated_games += 1
+        inserted_games += 1
 
     conn.commit()
     conn.close()
@@ -221,6 +292,7 @@ def sync_games_from_api():
     return {
         "matched_games": matched_games,
         "updated_games": updated_games,
+        "inserted_games": inserted_games,
         "skipped_games": skipped_games,
         "skipped_details": skipped_details[:20]
     }
