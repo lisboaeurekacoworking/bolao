@@ -925,3 +925,6 @@ msgstr "Semifinal"
 
 msgid "Terceiro Lugar"
 msgstr "Terceiro Lugar"
+
+msgid "TBC"
+msgstr "A confirmar"

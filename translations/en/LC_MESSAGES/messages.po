@@ -881,3 +881,6 @@ msgstr "Semi-finals"
 
 msgid "Terceiro Lugar"
 msgstr "Third Place"
+
+msgid "TBC"
+msgstr "TBC"
