@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, g
 from init_db import init_db
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 import zoneinfo
 from collections import defaultdict
 from functools import wraps
@@ -14,7 +14,6 @@ load_dotenv()
 from flask_babel import Babel, gettext as _
 from mailer import send_email
 from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.cron import CronTrigger
 import atexit
 
 app = Flask(__name__)
@@ -500,41 +499,23 @@ def calculate_points(real_home, real_away, pred_home, pred_away):
 # Só corre nos dias com jogos, a cada 15 min
 # =========================
 def has_games_today():
+    """Sincroniza sempre durante a Copa 2026, caso contrário só se houver jogos hoje."""
+    from datetime import date
+    today = datetime.utcnow().date()
+    copa_start = date(2026, 6, 11)
+    copa_end = date(2026, 7, 19)
+
+    if copa_start <= today <= copa_end:
+        return True
+
     conn = get_db_connection()
-    today = datetime.utcnow().date().isoformat()
     row = conn.execute("""
         SELECT COUNT(*) as total
         FROM games
         WHERE game_datetime LIKE ?
-    """, (today + "%",)).fetchone()
+    """, (today.isoformat() + "%",)).fetchone()
     conn.close()
     return row["total"] > 0
-
-def smart_sync():
-    if not has_games_today():
-        print(f"[sync] Sem jogos hoje ({datetime.utcnow().date()}) — sync ignorado")
-        return
-
-    print(f"[sync] Jogos hoje — a sincronizar às {datetime.now().strftime('%H:%M')}")
-    try:
-        result = sync_games_from_api()
-        print(f"[sync] OK — {result['updated_games']} jogos actualizados, {result['skipped_games']} ignorados")
-    except Exception as e:
-        print(f"[sync] ERRO — {e}")
-
-
-# Scheduler: corre a cada 15 minutos
-scheduler = BackgroundScheduler(timezone="UTC")
-scheduler.add_job(
-    func=smart_sync,
-    trigger="interval",
-    minutes=15,
-    id="smart_sync_job",
-    replace_existing=True
-)
-scheduler.start()
-import atexit
-atexit.register(lambda: scheduler.shutdown(wait=False))
 
 # =========================
 # DADOS DO RANKING
