@@ -476,7 +476,13 @@ def admin_games_audit():
 
     from collections import defaultdict
     buckets = defaultdict(list)
+    skipped_undefined = 0
     for r in rows:
+        # Jogos das eliminatórias podem ter teams NULL (ainda não definidos).
+        # Sem times, não dá pra detectar duplicata por par.
+        if r["team_home_id"] is None or r["team_away_id"] is None:
+            skipped_undefined += 1
+            continue
         a = min(r["team_home_id"], r["team_away_id"])
         b = max(r["team_home_id"], r["team_away_id"])
         buckets[(r["stage_id"], a, b)].append(dict(r))
@@ -497,6 +503,7 @@ def admin_games_audit():
 
     return jsonify({
         "total_games": len(rows),
+        "skipped_undefined_teams": skipped_undefined,
         "duplicate_pairs": len(duplicates),
         "duplicates": duplicates,
     })
@@ -525,6 +532,8 @@ def admin_games_dedupe():
     from collections import defaultdict
     buckets = defaultdict(list)
     for r in rows:
+        if r["team_home_id"] is None or r["team_away_id"] is None:
+            continue
         a = min(r["team_home_id"], r["team_away_id"])
         b = max(r["team_home_id"], r["team_away_id"])
         buckets[(r["stage_id"], a, b)].append(dict(r))
