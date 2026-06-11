@@ -118,6 +118,13 @@ def get_db_connection():
     return conn
 
 
+# timezone preferido por país — BR vê em horário de São Paulo, resto em Lisboa
+def user_timezone(country_code):
+    if country_code == "BR":
+        return zoneinfo.ZoneInfo("America/Sao_Paulo")
+    return zoneinfo.ZoneInfo("Europe/Lisbon")
+
+
 # achar jogo por nome do time
 def find_db_game_by_team_names(conn, home_name, away_name):
     """Procura jogo na DB pelos nomes dos times, em qualquer ordem.
@@ -1280,6 +1287,9 @@ def predict():
     # -------------------
     # GET: listar jogos e palpites
     # -------------------
+    user_row = conn.execute("SELECT country_code FROM users WHERE id = ?", (user_id,)).fetchone()
+    display_tz = user_timezone(user_row["country_code"] if user_row else None)
+
     rows = conn.execute("""
         SELECT
             g.id,
@@ -1342,14 +1352,13 @@ def predict():
         game_datetime = datetime.fromisoformat(raw_datetime.replace('+00:00', '').replace('Z', ''))
         is_locked = now >= game_datetime
 
-        # Formatar data para exibição em hora de Lisboa
+        # Formatar data no fuso preferido do usuário (BR ou PT)
         try:
             dt_str_clean = raw_datetime.replace('T', ' ').replace('+00:00', '').replace('Z', '')
             dt_utc = datetime.fromisoformat(dt_str_clean)
-            lisbon_tz = zoneinfo.ZoneInfo("Europe/Lisbon")
             dt_utc = dt_utc.replace(tzinfo=timezone.utc)
-            dt_lisbon = dt_utc.astimezone(lisbon_tz)
-            game_datetime_display = dt_lisbon.strftime("%d/%m · %H:%M")
+            dt_local = dt_utc.astimezone(display_tz)
+            game_datetime_display = dt_local.strftime("%d/%m · %H:%M")
         except Exception:
             game_datetime_display = raw_datetime[:16]
 
