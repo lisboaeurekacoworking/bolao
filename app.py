@@ -445,6 +445,129 @@ def fetch_world_cup_fixtures():
 
 
 
+# =========================
+# AUDIT — lista pares (mesmo par de times no mesmo stage) duplicados
+# Aceder em: /admin/games-audit (só admin, user_id=1)
+# =========================
+@app.route("/admin/games-audit")
+def admin_games_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute("""
+        SELECT
+            g.id,
+            g.stage_id,
+            g.team_home_id,
+            g.team_away_id,
+            g.game_datetime,
+            g.score_home,
+            g.score_away,
+            th.name AS home_name,
+            ta.name AS away_name,
+            (SELECT COUNT(*) FROM predictions WHERE game_id = g.id) AS predictions
+        FROM games g
+        LEFT JOIN teams th ON g.team_home_id = th.id
+        LEFT JOIN teams ta ON g.team_away_id = ta.id
+        ORDER BY g.stage_id, g.id
+    """).fetchall()
+    conn.close()
+
+    from collections import defaultdict
+    buckets = defaultdict(list)
+    for r in rows:
+        a = min(r["team_home_id"], r["team_away_id"])
+        b = max(r["team_home_id"], r["team_away_id"])
+        buckets[(r["stage_id"], a, b)].append(dict(r))
+
+    duplicates = []
+    for key, games in buckets.items():
+        if len(games) <= 1:
+            continue
+        # Mesma ordenação que o dedupe vai aplicar: mais palpites primeiro, menor id em empate
+        ranked = sorted(games, key=lambda g: (-g["predictions"], g["id"]))
+        duplicates.append({
+            "stage_id": key[0],
+            "team_pair": f"{key[1]}x{key[2]}",
+            "would_keep": ranked[0]["id"],
+            "would_remove": [g["id"] for g in ranked[1:]],
+            "games": ranked,
+        })
+
+    return jsonify({
+        "total_games": len(rows),
+        "duplicate_pairs": len(duplicates),
+        "duplicates": duplicates,
+    })
+
+
+# =========================
+# DEDUPE — remove pares duplicados, migra palpites pro jogo mantido
+# POST em /admin/games-dedupe (só admin)
+# =========================
+@app.route("/admin/games-dedupe", methods=["POST"])
+def admin_games_dedupe():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute("""
+        SELECT
+            g.id,
+            g.stage_id,
+            g.team_home_id,
+            g.team_away_id,
+            (SELECT COUNT(*) FROM predictions WHERE game_id = g.id) AS predictions
+        FROM games g
+    """).fetchall()
+
+    from collections import defaultdict
+    buckets = defaultdict(list)
+    for r in rows:
+        a = min(r["team_home_id"], r["team_away_id"])
+        b = max(r["team_home_id"], r["team_away_id"])
+        buckets[(r["stage_id"], a, b)].append(dict(r))
+
+    report = []
+    for key, games in buckets.items():
+        if len(games) <= 1:
+            continue
+        ranked = sorted(games, key=lambda g: (-g["predictions"], g["id"]))
+        keeper = ranked[0]["id"]
+        losers = [g["id"] for g in ranked[1:]]
+
+        moved_total = 0
+        dropped_total = 0
+        for loser in losers:
+            # Migra palpites do loser pro keeper, exceto quando user já tem palpite no keeper
+            cur = conn.execute("""
+                UPDATE predictions
+                SET game_id = ?
+                WHERE game_id = ?
+                  AND user_id NOT IN (SELECT user_id FROM predictions WHERE game_id = ?)
+            """, (keeper, loser, keeper))
+            moved_total += cur.rowcount
+
+            # Apaga os palpites duplicados restantes (user já tinha no keeper)
+            cur = conn.execute("DELETE FROM predictions WHERE game_id = ?", (loser,))
+            dropped_total += cur.rowcount
+
+            # Remove o jogo duplicado
+            conn.execute("DELETE FROM games WHERE id = ?", (loser,))
+
+        report.append({
+            "stage_id": key[0],
+            "team_pair": f"{key[1]}x{key[2]}",
+            "kept": keeper,
+            "removed": losers,
+            "predictions_moved": moved_total,
+            "predictions_dropped": dropped_total,
+        })
+
+    conn.commit()
+    conn.close()
+    return jsonify({"action": "applied", "pairs_dedup": len(report), "report": report})
 
 
 
