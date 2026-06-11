@@ -120,6 +120,12 @@ def get_db_connection():
 
 # achar jogo por nome do time
 def find_db_game_by_team_names(conn, home_name, away_name):
+    """Procura jogo na DB pelos nomes dos times, em qualquer ordem.
+
+    Retorna (row, swapped) onde swapped=True se a DB tem os times
+    invertidos em relação à API. O caller deve usar swapped para
+    flipar score_home/score_away antes de gravar.
+    """
     rows = conn.execute("""
         SELECT
             g.id,
@@ -139,9 +145,11 @@ def find_db_game_by_team_names(conn, home_name, away_name):
         db_away = normalize_team_name(row["away_name"])
 
         if db_home == api_home and db_away == api_away:
-            return row
+            return row, False
+        if db_home == api_away and db_away == api_home:
+            return row, True
 
-    return None
+    return None, False
 
 # funcão principal de sincronização
 
@@ -203,14 +211,17 @@ def sync_games_from_api():
             FROM games
             WHERE api_game_id = ?
         """, (api_game_id,)).fetchone()
+        swapped = False
 
-        # se não achou, tenta achar por nome dos times
+        # se não achou, tenta achar por nome dos times (unordered)
         if not db_game:
-            db_game = find_db_game_by_team_names(conn, home_name, away_name)
+            db_game, swapped = find_db_game_by_team_names(conn, home_name, away_name)
 
-        # se encontrou — actualizar
+        # se encontrou — actualizar (flipar scores se o seed tem times em ordem oposta)
         if db_game:
             matched_games += 1
+            stored_home = score_away if swapped else score_home
+            stored_away = score_home if swapped else score_away
             conn.execute("""
                 UPDATE games
                 SET
@@ -222,8 +233,8 @@ def sync_games_from_api():
             """, (
                 api_game_id,
                 fixture_date,
-                score_home,
-                score_away,
+                stored_home,
+                stored_away,
                 db_game["id"]
             ))
             updated_games += 1
