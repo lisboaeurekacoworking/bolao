@@ -207,8 +207,20 @@ def sync_games_from_api():
         home_name = teams.get("home", {}).get("name")
         away_name = teams.get("away", {}).get("name")
 
-        score_home = goals.get("home")
-        score_away = goals.get("away")
+        # O campo `goals` da API traz o placar AO VIVO durante a partida.
+        # Só consideramos resultado quando o jogo realmente terminou —
+        # senão um 0x0 de jogo em andamento marcaria o jogo como encerrado
+        # e ainda pontuaria no ranking antes da hora.
+        status_short = fixture.get("status", {}).get("short")
+        FINISHED_STATUSES = {"FT", "AET", "PEN"}
+        if status_short in FINISHED_STATUSES:
+            score_home = goals.get("home")
+            score_away = goals.get("away")
+        else:
+            # Jogo não finalizado (NS, 1H, HT, 2H, ET, etc.) — sem resultado.
+            # Gravar NULL também limpa placares ao vivo gravados antes.
+            score_home = None
+            score_away = None
 
         # Nome da ronda na API
         round_name = league.get("round", "")
