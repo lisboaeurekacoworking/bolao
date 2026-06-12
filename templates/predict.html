@@ -308,9 +308,15 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
 
           <div class="match-card-footer">
             {% if game.is_locked %}
+            {% if game.score_home is not none %}
             <span class="match-status locked"
               >🔒 {{ _('Match finished') }}</span
             >
+            {% else %}
+            <span class="match-status in-progress"
+              >🔒 {{ _('Match in progress') }}</span
+            >
+            {% endif %}
             <span class="match-points">{{ game.points }} pts</span>
             {% else %}
             <span class="match-status open"

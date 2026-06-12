@@ -264,6 +264,11 @@
   color: #9c7500;
 }
 
+.match-status.in-progress {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
 .match-card-locked {
   opacity: 0.95;
 }

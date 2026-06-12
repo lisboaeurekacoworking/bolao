@@ -204,6 +204,9 @@ msgstr "Gerir a sua conta e o acesso à plataforma"
 msgid "Match finished"
 msgstr "Jogo encerrado"
 
+msgid "Match in progress"
+msgstr "Jogo a decorrer"
+
 msgid "Matches"
 msgstr "Jogos"
 

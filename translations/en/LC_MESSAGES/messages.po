@@ -204,6 +204,9 @@ msgstr "Managing your account and access to the platform"
 msgid "Match finished"
 msgstr "Match finished"
 
+msgid "Match in progress"
+msgstr "Match in progress"
+
 msgid "Matches"
 msgstr "Matches"
 
