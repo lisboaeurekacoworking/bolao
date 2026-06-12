@@ -126,6 +126,9 @@ msgstr "Correct inaccurate data"
 msgid "Country"
 msgstr "Country"
 
+msgid "Please select a valid Eureka unit."
+msgstr "Please select a valid Eureka unit."
+
 msgid "Create account"
 msgstr "Create account"
 

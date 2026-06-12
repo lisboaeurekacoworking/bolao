@@ -125,6 +125,19 @@ def user_timezone(country_code):
     return zoneinfo.ZoneInfo("Europe/Lisbon")
 
 
+# país é derivado da unidade Eureka — fonte única de verdade.
+# Evita combinações incoerentes (ex.: unidade São Paulo com bandeira de Portugal).
+UNIT_COUNTRY = {
+    "lisboa": "PT",
+    "campinas": "BR",
+    "sao_paulo": "BR",
+}
+
+
+def country_from_unit(eureka_unit):
+    return UNIT_COUNTRY.get(eureka_unit)
+
+
 # achar jogo por nome do time
 def find_db_game_by_team_names(conn, home_name, away_name):
     """Procura jogo na DB pelos nomes dos times, em qualquer ordem.
@@ -597,6 +610,72 @@ def admin_games_dedupe():
     return jsonify({"action": "applied", "pairs_dedup": len(report), "report": report})
 
 
+# =========================
+# AUDIT/FIX — país incoerente com a unidade Eureka
+# GET  /admin/users-country-audit  → lista inconsistências (dry-run)
+# POST /admin/users-country-fix    → corrige country_code pela unidade
+# =========================
+@app.route("/admin/users-country-audit")
+def admin_users_country_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute(
+        "SELECT id, name, country_code, eureka_unit FROM users"
+    ).fetchall()
+    conn.close()
+
+    mismatches = []
+    for r in rows:
+        expected = country_from_unit(r["eureka_unit"])
+        if expected is not None and r["country_code"] != expected:
+            mismatches.append({
+                "id": r["id"],
+                "name": r["name"],
+                "eureka_unit": r["eureka_unit"],
+                "country_code": r["country_code"],
+                "should_be": expected,
+            })
+
+    return jsonify({
+        "total_users": len(rows),
+        "mismatches": len(mismatches),
+        "details": mismatches,
+    })
+
+
+@app.route("/admin/users-country-fix", methods=["POST"])
+def admin_users_country_fix():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute(
+        "SELECT id, name, country_code, eureka_unit FROM users"
+    ).fetchall()
+
+    fixed = []
+    for r in rows:
+        expected = country_from_unit(r["eureka_unit"])
+        if expected is not None and r["country_code"] != expected:
+            conn.execute(
+                "UPDATE users SET country_code = ? WHERE id = ?",
+                (expected, r["id"]),
+            )
+            fixed.append({
+                "id": r["id"],
+                "name": r["name"],
+                "eureka_unit": r["eureka_unit"],
+                "from": r["country_code"],
+                "to": expected,
+            })
+
+    conn.commit()
+    conn.close()
+    return jsonify({"action": "applied", "fixed": len(fixed), "report": fixed})
+
+
 
 
 # =========================
@@ -1023,8 +1102,14 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
-        country_code = request.form["country_code"]
         eureka_unit = request.form["eureka_unit"]
+
+        # País é derivado da unidade, não escolhido separadamente — assim
+        # bandeira e cidade no ranking nunca ficam incoerentes.
+        country_code = country_from_unit(eureka_unit)
+        if country_code is None:
+            register_error = _("Please select a valid Eureka unit.")
+            return render_template("register.html", register_error=register_error)
 
         if not request.form.get("rules_consent"):
             register_error = _("You must accept the Arena Eureka Rules to create an account.")
