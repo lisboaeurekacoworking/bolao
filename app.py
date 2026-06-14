@@ -9,6 +9,7 @@ from functools import wraps
 import sqlite3
 import requests
 import os
+import unicodedata
 from dotenv import load_dotenv
 load_dotenv()
 from flask_babel import Babel, gettext as _
@@ -445,24 +446,16 @@ def normalize_team_name(name):
     if not name:
         return ""
 
+    # NFC primeiro: garante que a chave do mapa case independentemente da
+    # composição unicode (ex.: 'ü' precomposto U+00FC vs 'u' + combining ◌̈).
+    name = unicodedata.normalize("NFC", name.strip())
     translated_name = TEAM_NAME_MAP.get(name, name)
 
-    return (
-        translated_name.strip()
-        .lower()
-        .replace("á", "a")
-        .replace("à", "a")
-        .replace("â", "a")
-        .replace("ã", "a")
-        .replace("é", "e")
-        .replace("ê", "e")
-        .replace("í", "i")
-        .replace("ó", "o")
-        .replace("ô", "o")
-        .replace("õ", "o")
-        .replace("ú", "u")
-        .replace("ç", "c")
-    )
+    # Remove QUALQUER diacrítico genericamente (não só os da lista antiga),
+    # então não depende de cada acento estar mapeado à mão.
+    decomposed = unicodedata.normalize("NFKD", translated_name)
+    without_accents = "".join(c for c in decomposed if not unicodedata.combining(c))
+    return without_accents.lower().strip()
 
 
 # =========================
@@ -764,6 +757,63 @@ def has_games_today():
     return row["total"] > 0
 
 
+def get_alert_email():
+    """Email que recebe alertas operacionais (jogos não sincronizados).
+
+    Ordem: ALERT_EMAIL > ADMIN_BOOTSTRAP_EMAIL > email do admin (user 1).
+    """
+    email = os.environ.get("ALERT_EMAIL") or os.environ.get("ADMIN_BOOTSTRAP_EMAIL")
+    if email:
+        return email
+    try:
+        conn = get_db_connection()
+        row = conn.execute("SELECT email FROM users WHERE id = 1").fetchone()
+        conn.close()
+        return row["email"] if row else None
+    except Exception:
+        return None
+
+
+# Assinatura do último alerta enviado — evita reenviar o mesmo a cada 15 min.
+_last_skip_alert = {"signature": None}
+
+
+def alert_skipped_games(skipped_details):
+    """Avisa o admin por email quando jogos não casaram no sync.
+
+    Só envia quando o conjunto de jogos pulados MUDA, pra não gerar
+    um email a cada execução do scheduler (15 em 15 min).
+    """
+    signature = ",".join(sorted(str(d.get("fixture_id")) for d in skipped_details))
+    if signature == _last_skip_alert["signature"]:
+        return  # mesma lista já avisada
+    _last_skip_alert["signature"] = signature
+
+    to = get_alert_email()
+    if not to:
+        print("[sync] ALERT_EMAIL não resolvido — alerta não enviado", flush=True)
+        return
+
+    linhas = "".join(
+        f"<li><b>{d.get('home_name')}</b> x <b>{d.get('away_name')}</b> "
+        f"— motivo: {d.get('reason')} "
+        f"(traduzido: {d.get('home_name_pt')} / {d.get('away_name_pt')})</li>"
+        for d in skipped_details
+    )
+    html_body = (
+        f"<p>{len(skipped_details)} jogo(s) não foram sincronizados da API "
+        f"(nome não casou com a base). O resultado não será gravado até resolver:</p>"
+        f"<ul>{linhas}</ul>"
+        f"<p>Em geral é um alias de nome faltando no <code>TEAM_NAME_MAP</code>.</p>"
+    )
+    subject = f"[Arena Eureka] {len(skipped_details)} jogo(s) não sincronizados"
+    try:
+        send_email(to, subject, html_body)
+        print(f"[sync] alerta de {len(skipped_details)} jogos pulados enviado para {to}", flush=True)
+    except Exception as e:
+        print(f"[sync] falha ao enviar alerta de jogos pulados: {e}", flush=True)
+
+
 def smart_sync():
     """Só sincroniza se houver jogos hoje ou durante a Copa 2026."""
     if not has_games_today():
@@ -774,6 +824,9 @@ def smart_sync():
     try:
         result = sync_games_from_api()
         print(f"[sync] OK — {result['updated_games']} jogos actualizados, {result['skipped_games']} ignorados")
+        skipped = result.get("skipped_details") or []
+        if skipped:
+            alert_skipped_games(skipped)
     except Exception as e:
         print(f"[sync] ERRO — {e}")
 
