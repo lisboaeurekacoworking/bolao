@@ -704,6 +704,105 @@ def admin_users_country_fix():
     return jsonify({"action": "applied", "fixed": len(fixed), "report": fixed})
 
 
+# =========================
+# AUDIT — placares invertidos (dry-run, não altera nada)
+# GET /admin/scores-audit
+# Compara o placar guardado na base com a orientação correta (calculada
+# pelos nomes vs API) e lista os jogos onde divergem.
+# =========================
+@app.route("/admin/scores-audit")
+def admin_scores_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    try:
+        fixtures = fetch_world_cup_fixtures()
+    except Exception as e:
+        return jsonify({"error": f"falha ao buscar fixtures: {e}"}), 502
+
+    conn = get_db_connection()
+    FINISHED_STATUSES = {"FT", "AET", "PEN"}
+    inverted = []
+    finished_checked = 0
+
+    for item in fixtures:
+        fixture = item.get("fixture", {})
+        teams = item.get("teams", {})
+        goals = item.get("goals", {})
+
+        if fixture.get("status", {}).get("short") not in FINISHED_STATUSES:
+            continue
+
+        home_name = teams.get("home", {}).get("name")
+        away_name = teams.get("away", {}).get("name")
+        fixture_id = fixture.get("id")
+        if not fixture_id or not home_name or not away_name:
+            continue
+
+        api_game_id = str(fixture_id)
+
+        # localizar o jogo na base (mesma lógica do sync)
+        row = conn.execute(
+            "SELECT id FROM games WHERE api_game_id = ?", (api_game_id,)
+        ).fetchone()
+        if row:
+            gid = row["id"]
+        else:
+            nm, _ = find_db_game_by_team_names(conn, home_name, away_name)
+            gid = nm["id"] if nm else None
+        if not gid:
+            continue
+
+        g = conn.execute("""
+            SELECT g.score_home, g.score_away,
+                   th.name AS home_name, ta.name AS away_name
+            FROM games g
+            LEFT JOIN teams th ON g.team_home_id = th.id
+            LEFT JOIN teams ta ON g.team_away_id = ta.id
+            WHERE g.id = ?
+        """, (gid,)).fetchone()
+        if not g:
+            continue
+
+        finished_checked += 1
+
+        # orientação correta pelos nomes
+        dh = normalize_team_name(g["home_name"])
+        da = normalize_team_name(g["away_name"])
+        ah = normalize_team_name(home_name)
+        aa = normalize_team_name(away_name)
+        if dh == aa and da == ah:
+            swapped = True
+        elif dh == ah and da == aa:
+            swapped = False
+        else:
+            continue  # nomes não resolvem — não dá pra afirmar orientação
+
+        sh = goals.get("home")
+        sa = goals.get("away")
+        correct_home = sa if swapped else sh
+        correct_away = sh if swapped else sa
+
+        cur_home = g["score_home"]
+        cur_away = g["score_away"]
+
+        # só reporta quando já há placar gravado e ele diverge do correto
+        if cur_home is not None and (cur_home, cur_away) != (correct_home, correct_away):
+            inverted.append({
+                "game_id": gid,
+                "home": g["home_name"],
+                "away": g["away_name"],
+                "stored": f"{cur_home} x {cur_away}",
+                "correct": f"{correct_home} x {correct_away}",
+                "pure_swap": (cur_home == correct_away and cur_away == correct_home),
+            })
+
+    conn.close()
+    return jsonify({
+        "finished_checked": finished_checked,
+        "inverted": len(inverted),
+        "details": inverted,
+    })
 
 
 # =========================
