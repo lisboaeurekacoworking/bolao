@@ -438,7 +438,7 @@ TEAM_NAME_MAP = {
     # A API usa o nome oficial "Türkiye" e formas longas para alguns países.
     "Türkiye": "Turquia",
     "Cape Verde Islands": "Cabo Verde",
-    "Congo DR": "Congo"
+    "Congo DR": "República Democrática do Congo"
 }
 
 def normalize_team_name(name):
