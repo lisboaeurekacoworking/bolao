@@ -126,6 +126,10 @@ msgstr "Corrigir dados incorretos"
 msgid "Country"
 msgstr "País"
 
+# Nome de seleção: no Brasil usa-se "Holanda"; em PT-europeu fica "Países Baixos".
+msgid "Países Baixos"
+msgstr "Holanda"
+
 msgid "Please select a valid Eureka unit."
 msgstr "Selecione uma unidade Eureka válida."
 

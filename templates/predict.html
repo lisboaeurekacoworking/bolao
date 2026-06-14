@@ -169,7 +169,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
               {% else %}
               <div class="team-flag-placeholder"></div>
               {% endif %}
-              <p>{{ game.home_name if game.home_name else _('TBC') }}</p>
+              <p>{{ _(game.home_name) if game.home_name else _('TBC') }}</p>
             </div>
 
             <div class="bet-center">
@@ -303,7 +303,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
               {% else %}
               <div class="team-flag-placeholder"></div>
               {% endif %}
-              <p>{{ game.away_name if game.away_name else _('TBC') }}</p>
+              <p>{{ _(game.away_name) if game.away_name else _('TBC') }}</p>
             </div>
           </div>
 
