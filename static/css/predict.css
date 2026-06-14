@@ -153,17 +153,34 @@
 
 .match-row {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  align-items: center;
+  /* Mobile: seleções lado a lado em cima, palpite ocupando a largura embaixo */
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "home away"
+    "bet  bet";
+  column-gap: 0.5rem;
+  row-gap: 1rem;
+  align-items: start;
   flex: 1;
+}
+
+.match-row > .team-side:first-child {
+  grid-area: home;
+}
+.match-row > .team-side:last-child {
+  grid-area: away;
+}
+.match-row > .bet-center {
+  grid-area: bet;
 }
 
 .team-side {
   display: flex;
+  /* Mobile: bandeira em cima, nome embaixo — coluna fina cabe lado a lado */
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
+  justify-content: flex-start;
+  gap: 0.45rem;
   text-align: center;
 }
 
@@ -499,10 +516,14 @@
 
   .match-row {
     grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: none;
+    align-items: center;
   }
 
   .team-side {
+    flex-direction: row;
     justify-content: center;
+    gap: 0.8rem;
   }
 
   .match-card-footer {
