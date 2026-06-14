@@ -705,6 +705,116 @@ def admin_users_country_fix():
 
 
 # =========================
+# AUDIT/FIX — ordem dos times (mando) divergente da API
+# GET  /admin/orientation-audit  → lista jogos com mandante invertido (dry-run)
+# POST /admin/orientation-fix    → troca times + palpites + placar juntos
+#
+# Para cada jogo onde a base tem (home,away) na ordem oposta à da API:
+#   - troca team_home_id <-> team_away_id
+#   - troca predicted_home_score <-> predicted_away_score (todos os palpites)
+#   - troca score_home <-> score_away
+# Assim o mando passa a refletir o jogo oficial SEM mudar o sentido dos
+# palpites nem a pontuação.
+# =========================
+def _orientation_mismatches(conn):
+    """Retorna lista de jogos cuja ordem (home/away) está oposta à da API."""
+    fixtures = fetch_world_cup_fixtures()
+    mismatches = []
+    for item in fixtures:
+        teams = item.get("teams", {})
+        home_name = teams.get("home", {}).get("name")
+        away_name = teams.get("away", {}).get("name")
+        fixture_id = item.get("fixture", {}).get("id")
+        if not fixture_id or not home_name or not away_name:
+            continue
+
+        row = conn.execute(
+            "SELECT id FROM games WHERE api_game_id = ?", (str(fixture_id),)
+        ).fetchone()
+        if row:
+            gid = row["id"]
+        else:
+            nm, _ = find_db_game_by_team_names(conn, home_name, away_name)
+            gid = nm["id"] if nm else None
+        if not gid:
+            continue
+
+        g = conn.execute("""
+            SELECT g.score_home, g.score_away,
+                   th.name AS home_name, ta.name AS away_name
+            FROM games g
+            LEFT JOIN teams th ON g.team_home_id = th.id
+            LEFT JOIN teams ta ON g.team_away_id = ta.id
+            WHERE g.id = ?
+        """, (gid,)).fetchone()
+        if not g:
+            continue
+
+        dh = normalize_team_name(g["home_name"])
+        da = normalize_team_name(g["away_name"])
+        ah = normalize_team_name(home_name)
+        aa = normalize_team_name(away_name)
+        # só consideramos mando invertido quando os nomes resolvem na ordem oposta
+        if dh == aa and da == ah and dh != da:
+            preds = conn.execute(
+                "SELECT COUNT(*) AS n FROM predictions WHERE game_id = ?", (gid,)
+            ).fetchone()["n"]
+            mismatches.append({
+                "game_id": gid,
+                "db_order": f"{g['home_name']} x {g['away_name']}",
+                "api_order": f"{home_name} x {away_name}",
+                "predictions": preds,
+                "has_score": g["score_home"] is not None,
+            })
+    return mismatches
+
+
+@app.route("/admin/orientation-audit")
+def admin_orientation_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+    try:
+        conn = get_db_connection()
+        mismatches = _orientation_mismatches(conn)
+        conn.close()
+    except Exception as e:
+        return jsonify({"error": f"falha: {e}"}), 502
+    return jsonify({"mismatches": len(mismatches), "details": mismatches})
+
+
+@app.route("/admin/orientation-fix", methods=["POST"])
+def admin_orientation_fix():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+    try:
+        conn = get_db_connection()
+        mismatches = _orientation_mismatches(conn)
+        for m in mismatches:
+            gid = m["game_id"]
+            # troca os times do jogo
+            conn.execute("""
+                UPDATE games
+                SET team_home_id = team_away_id,
+                    team_away_id = team_home_id,
+                    score_home = score_away,
+                    score_away = score_home
+                WHERE id = ?
+            """, (gid,))
+            # troca os palpites (mantém o sentido pro usuário)
+            conn.execute("""
+                UPDATE predictions
+                SET predicted_home_score = predicted_away_score,
+                    predicted_away_score = predicted_home_score
+                WHERE game_id = ?
+            """, (gid,))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        return jsonify({"error": f"falha: {e}"}), 502
+    return jsonify({"action": "applied", "fixed": len(mismatches), "report": mismatches})
+
+
+# =========================
 # AUDIT — placares invertidos (dry-run, não altera nada)
 # GET /admin/scores-audit
 # Compara o placar guardado na base com a orientação correta (calculada
