@@ -433,7 +433,12 @@ TEAM_NAME_MAP = {
     "Curacao": "Curaçao",
     "Haiti": "Haiti",
     "Paraguay": "Paraguai",
-    "Scotland": "Escócia"
+    "Scotland": "Escócia",
+    # Aliases extras da API-Football que divergem do nome curto.
+    # A API usa o nome oficial "Türkiye" e formas longas para alguns países.
+    "Türkiye": "Turquia",
+    "Cape Verde Islands": "Cabo Verde",
+    "Congo DR": "Congo"
 }
 
 def normalize_team_name(name):
