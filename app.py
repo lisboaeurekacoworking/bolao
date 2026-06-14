@@ -238,11 +238,13 @@ def sync_games_from_api():
 
         api_game_id = str(fixture_id)
 
-        # tenta achar pelo api_game_id
+        # tenta achar pelo api_game_id (trazendo os nomes pra calcular orientação)
         db_game = conn.execute("""
-            SELECT id, api_game_id
-            FROM games
-            WHERE api_game_id = ?
+            SELECT g.id, g.api_game_id, th.name AS home_name, ta.name AS away_name
+            FROM games g
+            LEFT JOIN teams th ON g.team_home_id = th.id
+            LEFT JOIN teams ta ON g.team_away_id = ta.id
+            WHERE g.api_game_id = ?
         """, (api_game_id,)).fetchone()
         swapped = False
 
@@ -250,9 +252,25 @@ def sync_games_from_api():
         if not db_game:
             db_game, swapped = find_db_game_by_team_names(conn, home_name, away_name)
 
-        # se encontrou — actualizar (flipar scores se o seed tem times em ordem oposta)
+        # se encontrou — actualizar (flipar scores se a base tem times em ordem oposta)
         if db_game:
             matched_games += 1
+
+            # Orientação determinada SEMPRE pelos nomes — vale tanto pro match
+            # por nome quanto por api_game_id. Antes, jogos casados por
+            # api_game_id nunca eram flipados, invertendo o placar quando a
+            # ordem da base divergia da ordem da API.
+            db_home_norm = normalize_team_name(db_game["home_name"])
+            db_away_norm = normalize_team_name(db_game["away_name"])
+            api_home_norm = normalize_team_name(home_name)
+            api_away_norm = normalize_team_name(away_name)
+            if db_home_norm == api_away_norm and db_away_norm == api_home_norm:
+                swapped = True
+            elif db_home_norm == api_home_norm and db_away_norm == api_away_norm:
+                swapped = False
+            # se nenhuma orientação bate (nomes mudaram/TBC), mantém o swapped
+            # vindo do match por nome.
+
             stored_home = score_away if swapped else score_home
             stored_away = score_home if swapped else score_away
             conn.execute("""
