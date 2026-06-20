@@ -153,6 +153,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
           data-locked="{{ 'true' if game.is_locked else 'false' }}"
           data-has-prediction="{{ 'true' if game.predicted_home_score is not none else 'false' }}"
           data-datetime="{{ game.game_datetime }}"
+          data-kickoff="{{ game.kickoff_ms }}"
         >
           <div class="match-card-top">
             <span class="match-date">{{ game.game_datetime_display }}</span>

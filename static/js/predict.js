@@ -137,6 +137,15 @@ document.querySelectorAll(".ajax-predict-form").forEach((form) => {
       document.querySelector("main[data-predict-url]")?.dataset.predictUrl ||
       window.location.href;
 
+    // Trava por horário: se o jogo já começou, nem envia — o servidor
+    // rejeitaria de qualquer forma. Evita o "palpite fantasma" na tela.
+    const cardEl = form.closest(".match-card");
+    if (cardEl && isKickoffPassed(cardEl)) {
+      lockCardByTime(cardEl);
+      showToast("⏱️ Esse jogo já começou. Palpite bloqueado.");
+      return;
+    }
+
     try {
       const response = await fetch(predictUrl, { method: "POST", body: data });
       if (response.ok) {
@@ -162,6 +171,10 @@ document.querySelectorAll(".ajax-predict-form").forEach((form) => {
         const card = form.closest(".match-card");
         if (card) card.dataset.hasPrediction = "true";
         showToast("✓ Palpite guardado!");
+      } else if (response.status === 403) {
+        // Servidor rejeitou: jogo já começou (corrida com o timer do cliente).
+        if (cardEl) lockCardByTime(cardEl);
+        showToast("⏱️ Esse jogo já começou. Palpite bloqueado.");
       } else {
         showToast("Erro ao guardar. Tenta novamente.");
       }
@@ -170,6 +183,57 @@ document.querySelectorAll(".ajax-predict-form").forEach((form) => {
     }
   });
 });
+
+// ══════════════════════════════════════════
+// TRAVA POR HORÁRIO — fecha o card no momento do apito inicial,
+// mesmo com a página aberta há muito tempo (sem depender de reload).
+// O servidor é a fonte da verdade (rejeita POST após o início); isto é UX.
+// ══════════════════════════════════════════
+function isKickoffPassed(card) {
+  const ts = parseInt(card.dataset.kickoff || "0", 10);
+  return ts > 0 && Date.now() >= ts;
+}
+
+function lockCardByTime(card) {
+  if (!card || card.dataset.locked === "true") return;
+  card.dataset.locked = "true";
+  card.classList.add("match-card-locked");
+
+  // Desabilita e esconde o formulário de palpite
+  const form = card.querySelector(".predict-form");
+  if (form) {
+    form.querySelectorAll("input, button").forEach((el) => (el.disabled = true));
+    form.style.display = "none";
+  }
+
+  // Se não houver aviso de "aguardando resultado", adiciona
+  const stack = card.querySelector(".bet-center-stack");
+  if (stack && !stack.querySelector(".awaiting-result")) {
+    const note = document.createElement("div");
+    note.className = "awaiting-result";
+    note.textContent = "Aguardando resultado";
+    stack.appendChild(note);
+  }
+
+  // Atualiza o rodapé: "Aberto para palpites" -> "Jogo em andamento"
+  const status = card.querySelector(".match-card-footer .match-status");
+  if (status) {
+    status.classList.remove("open");
+    status.classList.add("in-progress");
+    status.textContent = "🔒 Jogo em andamento";
+  }
+}
+
+function lockExpiredCards() {
+  document
+    .querySelectorAll(".match-card[data-locked='false']")
+    .forEach((card) => {
+      if (isKickoffPassed(card)) lockCardByTime(card);
+    });
+}
+
+lockExpiredCards();
+setInterval(lockExpiredCards, 30000);
 
 // ══════════════════════════════════════════
 // POLLING DE RESULTADOS — verifica a cada 2 minutos

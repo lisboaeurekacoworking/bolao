@@ -1647,7 +1647,11 @@ def predict():
 
         if now >= game_datetime:
             conn.close()
-            return "Esse jogo já começou. Palpite bloqueado."
+            # 403 (não 200) pra o front detectar a rejeição e travar o card.
+            return jsonify({
+                "error": "locked",
+                "message": "Esse jogo já começou. Palpite bloqueado."
+            }), 403
 
         conn.execute("""
             INSERT OR REPLACE INTO predictions
@@ -1733,6 +1737,9 @@ def predict():
         raw_datetime = row["game_datetime"].strip()
         game_datetime = datetime.fromisoformat(raw_datetime.replace('+00:00', '').replace('Z', ''))
         is_locked = now >= game_datetime
+        # epoch em ms (UTC) — o front usa pra travar o card no horário,
+        # sem ambiguidade de fuso (game_datetime é sempre UTC).
+        kickoff_ms = int(game_datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
         # Formatar data no fuso preferido do usuário (BR ou PT)
         try:
@@ -1754,6 +1761,7 @@ def predict():
             "away_group_name": row["away_group_name"],
             "game_datetime": row["game_datetime"],
             "game_datetime_display": game_datetime_display,
+            "kickoff_ms": kickoff_ms,
             "predicted_home_score": row["predicted_home_score"],
             "predicted_away_score": row["predicted_away_score"],
             "points": points,
