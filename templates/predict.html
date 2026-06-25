@@ -272,28 +272,6 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                   class="predict-form ajax-predict-form"
                   data-game-id="{{ game.id }}"
                 >
-                  <input type="hidden" name="game_id" value="{{ game.id }}" />
-                  <div class="score-row">
-                    <input
-                      type="number"
-                      name="home_score"
-                      min="0"
-                      value=""
-                      required
-                      class="score-input"
-                      id="home-score-{{ game.id }}"
-                    />
-                    <span class="score-separator">x</span>
-                    <input
-                      type="number"
-                      name="away_score"
-                      min="0"
-                      value=""
-                      required
-                      class="score-input"
-                      id="away-score-{{ game.id }}"
-                    />
-                  </div>
                   {% if game.stage_id > 1 %}
                   <div
                     class="penalty-picker"
@@ -336,6 +314,29 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                       value="{{ game.predicted_penalty_winner_id or '' }}"
                     />
                   </div>
+                  <input type="hidden" name="game_id" value="{{ game.id }}" />
+                  <div class="score-row">
+                    <input
+                      type="number"
+                      name="home_score"
+                      min="0"
+                      value=""
+                      required
+                      class="score-input"
+                      id="home-score-{{ game.id }}"
+                    />
+                    <span class="score-separator">x</span>
+                    <input
+                      type="number"
+                      name="away_score"
+                      min="0"
+                      value=""
+                      required
+                      class="score-input"
+                      id="away-score-{{ game.id }}"
+                    />
+                  </div>
+
                   {% endif %}
                   <button type="submit" class="save-bet-btn">
                     {% if game.predicted_home_score is not none and
