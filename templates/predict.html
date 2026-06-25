@@ -373,11 +373,15 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
             >
             {% endif %}
             <span class="match-points">{{ game.points }} pts</span>
+            {% else %} {% if game.stage_id > 1 %}
+            <span class="match-status open"
+              >{{ _('Open for predictions') }} · {{ _('90\' + ET') }}</span
+            >
             {% else %}
             <span class="match-status open"
               >{{ _('Open for predictions') }}</span
             >
-            {% endif %}
+            {% endif %} {% endif %}
           </div>
         </article>
         {% endfor %}
