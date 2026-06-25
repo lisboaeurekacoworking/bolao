@@ -480,3 +480,51 @@ document.querySelectorAll('.predict-group-dropdown').forEach(dropdown => {
     if (stagePanel) applyStageFilter(stagePanel);
   });
 });
+
+// ── Pênaltis — mostrar/esconder picker quando placar é empate ──
+function checkPenaltyPicker(gameId) {
+  const homeInput = document.getElementById('home-score-' + gameId);
+  const awayInput = document.getElementById('away-score-' + gameId);
+  const picker = document.getElementById('penalty-picker-' + gameId);
+  if (!picker) return;
+
+  const home = homeInput ? parseInt(homeInput.value) : NaN;
+  const away = awayInput ? parseInt(awayInput.value) : NaN;
+
+  if (!isNaN(home) && !isNaN(away) && home === away) {
+    picker.style.display = 'block';
+  } else {
+    picker.style.display = 'none';
+    // Limpar selecção se não for empate
+    const hiddenInput = document.getElementById('penalty-winner-' + gameId);
+    if (hiddenInput) hiddenInput.value = '';
+    picker.querySelectorAll('.penalty-btn').forEach(btn => btn.classList.remove('active'));
+  }
+}
+
+// Ouvir mudanças nos inputs de score
+document.querySelectorAll('.score-input').forEach(input => {
+  input.addEventListener('input', function () {
+    const form = this.closest('form');
+    if (!form) return;
+    const gameId = form.dataset.gameId;
+    if (gameId) checkPenaltyPicker(gameId);
+  });
+});
+
+// Clicar nos botões de pênaltis
+document.querySelectorAll('.penalty-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    const gameId = this.dataset.game;
+    const teamId = this.dataset.team;
+
+    // Activar botão
+    document.querySelectorAll('.penalty-btn[data-game="' + gameId + '"]')
+      .forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+
+    // Guardar valor no hidden input
+    const hiddenInput = document.getElementById('penalty-winner-' + gameId);
+    if (hiddenInput) hiddenInput.value = teamId;
+  });
+});
