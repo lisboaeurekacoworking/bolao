@@ -2544,6 +2544,36 @@ def admin_users():
     })
 
 # =========================
+# ROTA DE ADMIN — ACTUALIZAR EMAIL
+# Uso: /admin/update-email/<id>/<novo_email>
+# =========================
+@app.route("/admin/update-email/<int:user_id>/<string:novo_email>")
+def admin_update_email(user_id, novo_email):
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    target = conn.execute("SELECT id, name, email FROM users WHERE id = ?", (user_id,)).fetchone()
+    if not target:
+        conn.close()
+        return jsonify({"status": "error", "message": "Utilizador não encontrado"}), 404
+
+    email_antigo = target["email"]
+    conn.execute("UPDATE users SET email = ?, email_verified = 1 WHERE id = ?", (novo_email, user_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "message": "Email actualizado com sucesso",
+        "nome": target["name"],
+        "email_antigo": email_antigo,
+        "email_novo": novo_email
+    })
+
+# =========================
 # ROTA DE ADMIN — APAGAR UTILIZADOR
 # Uso: /admin/delete-user/<id>
 # APAGAR depois de usar
