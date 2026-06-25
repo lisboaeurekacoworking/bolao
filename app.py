@@ -1723,17 +1723,20 @@ def predict():
                 "message": "Esse jogo já começou. Palpite bloqueado."
             }), 403
 
+        predicted_penalty_winner_id = request.form.get("predicted_penalty_winner_id") or None
+
         conn.execute("""
-            INSERT OR REPLACE INTO predictions
-            (user_id, game_id, predicted_home_score, predicted_away_score, created_at)
-            VALUES (?, ?, ?, ?, ?)
+         INSERT OR REPLACE INTO predictions
+         (user_id, game_id, predicted_home_score, predicted_away_score, predicted_penalty_winner_id, created_at)
+          VALUES (?, ?, ?, ?, ?, ?)
         """, (
-            user_id,
-            game_id,
-            home_score,
-            away_score,
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        ))
+        user_id,
+        game_id,
+        home_score,
+        away_score,
+        predicted_penalty_winner_id,
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+))
 
         conn.commit()
         conn.close()
