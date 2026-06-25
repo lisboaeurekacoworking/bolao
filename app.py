@@ -2310,7 +2310,10 @@ def rules():
 @app.route("/sync-games")
 @login_required
 def sync_games():
-    if session.get("user_id") != 1:
+    conn_check = get_db_connection()
+    current_user = conn_check.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_check.close()
+    if not current_user or current_user["is_admin"] != 1:
         return {"status": "error", "message": "Acesso negado"}, 403
 
     try:
