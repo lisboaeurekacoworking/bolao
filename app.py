@@ -1842,6 +1842,7 @@ def predict():
             "is_locked": is_locked,
             "penalty_winner_id": row["penalty_winner_id"] if "penalty_winner_id" in row.keys() else None,
             "predicted_penalty_winner_id": row["predicted_penalty_winner_id"] if "predicted_penalty_winner_id" in row.keys() else None,
+            "stage_id": row["stage_id"],
         }
 
         stage_id = row["stage_id"]
