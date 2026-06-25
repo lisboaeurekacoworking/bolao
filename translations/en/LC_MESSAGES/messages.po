@@ -893,3 +893,12 @@ msgstr "Third Place"
 
 msgid "TBC"
 msgstr "TBC"
+
+msgid "Result (90' + ET)"
+msgstr "Result (90' + ET)"
+
+msgid "Penalties"
+msgstr "Penalties"
+
+msgid "Who wins on penalties?"
+msgstr "Who wins on penalties?"

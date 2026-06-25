@@ -938,3 +938,12 @@ msgstr "Terceiro Lugar"
 
 msgid "TBC"
 msgstr "A confirmar"
+
+msgid "Result (90' + ET)"
+msgstr "Resultado (90' + Prorrogação)"
+
+msgid "Penalties"
+msgstr "Pênaltis"
+
+msgid "Who wins on penalties?"
+msgstr "Quem passa nos pênaltis?"
