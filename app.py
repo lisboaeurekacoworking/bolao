@@ -335,26 +335,63 @@ def sync_games_from_api():
             continue
 
         # Inserir novo jogo
-        conn.execute("""
-            INSERT INTO games (
+           # Verificar se existe um placeholder (sem equipas) para este stage e data
+        fixture_date_only = fixture_date[:10] if fixture_date else None
+        placeholder = None
+        if fixture_date_only:
+            placeholder = conn.execute("""
+                SELECT id FROM games
+                WHERE stage_id = ?
+                  AND team_home_id IS NULL
+                  AND team_away_id IS NULL
+                  AND game_datetime LIKE ?
+                LIMIT 1
+            """, (stage_id, fixture_date_only + "%")).fetchone()
+
+        if placeholder:
+            # Actualizar o placeholder com as equipas e dados reais
+            conn.execute("""
+                UPDATE games
+                SET
+                    api_game_id = ?,
+                    team_home_id = ?,
+                    team_away_id = ?,
+                    game_datetime = ?,
+                    score_home = ?,
+                    score_away = ?
+                WHERE id = ?
+            """, (
                 api_game_id,
-                team_home_id,
-                team_away_id,
+                home_team["id"],
+                away_team["id"],
+                fixture_date,
+                score_home,
+                score_away,
+                placeholder["id"]
+            ))
+            updated_games += 1
+        else:
+            # Inserir novo jogo (não há placeholder)
+            conn.execute("""
+                INSERT INTO games (
+                    api_game_id,
+                    team_home_id,
+                    team_away_id,
+                    stage_id,
+                    game_datetime,
+                    score_home,
+                    score_away
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (
+                api_game_id,
+                home_team["id"],
+                away_team["id"],
                 stage_id,
-                game_datetime,
+                fixture_date,
                 score_home,
                 score_away
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            api_game_id,
-            home_team["id"],
-            away_team["id"],
-            stage_id,
-            fixture_date,
-            score_home,
-            score_away
-        ))
-        inserted_games += 1
+            ))
+            inserted_games += 1
 
     conn.commit()
     conn.close()
