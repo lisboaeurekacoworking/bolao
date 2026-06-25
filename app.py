@@ -1764,7 +1764,9 @@ def predict():
             ga.name AS away_group_name,
 
             p.predicted_home_score,
-            p.predicted_away_score
+            p.predicted_away_score,
+            g.penalty_winner_id,
+            p.predicted_penalty_winner_id
 
         FROM games g
         JOIN stages s ON g.stage_id = s.id
@@ -1838,6 +1840,8 @@ def predict():
             "score_home": real_home,
             "score_away": real_away,
             "is_locked": is_locked,
+            "penalty_winner_id": row["penalty_winner_id"] if "penalty_winner_id" in row.keys() else None,
+            "predicted_penalty_winner_id": row["predicted_penalty_winner_id"] if "predicted_penalty_winner_id" in row.keys() else None,
         }
 
         stage_id = row["stage_id"]
