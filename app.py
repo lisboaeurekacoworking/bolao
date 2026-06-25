@@ -2525,8 +2525,8 @@ def fix_groups_kl():
     # Equipas do Grupo K (id 11): Croácia(41), Inglaterra(42), Panamá(43), Gana(44)
     # Equipas do Grupo L (id 12): Portugal(45), RDCongo(46), Uzbequistão(47), Colômbia(48)
     # Estão com group_id trocado — corrigir
-    conn.execute("UPDATE teams SET group_id = 11 WHERE id IN (41, 42, 43, 44)")
-    conn.execute("UPDATE teams SET group_id = 12 WHERE id IN (45, 46, 47, 48)")
+    conn.execute("UPDATE teams SET group_id = 12 WHERE id IN (41, 42, 43, 44)")
+    conn.execute("UPDATE teams SET group_id = 11 WHERE id IN (45, 46, 47, 48)")
     conn.commit()
 
     # Verificar
