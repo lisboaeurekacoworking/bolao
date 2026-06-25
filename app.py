@@ -1968,6 +1968,29 @@ def rename_stage(stage_id, novo_nome):
         "nome_novo": novo_nome
     })
 
+# =========================
+# ROTA TEMPORÁRIA — LISTAR UTILIZADORES (APAGAR DEPOIS)
+# =========================
+@app.route("/admin/users")
+def admin_users():
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    users = conn.execute("""
+        SELECT id, name, email, email_verified, created_at
+        FROM users
+        ORDER BY created_at DESC
+    """).fetchall()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "total": len(users),
+        "users": [dict(u) for u in users]
+    })
 
 # =========================
 # LOGOUT
