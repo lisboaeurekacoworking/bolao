@@ -750,3 +750,94 @@
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+/* ── Picker de Pênaltis ── */
+.penalty-picker {
+  width: 100%;
+  max-width: 280px;
+  background: #fff7dc;
+  border: 1px solid #ffc507;
+  border-radius: 18px;
+  padding: 0.8rem 1rem;
+  text-align: center;
+}
+
+.penalty-picker-label {
+  display: block;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #9c7500;
+  margin-bottom: 0.6rem;
+}
+
+.penalty-picker-btns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.penalty-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.8rem;
+  border: 2px solid #eadfb7;
+  border-radius: 12px;
+  background: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  transition: 0.2s ease;
+  flex: 1;
+  min-width: 80px;
+  max-width: 120px;
+}
+
+.penalty-btn img {
+  width: 32px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.penalty-btn:hover {
+  background: #fff7dc;
+  border-color: #ffc507;
+  color: #111;
+}
+
+.penalty-btn.active {
+  background: #ffc507;
+  border-color: #ffc507;
+  color: black;
+  font-weight: 700;
+}
+
+/* Label de pênaltis no card de resultado */
+.penalty-label {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0f6e56;
+}
+
+@media (max-width: 400px) {
+  .penalty-btn {
+    font-size: 0.72rem;
+    padding: 0.4rem 0.5rem;
+    min-width: 60px;
+  }
+
+  .penalty-btn img {
+    width: 24px;
+    height: 16px;
+  }
+}
