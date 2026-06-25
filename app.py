@@ -194,6 +194,7 @@ def sync_games_from_api():
         "Semi-finals": 5,
         "3rd Place Final": 6,
         "Final": 7,
+        "Round of 32": 2,
     }
 
     for item in fixtures:
