@@ -2610,6 +2610,36 @@ def admin_delete_user(user_id):
     })
 
 # =========================
+# ROTA DE ADMIN — REDEFINIR SENHA
+# Uso: /admin/reset-password/<id>/<nova_senha>
+# APAGAR depois de usar
+# =========================
+@app.route("/admin/reset-password/<int:user_id>/<string:nova_senha>")
+def admin_reset_password(user_id, nova_senha):
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    target = conn.execute("SELECT id, name, email FROM users WHERE id = ?", (user_id,)).fetchone()
+    if not target:
+        conn.close()
+        return jsonify({"status": "error", "message": "Utilizador não encontrado"}), 404
+
+    from werkzeug.security import generate_password_hash
+    new_hash = generate_password_hash(nova_senha)
+    conn.execute("UPDATE users SET password_hash = ? WHERE id = ?", (new_hash, user_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "message": f"Senha de {target['name']} redefinida com sucesso",
+        "email": target["email"]
+    })
+
+# =========================
 # LOGOUT
 # =========================
 @app.route("/logout")
