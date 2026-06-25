@@ -982,7 +982,7 @@ def admin_scores_audit():
 # =========================
 # REGRAS DE PONTUAÇÃO
 # =========================
-def calculate_points(real_home, real_away, pred_home, pred_away):
+def calculate_points(real_home, real_away, pred_home, pred_away, penalty_winner_id=None, predicted_penalty_winner_id=None):
     if pred_home is None or pred_away is None:
         return 0
 
@@ -993,7 +993,13 @@ def calculate_points(real_home, real_away, pred_home, pred_away):
 
     # Placar exato
     if real_home == pred_home and real_away == pred_away:
-        return 10
+        # Jogo com pênaltis — empate acertado
+        if penalty_winner_id is not None:
+            if predicted_penalty_winner_id == penalty_winner_id:
+                return 10  # empate acertado + vencedor pênaltis acertado
+            else:
+                return 7   # empate acertado + vencedor pênaltis errado (ou não escolhido)
+        return 10  # placar exato normal
 
     # Resultado real
     if real_home > real_away:
