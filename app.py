@@ -2551,7 +2551,32 @@ def rename_stage(stage_id, novo_nome):
         "nome_novo": novo_nome
     })
 
+# =========================
+# ROTA DE ADMIN — ADICIONAR COLUNAS DE PÊNALTIS
+# Corre UMA VEZ — APAGAR depois
+# =========================
+@app.route("/admin/add-penalty-columns")
+def add_penalty_columns():
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
 
+    results = []
+    for sql in [
+        "ALTER TABLE games ADD COLUMN penalty_winner_id INTEGER",
+        "ALTER TABLE predictions ADD COLUMN predicted_penalty_winner_id INTEGER",
+    ]:
+        try:
+            conn.execute(sql)
+            results.append(f"✓ {sql}")
+        except Exception as e:
+            results.append(f"✗ {sql} — {e}")
+
+    conn.commit()
+    conn.close()
+    return jsonify({"status": "ok", "results": results})
 
 # =========================
 # LOGOUT
