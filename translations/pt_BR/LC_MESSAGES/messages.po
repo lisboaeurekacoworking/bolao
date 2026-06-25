@@ -126,6 +126,13 @@ msgstr "Corrigir dados incorretos"
 msgid "Country"
 msgstr "País"
 
+# Nome de seleção: no Brasil usa-se "Holanda"; em PT-europeu fica "Países Baixos".
+msgid "Países Baixos"
+msgstr "Holanda"
+
+msgid "Please select a valid Eureka unit."
+msgstr "Selecione uma unidade Eureka válida."
+
 msgid "Create account"
 msgstr "Criar conta"
 
@@ -203,6 +210,9 @@ msgstr "Gerenciar sua conta e o acesso à plataforma"
 
 msgid "Match finished"
 msgstr "Jogo encerrado"
+
+msgid "Match in progress"
+msgstr "Jogo em andamento"
 
 msgid "Matches"
 msgstr "Jogos"

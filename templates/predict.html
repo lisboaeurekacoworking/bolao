@@ -153,6 +153,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
           data-locked="{{ 'true' if game.is_locked else 'false' }}"
           data-has-prediction="{{ 'true' if game.predicted_home_score is not none else 'false' }}"
           data-datetime="{{ game.game_datetime }}"
+          data-kickoff="{{ game.kickoff_ms }}"
         >
           <div class="match-card-top">
             <span class="match-date">{{ game.game_datetime_display }}</span>
@@ -169,7 +170,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
               {% else %}
               <div class="team-flag-placeholder"></div>
               {% endif %}
-              <p>{{ game.home_name if game.home_name else _('TBC') }}</p>
+              <p>{{ _(game.home_name) if game.home_name else _('TBC') }}</p>
             </div>
 
             <div class="bet-center">
@@ -282,10 +283,11 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                     />
                   </div>
                   <button type="submit" class="save-bet-btn">
-                    {% if game.predicted_home_score is not none and
-                    game.predicted_away_score is not none %}{{ _('Update
-                    prediction') }}{% else %}{{ _('Save prediction') }}{% endif
-                    %}
+                    {% if game.predicted_home_score is not none and game.predicted_away_score is not none %}
+                    {{ _('Update prediction') }}
+                    {% else %}
+                    {{ _('Save prediction') }}
+                    {% endif %}
                   </button>
                 </form>
               </div>
@@ -302,15 +304,21 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
               {% else %}
               <div class="team-flag-placeholder"></div>
               {% endif %}
-              <p>{{ game.away_name if game.away_name else _('TBC') }}</p>
+              <p>{{ _(game.away_name) if game.away_name else _('TBC') }}</p>
             </div>
           </div>
 
           <div class="match-card-footer">
             {% if game.is_locked %}
+            {% if game.score_home is not none %}
             <span class="match-status locked"
               >🔒 {{ _('Match finished') }}</span
             >
+            {% else %}
+            <span class="match-status in-progress"
+              >🔒 {{ _('Match in progress') }}</span
+            >
+            {% endif %}
             <span class="match-points">{{ game.points }} pts</span>
             {% else %}
             <span class="match-status open"

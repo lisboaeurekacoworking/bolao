@@ -153,7 +153,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       {% if today_games %}
       <ul class="profile-list">
         {% for game in today_games %}
-        <li>{{ game.home_name }} x {{ game.away_name }}</li>
+        <li>{{ _(game.home_name) }} x {{ _(game.away_name) }}</li>
         {% endfor %}
       </ul>
       {% else %}
@@ -167,7 +167,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
       {% if upcoming_games %}
       <ul class="profile-list">
         {% for game in upcoming_games %}
-        <li>{{ game.home_name }} x {{ game.away_name }}</li>
+        <li>{{ _(game.home_name) }} x {{ _(game.away_name) }}</li>
         {% endfor %}
       </ul>
 

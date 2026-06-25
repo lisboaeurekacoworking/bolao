@@ -9,6 +9,7 @@ from functools import wraps
 import sqlite3
 import requests
 import os
+import unicodedata
 from dotenv import load_dotenv
 load_dotenv()
 from flask_babel import Babel, gettext as _
@@ -118,8 +119,34 @@ def get_db_connection():
     return conn
 
 
+# timezone preferido por país — BR vê em horário de São Paulo, resto em Lisboa
+def user_timezone(country_code):
+    if country_code == "BR":
+        return zoneinfo.ZoneInfo("America/Sao_Paulo")
+    return zoneinfo.ZoneInfo("Europe/Lisbon")
+
+
+# país é derivado da unidade Eureka — fonte única de verdade.
+# Evita combinações incoerentes (ex.: unidade São Paulo com bandeira de Portugal).
+UNIT_COUNTRY = {
+    "lisboa": "PT",
+    "campinas": "BR",
+    "sao_paulo": "BR",
+}
+
+
+def country_from_unit(eureka_unit):
+    return UNIT_COUNTRY.get(eureka_unit)
+
+
 # achar jogo por nome do time
 def find_db_game_by_team_names(conn, home_name, away_name):
+    """Procura jogo na DB pelos nomes dos times, em qualquer ordem.
+
+    Retorna (row, swapped) onde swapped=True se a DB tem os times
+    invertidos em relação à API. O caller deve usar swapped para
+    flipar score_home/score_away antes de gravar.
+    """
     rows = conn.execute("""
         SELECT
             g.id,
@@ -139,9 +166,11 @@ def find_db_game_by_team_names(conn, home_name, away_name):
         db_away = normalize_team_name(row["away_name"])
 
         if db_home == api_home and db_away == api_away:
-            return row
+            return row, False
+        if db_home == api_away and db_away == api_home:
+            return row, True
 
-    return None
+    return None, False
 
 # funcão principal de sincronização
 
@@ -179,8 +208,20 @@ def sync_games_from_api():
         home_name = teams.get("home", {}).get("name")
         away_name = teams.get("away", {}).get("name")
 
-        score_home = goals.get("home")
-        score_away = goals.get("away")
+        # O campo `goals` da API traz o placar AO VIVO durante a partida.
+        # Só consideramos resultado quando o jogo realmente terminou —
+        # senão um 0x0 de jogo em andamento marcaria o jogo como encerrado
+        # e ainda pontuaria no ranking antes da hora.
+        status_short = fixture.get("status", {}).get("short")
+        FINISHED_STATUSES = {"FT", "AET", "PEN"}
+        if status_short in FINISHED_STATUSES:
+            score_home = goals.get("home")
+            score_away = goals.get("away")
+        else:
+            # Jogo não finalizado (NS, 1H, HT, 2H, ET, etc.) — sem resultado.
+            # Gravar NULL também limpa placares ao vivo gravados antes.
+            score_home = None
+            score_away = None
 
         # Nome da ronda na API
         round_name = league.get("round", "")
@@ -197,20 +238,41 @@ def sync_games_from_api():
 
         api_game_id = str(fixture_id)
 
-        # tenta achar pelo api_game_id
+        # tenta achar pelo api_game_id (trazendo os nomes pra calcular orientação)
         db_game = conn.execute("""
-            SELECT id, api_game_id
-            FROM games
-            WHERE api_game_id = ?
+            SELECT g.id, g.api_game_id, th.name AS home_name, ta.name AS away_name
+            FROM games g
+            LEFT JOIN teams th ON g.team_home_id = th.id
+            LEFT JOIN teams ta ON g.team_away_id = ta.id
+            WHERE g.api_game_id = ?
         """, (api_game_id,)).fetchone()
+        swapped = False
 
-        # se não achou, tenta achar por nome dos times
+        # se não achou, tenta achar por nome dos times (unordered)
         if not db_game:
-            db_game = find_db_game_by_team_names(conn, home_name, away_name)
+            db_game, swapped = find_db_game_by_team_names(conn, home_name, away_name)
 
-        # se encontrou — actualizar
+        # se encontrou — actualizar (flipar scores se a base tem times em ordem oposta)
         if db_game:
             matched_games += 1
+
+            # Orientação determinada SEMPRE pelos nomes — vale tanto pro match
+            # por nome quanto por api_game_id. Antes, jogos casados por
+            # api_game_id nunca eram flipados, invertendo o placar quando a
+            # ordem da base divergia da ordem da API.
+            db_home_norm = normalize_team_name(db_game["home_name"])
+            db_away_norm = normalize_team_name(db_game["away_name"])
+            api_home_norm = normalize_team_name(home_name)
+            api_away_norm = normalize_team_name(away_name)
+            if db_home_norm == api_away_norm and db_away_norm == api_home_norm:
+                swapped = True
+            elif db_home_norm == api_home_norm and db_away_norm == api_away_norm:
+                swapped = False
+            # se nenhuma orientação bate (nomes mudaram/TBC), mantém o swapped
+            # vindo do match por nome.
+
+            stored_home = score_away if swapped else score_home
+            stored_away = score_home if swapped else score_away
             conn.execute("""
                 UPDATE games
                 SET
@@ -222,8 +284,8 @@ def sync_games_from_api():
             """, (
                 api_game_id,
                 fixture_date,
-                score_home,
-                score_away,
+                stored_home,
+                stored_away,
                 db_game["id"]
             ))
             updated_games += 1
@@ -390,31 +452,28 @@ TEAM_NAME_MAP = {
     "Curacao": "Curaçao",
     "Haiti": "Haiti",
     "Paraguay": "Paraguai",
-    "Scotland": "Escócia"
+    "Scotland": "Escócia",
+    # Aliases extras da API-Football que divergem do nome curto.
+    # A API usa o nome oficial "Türkiye" e formas longas para alguns países.
+    "Türkiye": "Turquia",
+    "Cape Verde Islands": "Cabo Verde",
+    "Congo DR": "República Democrática do Congo"
 }
 
 def normalize_team_name(name):
     if not name:
         return ""
 
+    # NFC primeiro: garante que a chave do mapa case independentemente da
+    # composição unicode (ex.: 'ü' precomposto U+00FC vs 'u' + combining ◌̈).
+    name = unicodedata.normalize("NFC", name.strip())
     translated_name = TEAM_NAME_MAP.get(name, name)
 
-    return (
-        translated_name.strip()
-        .lower()
-        .replace("á", "a")
-        .replace("à", "a")
-        .replace("â", "a")
-        .replace("ã", "a")
-        .replace("é", "e")
-        .replace("ê", "e")
-        .replace("í", "i")
-        .replace("ó", "o")
-        .replace("ô", "o")
-        .replace("õ", "o")
-        .replace("ú", "u")
-        .replace("ç", "c")
-    )
+    # Remove QUALQUER diacrítico genericamente (não só os da lista antiga),
+    # então não depende de cada acento estar mapeado à mão.
+    decomposed = unicodedata.normalize("NFKD", translated_name)
+    without_accents = "".join(c for c in decomposed if not unicodedata.combining(c))
+    return without_accents.lower().strip()
 
 
 # =========================
@@ -445,8 +504,415 @@ def fetch_world_cup_fixtures():
 
 
 
+# =========================
+# AUDIT — lista pares (mesmo par de times no mesmo stage) duplicados
+# Aceder em: /admin/games-audit (só admin, user_id=1)
+# =========================
+@app.route("/admin/games-audit")
+def admin_games_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute("""
+        SELECT
+            g.id,
+            g.stage_id,
+            g.team_home_id,
+            g.team_away_id,
+            g.game_datetime,
+            g.score_home,
+            g.score_away,
+            th.name AS home_name,
+            ta.name AS away_name,
+            (SELECT COUNT(*) FROM predictions WHERE game_id = g.id) AS predictions
+        FROM games g
+        LEFT JOIN teams th ON g.team_home_id = th.id
+        LEFT JOIN teams ta ON g.team_away_id = ta.id
+        ORDER BY g.stage_id, g.id
+    """).fetchall()
+    conn.close()
+
+    from collections import defaultdict
+    buckets = defaultdict(list)
+    skipped_undefined = 0
+    for r in rows:
+        # Jogos das eliminatórias podem ter teams NULL (ainda não definidos).
+        # Sem times, não dá pra detectar duplicata por par.
+        if r["team_home_id"] is None or r["team_away_id"] is None:
+            skipped_undefined += 1
+            continue
+        a = min(r["team_home_id"], r["team_away_id"])
+        b = max(r["team_home_id"], r["team_away_id"])
+        buckets[(r["stage_id"], a, b)].append(dict(r))
+
+    duplicates = []
+    for key, games in buckets.items():
+        if len(games) <= 1:
+            continue
+        # Mesma ordenação que o dedupe vai aplicar: mais palpites primeiro, menor id em empate
+        ranked = sorted(games, key=lambda g: (-g["predictions"], g["id"]))
+        duplicates.append({
+            "stage_id": key[0],
+            "team_pair": f"{key[1]}x{key[2]}",
+            "would_keep": ranked[0]["id"],
+            "would_remove": [g["id"] for g in ranked[1:]],
+            "games": ranked,
+        })
+
+    return jsonify({
+        "total_games": len(rows),
+        "skipped_undefined_teams": skipped_undefined,
+        "duplicate_pairs": len(duplicates),
+        "duplicates": duplicates,
+    })
 
 
+# =========================
+# DEDUPE — remove pares duplicados, migra palpites pro jogo mantido
+# POST em /admin/games-dedupe (só admin)
+# =========================
+@app.route("/admin/games-dedupe", methods=["POST"])
+def admin_games_dedupe():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute("""
+        SELECT
+            g.id,
+            g.stage_id,
+            g.team_home_id,
+            g.team_away_id,
+            (SELECT COUNT(*) FROM predictions WHERE game_id = g.id) AS predictions
+        FROM games g
+    """).fetchall()
+
+    from collections import defaultdict
+    buckets = defaultdict(list)
+    for r in rows:
+        if r["team_home_id"] is None or r["team_away_id"] is None:
+            continue
+        a = min(r["team_home_id"], r["team_away_id"])
+        b = max(r["team_home_id"], r["team_away_id"])
+        buckets[(r["stage_id"], a, b)].append(dict(r))
+
+    report = []
+    for key, games in buckets.items():
+        if len(games) <= 1:
+            continue
+        ranked = sorted(games, key=lambda g: (-g["predictions"], g["id"]))
+        keeper = ranked[0]["id"]
+        losers = [g["id"] for g in ranked[1:]]
+
+        moved_total = 0
+        dropped_total = 0
+        for loser in losers:
+            # Migra palpites do loser pro keeper, exceto quando user já tem palpite no keeper
+            cur = conn.execute("""
+                UPDATE predictions
+                SET game_id = ?
+                WHERE game_id = ?
+                  AND user_id NOT IN (SELECT user_id FROM predictions WHERE game_id = ?)
+            """, (keeper, loser, keeper))
+            moved_total += cur.rowcount
+
+            # Apaga os palpites duplicados restantes (user já tinha no keeper)
+            cur = conn.execute("DELETE FROM predictions WHERE game_id = ?", (loser,))
+            dropped_total += cur.rowcount
+
+            # Remove o jogo duplicado
+            conn.execute("DELETE FROM games WHERE id = ?", (loser,))
+
+        report.append({
+            "stage_id": key[0],
+            "team_pair": f"{key[1]}x{key[2]}",
+            "kept": keeper,
+            "removed": losers,
+            "predictions_moved": moved_total,
+            "predictions_dropped": dropped_total,
+        })
+
+    conn.commit()
+    conn.close()
+    return jsonify({"action": "applied", "pairs_dedup": len(report), "report": report})
+
+
+# =========================
+# AUDIT/FIX — país incoerente com a unidade Eureka
+# GET  /admin/users-country-audit  → lista inconsistências (dry-run)
+# POST /admin/users-country-fix    → corrige country_code pela unidade
+# =========================
+@app.route("/admin/users-country-audit")
+def admin_users_country_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute(
+        "SELECT id, name, country_code, eureka_unit FROM users"
+    ).fetchall()
+    conn.close()
+
+    mismatches = []
+    for r in rows:
+        expected = country_from_unit(r["eureka_unit"])
+        if expected is not None and r["country_code"] != expected:
+            mismatches.append({
+                "id": r["id"],
+                "name": r["name"],
+                "eureka_unit": r["eureka_unit"],
+                "country_code": r["country_code"],
+                "should_be": expected,
+            })
+
+    return jsonify({
+        "total_users": len(rows),
+        "mismatches": len(mismatches),
+        "details": mismatches,
+    })
+
+
+@app.route("/admin/users-country-fix", methods=["POST"])
+def admin_users_country_fix():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    conn = get_db_connection()
+    rows = conn.execute(
+        "SELECT id, name, country_code, eureka_unit FROM users"
+    ).fetchall()
+
+    fixed = []
+    for r in rows:
+        expected = country_from_unit(r["eureka_unit"])
+        if expected is not None and r["country_code"] != expected:
+            conn.execute(
+                "UPDATE users SET country_code = ? WHERE id = ?",
+                (expected, r["id"]),
+            )
+            fixed.append({
+                "id": r["id"],
+                "name": r["name"],
+                "eureka_unit": r["eureka_unit"],
+                "from": r["country_code"],
+                "to": expected,
+            })
+
+    conn.commit()
+    conn.close()
+    return jsonify({"action": "applied", "fixed": len(fixed), "report": fixed})
+
+
+# =========================
+# AUDIT/FIX — ordem dos times (mando) divergente da API
+# GET  /admin/orientation-audit  → lista jogos com mandante invertido (dry-run)
+# POST /admin/orientation-fix    → troca times + palpites + placar juntos
+#
+# Para cada jogo onde a base tem (home,away) na ordem oposta à da API:
+#   - troca team_home_id <-> team_away_id
+#   - troca predicted_home_score <-> predicted_away_score (todos os palpites)
+#   - troca score_home <-> score_away
+# Assim o mando passa a refletir o jogo oficial SEM mudar o sentido dos
+# palpites nem a pontuação.
+# =========================
+def _orientation_mismatches(conn):
+    """Retorna lista de jogos cuja ordem (home/away) está oposta à da API."""
+    fixtures = fetch_world_cup_fixtures()
+    mismatches = []
+    for item in fixtures:
+        teams = item.get("teams", {})
+        home_name = teams.get("home", {}).get("name")
+        away_name = teams.get("away", {}).get("name")
+        fixture_id = item.get("fixture", {}).get("id")
+        if not fixture_id or not home_name or not away_name:
+            continue
+
+        row = conn.execute(
+            "SELECT id FROM games WHERE api_game_id = ?", (str(fixture_id),)
+        ).fetchone()
+        if row:
+            gid = row["id"]
+        else:
+            nm, _ = find_db_game_by_team_names(conn, home_name, away_name)
+            gid = nm["id"] if nm else None
+        if not gid:
+            continue
+
+        g = conn.execute("""
+            SELECT g.score_home, g.score_away,
+                   th.name AS home_name, ta.name AS away_name
+            FROM games g
+            LEFT JOIN teams th ON g.team_home_id = th.id
+            LEFT JOIN teams ta ON g.team_away_id = ta.id
+            WHERE g.id = ?
+        """, (gid,)).fetchone()
+        if not g:
+            continue
+
+        dh = normalize_team_name(g["home_name"])
+        da = normalize_team_name(g["away_name"])
+        ah = normalize_team_name(home_name)
+        aa = normalize_team_name(away_name)
+        # só consideramos mando invertido quando os nomes resolvem na ordem oposta
+        if dh == aa and da == ah and dh != da:
+            preds = conn.execute(
+                "SELECT COUNT(*) AS n FROM predictions WHERE game_id = ?", (gid,)
+            ).fetchone()["n"]
+            mismatches.append({
+                "game_id": gid,
+                "db_order": f"{g['home_name']} x {g['away_name']}",
+                "api_order": f"{home_name} x {away_name}",
+                "predictions": preds,
+                "has_score": g["score_home"] is not None,
+            })
+    return mismatches
+
+
+@app.route("/admin/orientation-audit")
+def admin_orientation_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+    try:
+        conn = get_db_connection()
+        mismatches = _orientation_mismatches(conn)
+        conn.close()
+    except Exception as e:
+        return jsonify({"error": f"falha: {e}"}), 502
+    return jsonify({"mismatches": len(mismatches), "details": mismatches})
+
+
+@app.route("/admin/orientation-fix", methods=["POST"])
+def admin_orientation_fix():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+    try:
+        conn = get_db_connection()
+        mismatches = _orientation_mismatches(conn)
+        for m in mismatches:
+            gid = m["game_id"]
+            # troca os times do jogo
+            conn.execute("""
+                UPDATE games
+                SET team_home_id = team_away_id,
+                    team_away_id = team_home_id,
+                    score_home = score_away,
+                    score_away = score_home
+                WHERE id = ?
+            """, (gid,))
+            # troca os palpites (mantém o sentido pro usuário)
+            conn.execute("""
+                UPDATE predictions
+                SET predicted_home_score = predicted_away_score,
+                    predicted_away_score = predicted_home_score
+                WHERE game_id = ?
+            """, (gid,))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        return jsonify({"error": f"falha: {e}"}), 502
+    return jsonify({"action": "applied", "fixed": len(mismatches), "report": mismatches})
+
+
+# =========================
+# AUDIT — placares invertidos (dry-run, não altera nada)
+# GET /admin/scores-audit
+# Compara o placar guardado na base com a orientação correta (calculada
+# pelos nomes vs API) e lista os jogos onde divergem.
+# =========================
+@app.route("/admin/scores-audit")
+def admin_scores_audit():
+    if session.get("user_id") != 1:
+        return jsonify({"error": "forbidden"}), 403
+
+    try:
+        fixtures = fetch_world_cup_fixtures()
+    except Exception as e:
+        return jsonify({"error": f"falha ao buscar fixtures: {e}"}), 502
+
+    conn = get_db_connection()
+    FINISHED_STATUSES = {"FT", "AET", "PEN"}
+    inverted = []
+    finished_checked = 0
+
+    for item in fixtures:
+        fixture = item.get("fixture", {})
+        teams = item.get("teams", {})
+        goals = item.get("goals", {})
+
+        if fixture.get("status", {}).get("short") not in FINISHED_STATUSES:
+            continue
+
+        home_name = teams.get("home", {}).get("name")
+        away_name = teams.get("away", {}).get("name")
+        fixture_id = fixture.get("id")
+        if not fixture_id or not home_name or not away_name:
+            continue
+
+        api_game_id = str(fixture_id)
+
+        # localizar o jogo na base (mesma lógica do sync)
+        row = conn.execute(
+            "SELECT id FROM games WHERE api_game_id = ?", (api_game_id,)
+        ).fetchone()
+        if row:
+            gid = row["id"]
+        else:
+            nm, _ = find_db_game_by_team_names(conn, home_name, away_name)
+            gid = nm["id"] if nm else None
+        if not gid:
+            continue
+
+        g = conn.execute("""
+            SELECT g.score_home, g.score_away,
+                   th.name AS home_name, ta.name AS away_name
+            FROM games g
+            LEFT JOIN teams th ON g.team_home_id = th.id
+            LEFT JOIN teams ta ON g.team_away_id = ta.id
+            WHERE g.id = ?
+        """, (gid,)).fetchone()
+        if not g:
+            continue
+
+        finished_checked += 1
+
+        # orientação correta pelos nomes
+        dh = normalize_team_name(g["home_name"])
+        da = normalize_team_name(g["away_name"])
+        ah = normalize_team_name(home_name)
+        aa = normalize_team_name(away_name)
+        if dh == aa and da == ah:
+            swapped = True
+        elif dh == ah and da == aa:
+            swapped = False
+        else:
+            continue  # nomes não resolvem — não dá pra afirmar orientação
+
+        sh = goals.get("home")
+        sa = goals.get("away")
+        correct_home = sa if swapped else sh
+        correct_away = sh if swapped else sa
+
+        cur_home = g["score_home"]
+        cur_away = g["score_away"]
+
+        # só reporta quando já há placar gravado e ele diverge do correto
+        if cur_home is not None and (cur_home, cur_away) != (correct_home, correct_away):
+            inverted.append({
+                "game_id": gid,
+                "home": g["home_name"],
+                "away": g["away_name"],
+                "stored": f"{cur_home} x {cur_away}",
+                "correct": f"{correct_home} x {correct_away}",
+                "pure_swap": (cur_home == correct_away and cur_away == correct_home),
+            })
+
+    conn.close()
+    return jsonify({
+        "finished_checked": finished_checked,
+        "inverted": len(inverted),
+        "details": inverted,
+    })
 
 
 # =========================
@@ -518,6 +984,63 @@ def has_games_today():
     return row["total"] > 0
 
 
+def get_alert_email():
+    """Email que recebe alertas operacionais (jogos não sincronizados).
+
+    Ordem: ALERT_EMAIL > ADMIN_BOOTSTRAP_EMAIL > email do admin (user 1).
+    """
+    email = os.environ.get("ALERT_EMAIL") or os.environ.get("ADMIN_BOOTSTRAP_EMAIL")
+    if email:
+        return email
+    try:
+        conn = get_db_connection()
+        row = conn.execute("SELECT email FROM users WHERE id = 1").fetchone()
+        conn.close()
+        return row["email"] if row else None
+    except Exception:
+        return None
+
+
+# Assinatura do último alerta enviado — evita reenviar o mesmo a cada 15 min.
+_last_skip_alert = {"signature": None}
+
+
+def alert_skipped_games(skipped_details):
+    """Avisa o admin por email quando jogos não casaram no sync.
+
+    Só envia quando o conjunto de jogos pulados MUDA, pra não gerar
+    um email a cada execução do scheduler (15 em 15 min).
+    """
+    signature = ",".join(sorted(str(d.get("fixture_id")) for d in skipped_details))
+    if signature == _last_skip_alert["signature"]:
+        return  # mesma lista já avisada
+    _last_skip_alert["signature"] = signature
+
+    to = get_alert_email()
+    if not to:
+        print("[sync] ALERT_EMAIL não resolvido — alerta não enviado", flush=True)
+        return
+
+    linhas = "".join(
+        f"<li><b>{d.get('home_name')}</b> x <b>{d.get('away_name')}</b> "
+        f"— motivo: {d.get('reason')} "
+        f"(traduzido: {d.get('home_name_pt')} / {d.get('away_name_pt')})</li>"
+        for d in skipped_details
+    )
+    html_body = (
+        f"<p>{len(skipped_details)} jogo(s) não foram sincronizados da API "
+        f"(nome não casou com a base). O resultado não será gravado até resolver:</p>"
+        f"<ul>{linhas}</ul>"
+        f"<p>Em geral é um alias de nome faltando no <code>TEAM_NAME_MAP</code>.</p>"
+    )
+    subject = f"[Arena Eureka] {len(skipped_details)} jogo(s) não sincronizados"
+    try:
+        send_email(to, subject, html_body)
+        print(f"[sync] alerta de {len(skipped_details)} jogos pulados enviado para {to}", flush=True)
+    except Exception as e:
+        print(f"[sync] falha ao enviar alerta de jogos pulados: {e}", flush=True)
+
+
 def smart_sync():
     """Só sincroniza se houver jogos hoje ou durante a Copa 2026."""
     if not has_games_today():
@@ -528,6 +1051,9 @@ def smart_sync():
     try:
         result = sync_games_from_api()
         print(f"[sync] OK — {result['updated_games']} jogos actualizados, {result['skipped_games']} ignorados")
+        skipped = result.get("skipped_details") or []
+        if skipped:
+            alert_skipped_games(skipped)
     except Exception as e:
         print(f"[sync] ERRO — {e}")
 
@@ -873,8 +1399,14 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
-        country_code = request.form["country_code"]
         eureka_unit = request.form["eureka_unit"]
+
+        # País é derivado da unidade, não escolhido separadamente — assim
+        # bandeira e cidade no ranking nunca ficam incoerentes.
+        country_code = country_from_unit(eureka_unit)
+        if country_code is None:
+            register_error = _("Please select a valid Eureka unit.")
+            return render_template("register.html", register_error=register_error)
 
         if not request.form.get("rules_consent"):
             register_error = _("You must accept the Arena Eureka Rules to create an account.")
@@ -1115,7 +1647,11 @@ def predict():
 
         if now >= game_datetime:
             conn.close()
-            return "Esse jogo já começou. Palpite bloqueado."
+            # 403 (não 200) pra o front detectar a rejeição e travar o card.
+            return jsonify({
+                "error": "locked",
+                "message": "Esse jogo já começou. Palpite bloqueado."
+            }), 403
 
         conn.execute("""
             INSERT OR REPLACE INTO predictions
@@ -1137,6 +1673,9 @@ def predict():
     # -------------------
     # GET: listar jogos e palpites
     # -------------------
+    user_row = conn.execute("SELECT country_code FROM users WHERE id = ?", (user_id,)).fetchone()
+    display_tz = user_timezone(user_row["country_code"] if user_row else None)
+
     rows = conn.execute("""
         SELECT
             g.id,
@@ -1198,15 +1737,17 @@ def predict():
         raw_datetime = row["game_datetime"].strip()
         game_datetime = datetime.fromisoformat(raw_datetime.replace('+00:00', '').replace('Z', ''))
         is_locked = now >= game_datetime
+        # epoch em ms (UTC) — o front usa pra travar o card no horário,
+        # sem ambiguidade de fuso (game_datetime é sempre UTC).
+        kickoff_ms = int(game_datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
-        # Formatar data para exibição em hora de Lisboa
+        # Formatar data no fuso preferido do usuário (BR ou PT)
         try:
             dt_str_clean = raw_datetime.replace('T', ' ').replace('+00:00', '').replace('Z', '')
             dt_utc = datetime.fromisoformat(dt_str_clean)
-            lisbon_tz = zoneinfo.ZoneInfo("Europe/Lisbon")
             dt_utc = dt_utc.replace(tzinfo=timezone.utc)
-            dt_lisbon = dt_utc.astimezone(lisbon_tz)
-            game_datetime_display = dt_lisbon.strftime("%d/%m · %H:%M")
+            dt_local = dt_utc.astimezone(display_tz)
+            game_datetime_display = dt_local.strftime("%d/%m · %H:%M")
         except Exception:
             game_datetime_display = raw_datetime[:16]
 
@@ -1220,6 +1761,7 @@ def predict():
             "away_group_name": row["away_group_name"],
             "game_datetime": row["game_datetime"],
             "game_datetime_display": game_datetime_display,
+            "kickoff_ms": kickoff_ms,
             "predicted_home_score": row["predicted_home_score"],
             "predicted_away_score": row["predicted_away_score"],
             "points": points,

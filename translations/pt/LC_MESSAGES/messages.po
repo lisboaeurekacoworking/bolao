@@ -126,6 +126,9 @@ msgstr "Corrigir dados incorretos"
 msgid "Country"
 msgstr "País"
 
+msgid "Please select a valid Eureka unit."
+msgstr "Selecione uma unidade Eureka válida."
+
 msgid "Create account"
 msgstr "Criar conta"
 
@@ -203,6 +206,9 @@ msgstr "Gerir a sua conta e o acesso à plataforma"
 
 msgid "Match finished"
 msgstr "Jogo encerrado"
+
+msgid "Match in progress"
+msgstr "Jogo a decorrer"
 
 msgid "Matches"
 msgstr "Jogos"

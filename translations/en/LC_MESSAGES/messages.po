@@ -126,6 +126,12 @@ msgstr "Correct inaccurate data"
 msgid "Country"
 msgstr "Country"
 
+msgid "Países Baixos"
+msgstr "Netherlands"
+
+msgid "Please select a valid Eureka unit."
+msgstr "Please select a valid Eureka unit."
+
 msgid "Create account"
 msgstr "Create account"
 
@@ -203,6 +209,9 @@ msgstr "Managing your account and access to the platform"
 
 msgid "Match finished"
 msgstr "Match finished"
+
+msgid "Match in progress"
+msgstr "Match in progress"
 
 msgid "Matches"
 msgstr "Matches"
