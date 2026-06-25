@@ -192,12 +192,21 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                 </div>
                 {% endif %} {% if game.score_home is not none %}
                 <div class="real-result-box">
-                  <span class="real-result-label">{{ _('Final result') }}</span>
+                  <span class="real-result-label"
+                    >{{ _('Result (90\' + ET)') }}</span
+                  >
                   <div class="real-result-score">
                     <span>{{ game.score_home }}</span>
                     <span class="real-result-separator">x</span>
                     <span>{{ game.score_away }}</span>
                   </div>
+                  {% if game.penalty_winner_id %}
+                  <span class="penalty-label"
+                    >{{ _('Penalties') }}: {% if game.penalty_winner_id ==
+                    game.home_team_id %}{{ game.home_name }}{% else %}{{
+                    game.away_name }}{% endif %}</span
+                  >
+                  {% endif %}
                 </div>
 
                 {% if game.predicted_home_score is not none %}
@@ -271,6 +280,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                       value=""
                       required
                       class="score-input"
+                      id="home-score-{{ game.id }}"
                     />
                     <span class="score-separator">x</span>
                     <input
@@ -280,8 +290,25 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                       value=""
                       required
                       class="score-input"
+                      id="away-score-{{ game.id }}"
                     />
                   </div>
+                  {% if game.stage_id > 1 %}
+                  <div class="penalty-picker" id="penalty-picker-{{ game.id }}" style="display:none;">
+                    <span class="penalty-picker-label">{{ _('Who wins on penalties?') }}</span>
+                    <div class="penalty-picker-btns">
+                      <button type="button" class="penalty-btn {% if game.predicted_penalty_winner_id == game.home_team_id %}active{% endif %}" data-game="{{ game.id }}" data-team="{{ game.home_team_id }}">
+                        {% if game.home_flag %}<img src="https://flagcdn.com/w40/{{ game.home_flag|lower }}.png" alt="">{% endif %}
+                        {{ game.home_name if game.home_name else _('TBC') }}
+                      </button>
+                      <button type="button" class="penalty-btn {% if game.predicted_penalty_winner_id == game.away_team_id %}active{% endif %}" data-game="{{ game.id }}" data-team="{{ game.away_team_id }}">
+                        {% if game.away_flag %}<img src="https://flagcdn.com/w40/{{ game.away_flag|lower }}.png" alt="">{% endif %}
+                        {{ game.away_name if game.away_name else _('TBC') }}
+                      </button>
+                    </div>
+                    <input type="hidden" name="predicted_penalty_winner_id" id="penalty-winner-{{ game.id }}" value="{{ game.predicted_penalty_winner_id or '' }}">
+                  </div>
+                  {% endif %}
                   <button type="submit" class="save-bet-btn">
                     {% if game.predicted_home_score is not none and game.predicted_away_score is not none %}
                     {{ _('Update prediction') }}
@@ -290,9 +317,6 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                     {% endif %}
                   </button>
                 </form>
-              </div>
-              {% endif %}
-            </div>
 
             <div class="team-side">
               {% if game.away_flag %}
@@ -309,8 +333,7 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
           </div>
 
           <div class="match-card-footer">
-            {% if game.is_locked %}
-            {% if game.score_home is not none %}
+            {% if game.is_locked %} {% if game.score_home is not none %}
             <span class="match-status locked"
               >🔒 {{ _('Match finished') }}</span
             >
