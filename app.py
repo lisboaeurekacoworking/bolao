@@ -2511,6 +2511,39 @@ def rename_stage(stage_id, novo_nome):
     })
 
 # =========================
+# ROTA DE ADMIN — PESQUISAR UTILIZADOR
+# Uso: /admin/users?search=nome_ou_email
+# =========================
+@app.route("/admin/users")
+def admin_users():
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    search = request.args.get("search", "").strip()
+
+    if not search:
+        conn.close()
+        return jsonify({"status": "error", "message": "Indica um termo de pesquisa. Exemplo: /admin/users?search=nome_ou_email"}), 400
+
+    users = conn.execute("""
+        SELECT id, name, email, email_verified, created_at
+        FROM users
+        WHERE name LIKE ? OR email LIKE ?
+        ORDER BY created_at DESC
+    """, (f"%{search}%", f"%{search}%")).fetchall()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "search": search,
+        "total": len(users),
+        "users": [dict(u) for u in users]
+    })
+
+# =========================
 # ROTA DE ADMIN — APAGAR UTILIZADOR
 # Uso: /admin/delete-user/<id>
 # APAGAR depois de usar
