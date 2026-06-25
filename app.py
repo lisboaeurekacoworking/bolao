@@ -214,15 +214,31 @@ def sync_games_from_api():
         # senão um 0x0 de jogo em andamento marcaria o jogo como encerrado
         # e ainda pontuaria no ranking antes da hora.
         status_short = fixture.get("status", {}).get("short")
+        score_obj = item.get("score", {})
         FINISHED_STATUSES = {"FT", "AET", "PEN"}
+
         if status_short in FINISHED_STATUSES:
-            score_home = goals.get("home")
-            score_away = goals.get("away")
+            if status_short == "PEN":
+                # Usar resultado do extratime (90min + prorrogação)
+                et = score_obj.get("extratime", {})
+                score_home = et.get("home")
+                score_away = et.get("away")
+                if score_home is None:
+                    score_home = goals.get("home")
+                    score_away = goals.get("away")
+                # Quem venceu nos pênaltis
+                pen = score_obj.get("penalty", {})
+                pen_home = pen.get("home")
+                pen_away = pen.get("away")
+                penalty_winner_api_side = "home" if (pen_home or 0) > (pen_away or 0) else "away"
+            else:
+                score_home = goals.get("home")
+                score_away = goals.get("away")
+                penalty_winner_api_side = None
         else:
-            # Jogo não finalizado (NS, 1H, HT, 2H, ET, etc.) — sem resultado.
-            # Gravar NULL também limpa placares ao vivo gravados antes.
             score_home = None
             score_away = None
+            penalty_winner_api_side = None
 
         # Nome da ronda na API
         round_name = league.get("round", "")
@@ -274,19 +290,29 @@ def sync_games_from_api():
 
             stored_home = score_away if swapped else score_home
             stored_away = score_home if swapped else score_away
+         # Determinar penalty_winner_id
+            penalty_winner_id = None
+            if penalty_winner_api_side:
+                if (penalty_winner_api_side == "home" and not swapped) or (penalty_winner_api_side == "away" and swapped):
+                    penalty_winner_id = conn.execute("SELECT team_home_id FROM games WHERE id = ?", (db_game["id"],)).fetchone()["team_home_id"]
+                else:
+                    penalty_winner_id = conn.execute("SELECT team_away_id FROM games WHERE id = ?", (db_game["id"],)).fetchone()["team_away_id"]
+
             conn.execute("""
                 UPDATE games
                 SET
                     api_game_id = ?,
                     game_datetime = ?,
                     score_home = ?,
-                    score_away = ?
+                    score_away = ?,
+                    penalty_winner_id = ?
                 WHERE id = ?
             """, (
                 api_game_id,
                 fixture_date,
                 stored_home,
                 stored_away,
+                penalty_winner_id,
                 db_game["id"]
             ))
             updated_games += 1
