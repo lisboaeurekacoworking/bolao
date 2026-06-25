@@ -2510,6 +2510,35 @@ def rename_stage(stage_id, novo_nome):
         "nome_novo": novo_nome
     })
 
+# =========================
+# ROTA DE ADMIN — CORRIGIR GRUPOS K e L
+# Corre UMA VEZ — APAGAR depois
+# =========================
+@app.route("/admin/fix-groups-kl")
+def fix_groups_kl():
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    # Equipas do Grupo K (id 11): Croácia(41), Inglaterra(42), Panamá(43), Gana(44)
+    # Equipas do Grupo L (id 12): Portugal(45), RDCongo(46), Uzbequistão(47), Colômbia(48)
+    # Estão com group_id trocado — corrigir
+    conn.execute("UPDATE teams SET group_id = 11 WHERE id IN (41, 42, 43, 44)")
+    conn.execute("UPDATE teams SET group_id = 12 WHERE id IN (45, 46, 47, 48)")
+    conn.commit()
+
+    # Verificar
+    k = conn.execute("SELECT id, name FROM teams WHERE group_id = 11").fetchall()
+    l = conn.execute("SELECT id, name FROM teams WHERE group_id = 12").fetchall()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "grupo_k": [dict(t) for t in k],
+        "grupo_l": [dict(t) for t in l]
+    })
 
 # =========================
 # LOGOUT
