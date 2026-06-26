@@ -2625,6 +2625,21 @@ def add_penalty_columns():
     return jsonify({"status": "ok", "results": results})
 
 # =========================
+# rota temporaria check games
+# =========================
+
+@app.route("/admin/check-game/<int:game_id>")
+def check_game(game_id):
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+    game = conn.execute("SELECT id, team_home_id, team_away_id, api_game_id FROM games WHERE id = ?", (game_id,)).fetchone()
+    conn.close()
+    return jsonify(dict(game) if game else {})
+
+# =========================
 # LOGOUT
 # =========================
 @app.route("/logout")
