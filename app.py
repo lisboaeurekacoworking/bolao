@@ -1846,6 +1846,8 @@ def predict():
             "penalty_winner_id": row["penalty_winner_id"] if "penalty_winner_id" in row.keys() else None,
             "predicted_penalty_winner_id": row["predicted_penalty_winner_id"] if "predicted_penalty_winner_id" in row.keys() else None,
             "stage_id": row["stage_id"],
+            "home_team_id": row["team_home_id"] if "team_home_id" in row.keys() else None,
+            "away_team_id": row["team_away_id"] if "team_away_id" in row.keys() else None,
         }
 
         stage_id = row["stage_id"]
