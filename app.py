@@ -302,6 +302,8 @@ def sync_games_from_api():
                 UPDATE games
                 SET
                     api_game_id = ?,
+                    team_home_id = COALESCE(team_home_id, ?),
+                    team_away_id = COALESCE(team_away_id, ?),
                     game_datetime = ?,
                     score_home = ?,
                     score_away = ?,
@@ -309,6 +311,8 @@ def sync_games_from_api():
                 WHERE id = ?
             """, (
                 api_game_id,
+                home_team["id"] if home_team else None,
+                away_team["id"] if away_team else None,
                 fixture_date,
                 stored_home,
                 stored_away,
