@@ -1773,7 +1773,9 @@ def predict():
             p.predicted_home_score,
             p.predicted_away_score,
             g.penalty_winner_id,
-            p.predicted_penalty_winner_id
+            p.predicted_penalty_winner_id,
+            g.team_home_id,
+            g.team_away_id
 
         FROM games g
         JOIN stages s ON g.stage_id = s.id
