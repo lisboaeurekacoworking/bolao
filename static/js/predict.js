@@ -170,6 +170,14 @@ document.querySelectorAll(".ajax-predict-form").forEach((form) => {
         form.reset();
         const card = form.closest(".match-card");
         if (card) card.dataset.hasPrediction = "true";
+
+        // Manter picker visível se houve selecção de pênaltis
+        const penaltyInput = form.querySelector('[name="predicted_penalty_winner_id"]');
+        if (penaltyInput && penaltyInput.value) {
+          const picker = form.querySelector('.penalty-picker');
+          if (picker) picker.classList.remove('penalty-picker--hidden');
+        }
+
         showToast("✓ Palpite guardado!");
       } else if (response.status === 403) {
         // Servidor rejeitou: jogo já começou (corrida com o timer do cliente).
@@ -202,7 +210,9 @@ function lockCardByTime(card) {
   // Desabilita e esconde o formulário de palpite
   const form = card.querySelector(".predict-form");
   if (form) {
-    form.querySelectorAll("input, button").forEach((el) => (el.disabled = true));
+    form
+      .querySelectorAll("input, button")
+      .forEach((el) => (el.disabled = true));
     form.style.display = "none";
   }
 
@@ -404,108 +414,117 @@ setInterval(pollResults, 120000);
 
 // ── Filtros dentro de cada fase (chips + dropdown de grupos em conjunto) ──
 function applyStageFilter(stagePanel) {
-  const chipsContainer = stagePanel.querySelector('.predict-chips');
-  const dropdown = stagePanel.querySelector('.predict-group-dropdown');
+  const chipsContainer = stagePanel.querySelector(".predict-chips");
+  const dropdown = stagePanel.querySelector(".predict-group-dropdown");
 
-  const activeChip = chipsContainer ? chipsContainer.querySelector('.predict-chip.active') : null;
-  const activeFilter = activeChip ? activeChip.dataset.filter : 'all';
-  const activeGroup = dropdown ? dropdown.value : 'all';
+  const activeChip = chipsContainer
+    ? chipsContainer.querySelector(".predict-chip.active")
+    : null;
+  const activeFilter = activeChip ? activeChip.dataset.filter : "all";
+  const activeGroup = dropdown ? dropdown.value : "all";
 
   const now = new Date();
 
-  stagePanel.querySelectorAll('.match-card').forEach(card => {
-    const isLocked = card.dataset.locked === 'true';
-    const hasPrediction = card.dataset.hasPrediction === 'true';
+  stagePanel.querySelectorAll(".match-card").forEach((card) => {
+    const isLocked = card.dataset.locked === "true";
+    const hasPrediction = card.dataset.hasPrediction === "true";
 
     // Filtro de chip
     let showByChip = true;
-    if (activeFilter === 'today') {
-      const dtStr = card.dataset.datetime || '';
+    if (activeFilter === "today") {
+      const dtStr = card.dataset.datetime || "";
       const gameDate = new Date(dtStr);
       showByChip = gameDate.toDateString() === now.toDateString();
-    } else if (activeFilter === 'missing') {
+    } else if (activeFilter === "missing") {
       showByChip = !isLocked && !hasPrediction;
-    } else if (activeFilter === 'done') {
+    } else if (activeFilter === "done") {
       showByChip = hasPrediction;
     }
 
     // Filtro de grupo
     let showByGroup = true;
-    if (activeGroup !== 'all') {
-      const groupBlock = card.closest('.predict-group-block');
-      showByGroup = groupBlock ? groupBlock.dataset.groupBlock === activeGroup : true;
+    if (activeGroup !== "all") {
+      const groupBlock = card.closest(".predict-group-block");
+      showByGroup = groupBlock
+        ? groupBlock.dataset.groupBlock === activeGroup
+        : true;
     }
 
-    card.classList.toggle('match-card--hidden', !(showByChip && showByGroup));
+    card.classList.toggle("match-card--hidden", !(showByChip && showByGroup));
   });
 
   // Mostrar/esconder blocos de grupo
-  stagePanel.querySelectorAll('.predict-group-block').forEach(block => {
-    if (activeGroup !== 'all' && block.dataset.groupBlock !== activeGroup) {
-      block.classList.add('predict-group-block--hidden');
+  stagePanel.querySelectorAll(".predict-group-block").forEach((block) => {
+    if (activeGroup !== "all" && block.dataset.groupBlock !== activeGroup) {
+      block.classList.add("predict-group-block--hidden");
       return;
     }
-    const visible = block.querySelectorAll('.match-card:not(.match-card--hidden)').length;
-    block.classList.toggle('predict-group-block--hidden', visible === 0);
+    const visible = block.querySelectorAll(
+      ".match-card:not(.match-card--hidden)",
+    ).length;
+    block.classList.toggle("predict-group-block--hidden", visible === 0);
   });
 
   // Mensagem de vazio
-  let msg = stagePanel.querySelector('.predict-stage-empty');
+  let msg = stagePanel.querySelector(".predict-stage-empty");
   if (!msg) {
-    msg = document.createElement('p');
-    msg.className = 'predict-no-results predict-stage-empty';
-    msg.textContent = 'Nenhum jogo encontrado com este filtro.';
+    msg = document.createElement("p");
+    msg.className = "predict-no-results predict-stage-empty";
+    msg.textContent = "Nenhum jogo encontrado com este filtro.";
     stagePanel.appendChild(msg);
   }
-  const totalVisible = stagePanel.querySelectorAll('.match-card:not(.match-card--hidden)').length;
-  msg.classList.toggle('visible', activeFilter !== 'all' && totalVisible === 0);
+  const totalVisible = stagePanel.querySelectorAll(
+    ".match-card:not(.match-card--hidden)",
+  ).length;
+  msg.classList.toggle("visible", activeFilter !== "all" && totalVisible === 0);
 }
 
 // Chips dentro de cada fase
-document.querySelectorAll('.predict-chips').forEach(chipsContainer => {
-  chipsContainer.querySelectorAll('.predict-chip').forEach(chip => {
-    chip.addEventListener('click', function () {
-      chipsContainer.querySelectorAll('.predict-chip').forEach(c => c.classList.remove('active'));
-      this.classList.add('active');
-      const stagePanel = this.closest('.predict-stage-panel');
+document.querySelectorAll(".predict-chips").forEach((chipsContainer) => {
+  chipsContainer.querySelectorAll(".predict-chip").forEach((chip) => {
+    chip.addEventListener("click", function () {
+      chipsContainer
+        .querySelectorAll(".predict-chip")
+        .forEach((c) => c.classList.remove("active"));
+      this.classList.add("active");
+      const stagePanel = this.closest(".predict-stage-panel");
       if (stagePanel) applyStageFilter(stagePanel);
     });
   });
 });
 
 // Dropdown de grupos dentro de cada fase
-document.querySelectorAll('.predict-group-dropdown').forEach(dropdown => {
-  dropdown.addEventListener('change', function () {
-    const stagePanel = this.closest('.predict-stage-panel');
+document.querySelectorAll(".predict-group-dropdown").forEach((dropdown) => {
+  dropdown.addEventListener("change", function () {
+    const stagePanel = this.closest(".predict-stage-panel");
     if (stagePanel) applyStageFilter(stagePanel);
   });
 });
 
 // ── Pênaltis — mostrar/esconder picker quando placar é empate ──
 function checkPenaltyPicker(gameId) {
-  const homeInput = document.getElementById('home-score-' + gameId);
-  const awayInput = document.getElementById('away-score-' + gameId);
-  const picker = document.getElementById('penalty-picker-' + gameId);
+  const homeInput = document.getElementById("home-score-" + gameId);
+  const awayInput = document.getElementById("away-score-" + gameId);
+  const picker = document.getElementById("penalty-picker-" + gameId);
   if (!picker) return;
 
   const home = homeInput ? parseInt(homeInput.value) : NaN;
   const away = awayInput ? parseInt(awayInput.value) : NaN;
 
   if (!isNaN(home) && !isNaN(away) && home === away) {
-    picker.style.display = 'block';
+    picker.classList.remove("penalty-picker--hidden");
   } else {
-    picker.style.display = 'none';
-    // Limpar selecção se não for empate
-    const hiddenInput = document.getElementById('penalty-winner-' + gameId);
-    if (hiddenInput) hiddenInput.value = '';
-    picker.querySelectorAll('.penalty-btn').forEach(btn => btn.classList.remove('active'));
+    picker.classList.add("penalty-picker--hidden");
+    const hiddenInput = document.getElementById("penalty-winner-" + gameId);
+    if (hiddenInput) hiddenInput.value = "";
+    picker.querySelectorAll(".penalty-btn").forEach((btn) => btn.classList.remove("active"));
   }
 }
 
 // Ouvir mudanças nos inputs de score
-document.querySelectorAll('.score-input').forEach(input => {
-  input.addEventListener('input', function () {
-    const form = this.closest('form');
+document.querySelectorAll(".score-input").forEach((input) => {
+  input.addEventListener("input", function () {
+    const form = this.closest("form");
     if (!form) return;
     const gameId = form.dataset.gameId;
     if (gameId) checkPenaltyPicker(gameId);
@@ -513,18 +532,19 @@ document.querySelectorAll('.score-input').forEach(input => {
 });
 
 // Clicar nos botões de pênaltis
-document.querySelectorAll('.penalty-btn').forEach(btn => {
-  btn.addEventListener('click', function () {
+document.querySelectorAll(".penalty-btn").forEach((btn) => {
+  btn.addEventListener("click", function () {
     const gameId = this.dataset.game;
     const teamId = this.dataset.team;
 
     // Activar botão
-    document.querySelectorAll('.penalty-btn[data-game="' + gameId + '"]')
-      .forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
+    document
+      .querySelectorAll('.penalty-btn[data-game="' + gameId + '"]')
+      .forEach((b) => b.classList.remove("active"));
+    this.classList.add("active");
 
     // Guardar valor no hidden input
-    const hiddenInput = document.getElementById('penalty-winner-' + gameId);
+    const hiddenInput = document.getElementById("penalty-winner-" + gameId);
     if (hiddenInput) hiddenInput.value = teamId;
   });
 });

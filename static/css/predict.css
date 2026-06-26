@@ -515,6 +515,9 @@
   background: #ffc507;
   color: black;
 }
+.penalty-picker--hidden {
+  display: none;
+}
 
 @media (min-width: 768px) {
   .predict-stats {
@@ -588,8 +591,15 @@
   transition: 0.15s ease;
 }
 
-.predict-chip:hover { background: #fff7dc; color: #111; }
-.predict-chip.active { background: #ffc507; color: black; border-color: #ffc507; }
+.predict-chip:hover {
+  background: #fff7dc;
+  color: #111;
+}
+.predict-chip.active {
+  background: #ffc507;
+  color: black;
+  border-color: #ffc507;
+}
 
 /* Dropdown de grupos */
 .predict-group-dropdown-wrapper {
@@ -618,7 +628,7 @@
 
 .predict-group-dropdown:focus {
   border-color: #ffc507;
-  box-shadow: 0 0 0 2px rgba(255,197,7,0.15);
+  box-shadow: 0 0 0 2px rgba(255, 197, 7, 0.15);
 }
 
 /* Manter compatibilidade com predict-filter-select */
@@ -642,11 +652,15 @@
 
 .predict-filter-select:focus {
   border-color: #ffc507;
-  box-shadow: 0 0 0 2px rgba(255,197,7,0.15);
+  box-shadow: 0 0 0 2px rgba(255, 197, 7, 0.15);
 }
 
-.match-card--hidden { display: none !important; }
-.predict-group-block--hidden { display: none !important; }
+.match-card--hidden {
+  display: none !important;
+}
+.predict-group-block--hidden {
+  display: none !important;
+}
 
 .predict-no-results {
   font-family: "Montserrat", sans-serif;
@@ -655,7 +669,9 @@
   padding: 0.8rem 0;
   display: none;
 }
-.predict-no-results.visible { display: block; }
+.predict-no-results.visible {
+  display: block;
+}
 
 /* ── Resultado real nos cards ── */
 .real-result-box {
@@ -713,13 +729,29 @@
   border-radius: 999px;
 }
 
-.tag-hit { background: #e1f5ee; color: #0f6e56; }
-.tag-miss { background: #fcebeb; color: #a32d2d; }
-.tag-points { background: #ffc507; color: black; }
+.tag-hit {
+  background: #e1f5ee;
+  color: #0f6e56;
+}
+.tag-miss {
+  background: #fcebeb;
+  color: #a32d2d;
+}
+.tag-points {
+  background: #ffc507;
+  color: black;
+}
 
-.saved-bet-box--empty { background: #f5f5f5; border-color: #ddd; }
-.saved-bet-box--empty .saved-bet-label { color: #999; }
-.saved-bet-score--empty { color: #bbb; }
+.saved-bet-box--empty {
+  background: #f5f5f5;
+  border-color: #ddd;
+}
+.saved-bet-box--empty .saved-bet-label {
+  color: #999;
+}
+.saved-bet-score--empty {
+  color: #bbb;
+}
 .awaiting-result {
   font-family: "Montserrat", sans-serif;
   font-size: 0.85rem;
@@ -741,7 +773,9 @@
   padding: 0.85rem 1.6rem;
   border-radius: 999px;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   z-index: 9999;
   pointer-events: none;
   white-space: nowrap;

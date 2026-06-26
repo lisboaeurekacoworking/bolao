@@ -274,9 +274,8 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                 >
                   {% if game.stage_id > 1 %}
                   <div
-                    class="penalty-picker"
+                    class="penalty-picker {% if not game.predicted_penalty_winner_id %}penalty-picker--hidden{% endif %}"
                     id="penalty-picker-{{ game.id }}"
-                    style="display: none"
                   >
                     <span class="penalty-picker-label"
                       >{{ _('Who wins on penalties?') }}</span
