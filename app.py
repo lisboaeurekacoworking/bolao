@@ -1812,7 +1812,9 @@ def predict():
                 real_home,
                 real_away,
                 pred_home,
-                pred_away
+                pred_away,
+                penalty_winner_id=row["penalty_winner_id"] if "penalty_winner_id" in row.keys() else None,
+                predicted_penalty_winner_id=row["predicted_penalty_winner_id"] if "predicted_penalty_winner_id" in row.keys() else None
             )
 
         raw_datetime = row["game_datetime"].strip()
