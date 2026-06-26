@@ -274,25 +274,75 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                 >
                   <input type="hidden" name="game_id" value="{{ game.id }}" />
                   <div class="score-row">
-                    <input type="number" name="home_score" min="0" value="" required class="score-input" id="home-score-{{ game.id }}" />
+                    <input
+                      type="number"
+                      name="home_score"
+                      min="0"
+                      value=""
+                      required
+                      class="score-input"
+                      id="home-score-{{ game.id }}"
+                    />
                     <span class="score-separator">x</span>
-                    <input type="number" name="away_score" min="0" value="" required class="score-input" id="away-score-{{ game.id }}" />
+                    <input
+                      type="number"
+                      name="away_score"
+                      min="0"
+                      value=""
+                      required
+                      class="score-input"
+                      id="away-score-{{ game.id }}"
+                    />
                   </div>
                   {% if game.stage_id > 1 %}
-                  <div class="penalty-picker {% if game.predicted_penalty_winner_id %}{% else %}penalty-picker--hidden{% endif %}" id="penalty-picker-{{ game.id }}">
-                    <span class="penalty-picker-label">{{ _('Who wins on penalties?') }}</span>
+                  <div
+                    class="penalty-picker {% if game.predicted_penalty_winner_id %}{% else %}penalty-picker--hidden{% endif %}"
+                    id="penalty-picker-{{ game.id }}"
+                  >
+                    <!-- DEBUG: {{ game.predicted_penalty_winner_id }} / {{ game.home_team_id }} / {{ game.away_team_id }} -->
+                    <span class="penalty-picker-label"
+                      >{{ _('Who wins on penalties?') }}</span
+                    >
                     <div class="penalty-picker-btns">
-                      <button type="button" class="penalty-btn {% if game.predicted_penalty_winner_id and game.home_team_id and game.predicted_penalty_winner_id | int == game.home_team_id | int %}active{% endif %}" data-game="{{ game.id }}" data-team="{{ game.home_team_id }}">
-                        {% if game.home_flag %}<img src="https://flagcdn.com/w40/{{ game.home_flag|lower }}.png" alt="" />{% endif %} {{ game.home_name if game.home_name else _('TBC') }}
+                      <button
+                        type="button"
+                        class="penalty-btn {% if game.predicted_penalty_winner_id and game.home_team_id and game.predicted_penalty_winner_id | int == game.home_team_id | int %}active{% endif %}"
+                        data-game="{{ game.id }}"
+                        data-team="{{ game.home_team_id }}"
+                      >
+                        {% if game.home_flag %}<img
+                          src="https://flagcdn.com/w40/{{ game.home_flag|lower }}.png"
+                          alt=""
+                        />{% endif %} {{ game.home_name if game.home_name else
+                        _('TBC') }}
                       </button>
-                      <button type="button" class="penalty-btn {% if game.predicted_penalty_winner_id and game.away_team_id and game.predicted_penalty_winner_id | int == game.away_team_id | int %}active{% endif %}" data-game="{{ game.id }}" data-team="{{ game.away_team_id }}">
-                        {% if game.away_flag %}<img src="https://flagcdn.com/w40/{{ game.away_flag|lower }}.png" alt="" />{% endif %} {{ game.away_name if game.away_name else _('TBC') }}
+                      <button
+                        type="button"
+                        class="penalty-btn {% if game.predicted_penalty_winner_id and game.away_team_id and game.predicted_penalty_winner_id | int == game.away_team_id | int %}active{% endif %}"
+                        data-game="{{ game.id }}"
+                        data-team="{{ game.away_team_id }}"
+                      >
+                        {% if game.away_flag %}<img
+                          src="https://flagcdn.com/w40/{{ game.away_flag|lower }}.png"
+                          alt=""
+                        />{% endif %} {{ game.away_name if game.away_name else
+                        _('TBC') }}
                       </button>
                     </div>
-                    <input type="hidden" name="predicted_penalty_winner_id" id="penalty-winner-{{ game.id }}" value="{{ game.predicted_penalty_winner_id or '' }}" />
+                    <input
+                      type="hidden"
+                      name="predicted_penalty_winner_id"
+                      id="penalty-winner-{{ game.id }}"
+                      value="{{ game.predicted_penalty_winner_id or '' }}"
+                    />
                   </div>
                   {% endif %}
-                  <button type="submit" class="save-bet-btn">{% if game.predicted_home_score is not none and game.predicted_away_score is not none %}{{ _('Update prediction') }}{% else %}{{ _('Save prediction') }}{% endif %}</button>
+                  <button type="submit" class="save-bet-btn">
+                    {% if game.predicted_home_score is not none and
+                    game.predicted_away_score is not none %}{{ _('Update
+                    prediction') }}{% else %}{{ _('Save prediction') }}{% endif
+                    %}
+                  </button>
                 </form>
               </div>
               {% endif %}
