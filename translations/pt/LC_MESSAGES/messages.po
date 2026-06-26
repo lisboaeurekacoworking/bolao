@@ -942,3 +942,9 @@ msgstr "Grandes Penalidades"
 
 msgid "Who wins on penalties?"
 msgstr "Quem passa nas grandes penalidades?"
+
+msgid "Update prediction"
+msgstr "Atualizar palpite"
+
+msgid "Save prediction"
+msgstr "Guardar palpite"

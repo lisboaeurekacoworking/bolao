@@ -947,3 +947,9 @@ msgstr "Pênaltis"
 
 msgid "Who wins on penalties?"
 msgstr "Quem passa nos pênaltis?"
+
+msgid "Update prediction"
+msgstr "Atualizar palpite"
+
+msgid "Save prediction"
+msgstr "Guardar palpite"
