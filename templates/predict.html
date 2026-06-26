@@ -299,7 +299,6 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                     class="penalty-picker {% if game.predicted_penalty_winner_id %}{% else %}penalty-picker--hidden{% endif %}"
                     id="penalty-picker-{{ game.id }}"
                   >
-                    <!-- DEBUG: {{ game.predicted_penalty_winner_id }} / {{ game.home_team_id }} / {{ game.away_team_id }} -->
                     <span class="penalty-picker-label"
                       >{{ _('Who wins on penalties?') }}</span
                     >
@@ -337,7 +336,11 @@ Eureka{% endtrans %}{% endblock %} {% block menu %}
                     />
                   </div>
                   {% endif %}
-                  <button type="submit" class="save-bet-btn">{% if game.predicted_home_score is not none and game.predicted_away_score is not none %}{{ _('Update prediction') }}{% else %}{{ _('Save prediction') }}{% endif %}
+                  <button type="submit" class="save-bet-btn">
+                    {% if game.predicted_home_score is not none and
+                    game.predicted_away_score is not none %}{{ _('Update
+                    prediction') }}{% else %}{{ _('Save prediction') }}{% endif
+                    %}
                   </button>
                 </form>
               </div>
