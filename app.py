@@ -311,8 +311,8 @@ def sync_games_from_api():
                 WHERE id = ?
             """, (
                 api_game_id,
-                home_team["id"] if home_team else None,
-                away_team["id"] if away_team else None,
+                (conn.execute("SELECT id FROM teams WHERE name = ?", (TEAM_NAME_MAP.get(home_name, home_name),)).fetchone() or {"id": None})["id"],
+                (conn.execute("SELECT id FROM teams WHERE name = ?", (TEAM_NAME_MAP.get(away_name, away_name),)).fetchone() or {"id": None})["id"],
                 fixture_date,
                 stored_home,
                 stored_away,
