@@ -2628,7 +2628,76 @@ def add_penalty_columns():
     conn.close()
     return jsonify({"status": "ok", "results": results})
 
-    # =========================
+# =========================
+# ROTA DE ADMIN — PESQUISAR UTILIZADOR
+# Uso: /admin/users?search=nome_ou_email
+# =========================
+@app.route("/admin/users")
+def admin_users():
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    search = request.args.get("search", "").strip()
+
+    if not search:
+        conn.close()
+        return jsonify({"status": "error", "message": "Indica um termo de pesquisa. Exemplo: /admin/users?search=nome_ou_email"}), 400
+
+    users = conn.execute("""
+        SELECT id, name, email, email_verified, created_at
+        FROM users
+        WHERE name LIKE ? OR email LIKE ?
+        ORDER BY created_at DESC
+    """, (f"%{search}%", f"%{search}%")).fetchall()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "search": search,
+        "total": len(users),
+        "users": [dict(u) for u in users]
+    })
+
+# =========================
+# ROTA DE ADMIN — APAGAR UTILIZADOR
+# Uso: /admin/delete-user/<id>
+# APAGAR depois de usar
+# =========================
+@app.route("/admin/delete-user/<int:user_id>")
+def admin_delete_user(user_id):
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    target = conn.execute("SELECT id, name, email FROM users WHERE id = ?", (user_id,)).fetchone()
+    if not target:
+        conn.close()
+        return jsonify({"status": "error", "message": "Utilizador não encontrado"}), 404
+
+    # Apagar dados dependentes
+    conn.execute("DELETE FROM predictions WHERE user_id = ?", (user_id,))
+    conn.execute("DELETE FROM bettalks_likes WHERE user_id = ?", (user_id,))
+    conn.execute("DELETE FROM bettalks_comments WHERE user_id = ?", (user_id,))
+    posts = conn.execute("SELECT id FROM bettalks_posts WHERE user_id = ?", (user_id,)).fetchall()
+    for post in posts:
+        conn.execute("DELETE FROM bettalks_likes WHERE post_id = ?", (post["id"],))
+        conn.execute("DELETE FROM bettalks_comments WHERE post_id = ?", (post["id"],))
+    conn.execute("DELETE FROM bettalks_posts WHERE user_id = ?", (user_id,))
+    conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "message": f"Utilizador {target['name']} ({target['email']}) apagado com sucesso"
+    })
+
+# =========================
 # ROTA DE ADMIN — APAGAR JOGO
 # Uso: /admin/delete-game/<id>
 # APAGAR depois de usar
