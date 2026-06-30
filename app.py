@@ -219,13 +219,8 @@ def sync_games_from_api():
 
         if status_short in FINISHED_STATUSES:
             if status_short == "PEN":
-                # Usar resultado do extratime (90min + prorrogação)
-                et = score_obj.get("extratime", {})
-                score_home = et.get("home")
-                score_away = et.get("away")
-                if score_home is None:
-                    score_home = goals.get("home")
-                    score_away = goals.get("away")
+                score_home = goals.get("home")
+                score_away = goals.get("away")
                 # Quem venceu nos pênaltis
                 pen = score_obj.get("penalty", {})
                 pen_home = pen.get("home")
