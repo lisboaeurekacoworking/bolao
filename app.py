@@ -2677,6 +2677,19 @@ def admin_fix_score(game_id, home, away):
     game = conn.execute("SELECT * FROM games WHERE id = ?", (game_id,)).fetchone()
     conn.close()
     return jsonify({"status": "ok", "game": dict(game)})
+# =========================
+# ROTA DE ADMIN — debug fixture
+# Uso: /admin/debug-fixture/<int:fixture_id>
+# =========================
+@app.route("/admin/debug-fixture/<int:fixture_id>")
+def debug_fixture(fixture_id):
+    user = get_db_connection().execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        return jsonify({"status": "error"}), 403
+    url = f"https://v3.football.api-sports.io/fixtures?id={fixture_id}"
+    headers = {"x-apisports-key": os.environ.get("API_FOOTBALL_KEY")}
+    response = requests.get(url, headers=headers)
+    return jsonify(response.json())
 
 # =========================
 # ROTA DE ADMIN — ATUALIZAR NOME UTILIZADOR
