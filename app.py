@@ -2661,6 +2661,22 @@ def admin_users():
         "total": len(users),
         "users": [dict(u) for u in users]
     })
+# =========================
+# ROTA DE ADMIN — corrigir resultado
+# Uso: /admin/update-name/<int:user_id>/<string:novo_nome>
+# =========================
+@app.route("/admin/fix-result/<int:game_id>/<int:home>/<int:away>/<int:winner_id>")
+def admin_fix_result(game_id, home, away, winner_id):
+        conn = get_db_connection()
+        user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+        if not user or user["is_admin"] != 1:
+            conn.close()
+            return jsonify({"status": "error", "message": "Acesso negado"}), 403
+        conn.execute("UPDATE games SET score_home = ?, score_away = ?, penalty_winner_id = ? WHERE id = ?", (home, away, winner_id, game_id))
+        conn.commit()
+        game = conn.execute("SELECT * FROM games WHERE id = ?", (game_id,)).fetchone()
+        conn.close()
+        return jsonify({"status": "ok", "game": dict(game)})
 
 # =========================
 # ROTA DE ADMIN — ATUALIZAR NOME UTILIZADOR
