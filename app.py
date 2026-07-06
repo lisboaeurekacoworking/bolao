@@ -573,7 +573,10 @@ def fetch_world_cup_fixtures():
 # =========================
 @app.route("/admin/games-audit")
 def admin_games_audit():
-    if session.get("user_id") != 1:
+    conn_a = get_db_connection()
+    _u = conn_a.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_a.close()
+    if not _u or _u["is_admin"] != 1:
         return jsonify({"error": "forbidden"}), 403
 
     conn = get_db_connection()
@@ -637,7 +640,10 @@ def admin_games_audit():
 # =========================
 @app.route("/admin/games-dedupe", methods=["POST"])
 def admin_games_dedupe():
-    if session.get("user_id") != 1:
+    conn_a = get_db_connection()
+    _u = conn_a.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_a.close()
+    if not _u or _u["is_admin"] != 1:
         return jsonify({"error": "forbidden"}), 403
 
     conn = get_db_connection()
@@ -708,7 +714,10 @@ def admin_games_dedupe():
 # =========================
 @app.route("/admin/users-country-audit")
 def admin_users_country_audit():
-    if session.get("user_id") != 1:
+    conn_a = get_db_connection()
+    _u = conn_a.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_a.close()
+    if not _u or _u["is_admin"] != 1:
         return jsonify({"error": "forbidden"}), 403
 
     conn = get_db_connection()
@@ -738,7 +747,10 @@ def admin_users_country_audit():
 
 @app.route("/admin/users-country-fix", methods=["POST"])
 def admin_users_country_fix():
-    if session.get("user_id") != 1:
+    conn_a = get_db_connection()
+    _u = conn_a.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_a.close()
+    if not _u or _u["is_admin"] != 1:
         return jsonify({"error": "forbidden"}), 403
 
     conn = get_db_connection()
@@ -834,7 +846,10 @@ def _orientation_mismatches(conn):
 
 @app.route("/admin/orientation-audit")
 def admin_orientation_audit():
-    if session.get("user_id") != 1:
+    conn_a = get_db_connection()
+    _u = conn_a.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_a.close()
+    if not _u or _u["is_admin"] != 1:
         return jsonify({"error": "forbidden"}), 403
     try:
         conn = get_db_connection()
@@ -847,7 +862,10 @@ def admin_orientation_audit():
 
 @app.route("/admin/orientation-fix", methods=["POST"])
 def admin_orientation_fix():
-    if session.get("user_id") != 1:
+    conn_a = get_db_connection()
+    _u = conn_a.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_a.close()
+    if not _u or _u["is_admin"] != 1:
         return jsonify({"error": "forbidden"}), 403
     try:
         conn = get_db_connection()
@@ -885,7 +903,10 @@ def admin_orientation_fix():
 # =========================
 @app.route("/admin/scores-audit")
 def admin_scores_audit():
-    if session.get("user_id") != 1:
+    conn_a = get_db_connection()
+    _u = conn_a.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    conn_a.close()
+    if not _u or _u["is_admin"] != 1:
         return jsonify({"error": "forbidden"}), 403
 
     try:
