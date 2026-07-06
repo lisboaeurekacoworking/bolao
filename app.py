@@ -2739,6 +2739,35 @@ def check_game(game_id):
     return jsonify(dict(game) if game else {})
 
 # =========================
+# ROTA DE ADMIN — APAGAR JOGO
+# Uso: /admin/delete-game/<id>
+# APAGAR depois de usar
+# =========================
+@app.route("/admin/delete-game/<int:game_id>")
+def admin_delete_game(game_id):
+    conn = get_db_connection()
+    user = conn.execute("SELECT is_admin FROM users WHERE id = ?", (session.get("user_id"),)).fetchone()
+    if not user or user["is_admin"] != 1:
+        conn.close()
+        return jsonify({"status": "error", "message": "Acesso negado"}), 403
+
+    game = conn.execute("SELECT id, team_home_id, team_away_id, api_game_id FROM games WHERE id = ?", (game_id,)).fetchone()
+    if not game:
+        conn.close()
+        return jsonify({"status": "error", "message": "Jogo não encontrado"}), 404
+
+    conn.execute("DELETE FROM predictions WHERE game_id = ?", (game_id,))
+    conn.execute("DELETE FROM games WHERE id = ?", (game_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "status": "ok",
+        "message": f"Jogo {game_id} apagado com sucesso"
+    })
+
+
+# =========================
 # LOGOUT
 # =========================
 @app.route("/logout")
